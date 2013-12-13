@@ -22,7 +22,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "Meteorology.h"
+#include "Meteorology.hpp"
 using namespace std;
 
 #ifndef METEOROLOGY_METAR_H

@@ -14,8 +14,8 @@
 * Todo:        (1) Implement structures for International standards
 */
 
-#include "stdafx.h"
-#include "Metar.h"
+#include "stdafx.hpp"
+#include "Metar.hpp"
 
 namespace Meteorology {
 	const string Metar::m_Patterns[] = {
