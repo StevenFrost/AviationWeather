@@ -93,7 +93,7 @@ namespace Meteorology {
 
 			MetarObservationTime() {
 				time_t t = time(0);
-				struct tm * now = localtime(&t);
+				struct tm *now = localtime(&t);
 				dayOfMonth = now->tm_mon;
 				hourOfDay = now->tm_hour;
 				minuteOfHour = now->tm_min;
