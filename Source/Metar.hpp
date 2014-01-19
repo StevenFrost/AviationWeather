@@ -1,19 +1,29 @@
-/**
-* Module:      Metar.h
-* Author(s):   Steven Frost
-* Description: This module defines the METAR class used to download and/or process METAR
-*              data from reference (4). Key structures are also defined to make the
-*              transfer of full decoded METAR information much easier.
-*              This document currently complies with North-American standards ONLY and
-*              may not successfully decode International METAR information.
-*
-* References:  (1) http://www.ofcm.gov/fmh-1/pdf/L-CH12.pdf
-*              (2) http://en.wikipedia.org/wiki/METAR
-*              (3) http://www.herk-gouge.com/2006/11/understanding-runway-visual-range-rvr.html
-*              (4) http://www.aviationweather.gov/adds/dataserver
-*
-* Todo:        (1) Implement structures for International standards
-*/
+/****************************** Module Header ******************************\
+Module Name:  Metar.hpp
+Project:      Meteorology
+Copyright (c) 2014 Steven Frost.
+
+This module defines the METAR class used to download and/or process METAR 
+data from reference (4). Key structures are also defined to make the
+transfer of full decoded METAR information much easier.
+This document currently complies with North-American standards ONLY and may
+not successfully decode International METAR information.
+
+References:  (1) http://www.ofcm.gov/fmh-1/pdf/L-CH12.pdf
+             (2) http://en.wikipedia.org/wiki/METAR
+             (3) http://www.herk-gouge.com/2006/11/understanding-runway-visual-range-rvr.html
+             (4) http://www.aviationweather.gov/adds/dataserver
+
+Todo:        (1) Implement structures for International standards
+
+This source is subject to the MIT License.
+See http://opensource.org/licenses/MIT
+
+All other rights reserved.
+THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+\***************************************************************************/
 
 #include <ctime>
 #include <iostream>
@@ -67,7 +77,7 @@ namespace Meteorology {
 		* Station Identifier
 		*  Type defining a valid METAR Station Identifier
 		*/
-		typedef char StationIdentifier[5];
+		typedef string StationIdentifier;
 
 		/**
 		* MetarModifier
@@ -227,7 +237,7 @@ namespace Meteorology {
 				skyCondition(new list<MetarSkyConditionGroup *>),
 				temperature(NULL),
 				dewpoint(NULL),
-				altimeter(NULL) {
+				altimeter(9.0) {
 			};
 
 			~MetarInfo() {
@@ -235,64 +245,48 @@ namespace Meteorology {
 			}
 		};
 
-		/**
-		* Default class constructor
-		*/
 		Metar(void);
-
-		/**
-		* Class constructor takes a METAR string and processes it.
-		*/
 		Metar(string metar);
-
-		/**
-		* Default class destructor
-		*/
 		~Metar(void);
 
-		/**
-		* Gets the full METAR string.
-		*/
 		string getMetarString();
-
-		/**
-		* Sets the full METAR string. The MetarInfo structure is updated with the
-		* new METAR data.
-		*/
-		void setMetarString(string metar);
-
-		/**
-		* Gets a copy of the current MetarInfo structure.
-		*/
 		void getMetarStruct(MetarInfo &dest);
 
-		/**
-		* Gets a specified element from the MetarInfo structure. The type of the
-		* object required must match the reference you pass for the `obj`
-		* parameter and template type.
-		*/
-		template <class Object>
-		void getElement(MetarElement element, Object *obj);
+		MetarReportType					getReportType()			{ return m_MetarInfo->reportType; }
+		StationIdentifier				getStationIdentifier()	{ return m_MetarInfo->stationIdentifier; }
+		MetarObservationTime *			getObservationTime()	{ return m_MetarInfo->observationTime; }
+		MetarModifier					getModifier()			{ return m_MetarInfo->modifier; }
+		MetarWind *						getWind()				{ return m_MetarInfo->wind; }
+		Visibility						getVisibilityF()		{ return m_MetarInfo->visibility * METRES_TO_FEET; }
+		Visibility						getVisibilityM()		{ return m_MetarInfo->visibility; }
+		list<MetarRunwayVisualRange *> *getRunwayVisualRange()	{ return m_MetarInfo->runwayVisualRange; }
+		list<MetarWeatherGroup *> *		getWeather()			{ return m_MetarInfo->weather; }
+		list<MetarSkyConditionGroup *> *getSkyCondition()		{ return m_MetarInfo->skyCondition; }
+		Temperature						getTemperatureC()		{ return m_MetarInfo->temperature; }
+		Temperature						getTemperatureF()		{ return m_MetarInfo->temperature * CENT_TO_FAR; }
+		Dewpoint						getDewpointC()			{ return m_MetarInfo->dewpoint; }
+		Dewpoint						getDewpointF()			{ return m_MetarInfo->dewpoint * CENT_TO_FAR; }
+		Altimeter						getAltimeterinHg()		{ return m_MetarInfo->altimeter; }
+		Altimeter						getAltimeterhPa()		{ return m_MetarInfo->altimeter * INHG_TO_HPA; }
+		string							getRemarks()			{ return m_MetarInfo->remarks; }
+
+		void setMetarString(string metar);
 	private:
-		string m_Metar;						// Full METAR string
-		MetarInfo *m_MetarInfo;				// Main Metar Info structure holds all native data
-		static const string m_Patterns[];	// List of Regular Expressions to obtain native METAR data
+		string m_Metar;						/* Full METAR string */
+		MetarInfo *m_MetarInfo;				/* Main Metar Info structure holds all native data */
+		static const string m_Patterns[];	/* List of Regular Expressions to obtain native METAR data */
 
-		/**
-		* Initialises variables and allocates memory
-		*/
 		void initialise();
-
-		/**
-		* Processes the loaded metar string (stored in m_Metar)
-		*/
 		void processMetar();
-
-		/**
-		* Processes an individual metar element
-		*/
 		void processMetarElement(MetarElement elem, cmatch result);
 
+		void setReportType(MetarReportType type);
+		void setReportType(string type);
+		void setStationIdentifier(string ident);
+		void setObservationTime(MetarObservationTime time);
+		void setObservationTime(unsigned int day, unsigned int hour, unsigned int minute);
+		void setReportModifier(MetarModifier modifier);
+		
 		void processMetarElementReportType(cmatch metar);
 		void processMetarElementStationIdentifier(cmatch metar);
 		void processMetarElementObservationTime(cmatch metar);

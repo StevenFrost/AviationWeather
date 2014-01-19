@@ -1,18 +1,28 @@
-/**
-* Module:      Metar.cpp
-* Author(s):   Steven Frost
-* Description: This module implements the METAR class used to download and/or process METAR
-*              data from reference (4).
-*              This document currently complies with North-American standards ONLY and
-*              may not successfully decode International METAR information.
-*
-* References:  (1) http://www.ofcm.gov/fmh-1/pdf/L-CH12.pdf
-*              (2) http://en.wikipedia.org/wiki/METAR
-*              (3) http://www.herk-gouge.com/2006/11/understanding-runway-visual-range-rvr.html
-*              (4) http://www.aviationweather.gov/adds/dataserver
-*
-* Todo:        (1) Implement structures for International standards
-*/
+/****************************** Module Header ******************************\
+Module Name:  Metar.cpp
+Project:      Meteorology
+Copyright (c) 2014 Steven Frost.
+
+This module implements the METAR class used to download and/or process METAR
+data from reference (4).
+This document currently complies with North-American standards ONLY and may
+not successfully decode International METAR information.
+
+References:  (1) http://www.ofcm.gov/fmh-1/pdf/L-CH12.pdf
+             (2) http://en.wikipedia.org/wiki/METAR
+             (3) http://www.herk-gouge.com/2006/11/understanding-runway-visual-range-rvr.html
+             (4) http://www.aviationweather.gov/adds/dataserver
+
+Todo:        (1) Implement structures for International standards
+
+This source is subject to the MIT License.
+See http://opensource.org/licenses/MIT
+
+All other rights reserved.
+THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+\***************************************************************************/
 
 #include "stdafx.hpp"
 #include "Metar.hpp"
@@ -30,10 +40,10 @@ namespace Meteorology {
 		" ((SKC|CLR)|(((VV)|([A-Z]{2,3}))([0-9]{3}|///))) ",
 		" (M)?[0-9]{2}/",
 		"/(M)?[0-9]{2} ",
-		" A[0-9]{4} ",
+		" (Q|A)([0-9]{4}) ",
 		" RMK (PK WND [0-9]{5,6}/([0-9]{2}|[0-9]{4}))?.*$"
 	};
-
+	
 	Metar::Metar(void) {
 		initialise();
 	}
@@ -44,25 +54,25 @@ namespace Meteorology {
 		processMetar();
 	}
 
-	void Metar::initialise() {
-		m_MetarInfo = new MetarInfo;
-	}
-
 	Metar::~Metar(void) {
 		delete(m_MetarInfo);
+	}
+
+	void Metar::initialise() {
+		m_MetarInfo = new MetarInfo;
 	}
 
 	string Metar::getMetarString() {
 		return m_Metar;
 	}
 
+	void Metar::getMetarStruct(MetarInfo &dest) {
+		dest = (*m_MetarInfo);
+	}
+
 	void Metar::setMetarString(string metar) {
 		m_Metar = metar;
 		processMetar();
-	}
-
-	void Metar::getMetarStruct(MetarInfo &dest) {
-		dest = (*m_MetarInfo);
 	}
 
 	void Metar::processMetar() {
@@ -120,20 +130,64 @@ namespace Meteorology {
 		}
 	}
 
+	void Metar::setReportType(MetarReportType type) {
+		m_MetarInfo->reportType = type;
+	}
+
+	void Metar::setReportType(string type) {
+		if (type == "METAR") {
+			m_MetarInfo->reportType = METAR_REPORT_TYPE_METAR;
+		} else if (type == "SPECI") {
+			m_MetarInfo->reportType = METAR_REPORT_TYPE_SPECI;
+		} else {
+			throw new invalid_argument("The report type should be either METAR or SPECI");
+		}
+	}
+
+	void Metar::setStationIdentifier(string ident) {
+		m_MetarInfo->stationIdentifier = ident;
+	}
+
+	void Metar::setObservationTime(MetarObservationTime time) {
+		m_MetarInfo->observationTime = &time;
+	}
+
+	void Metar::setObservationTime(unsigned int day, unsigned int hour, unsigned int minute) {
+		m_MetarInfo->observationTime->dayOfMonth = day;
+		m_MetarInfo->observationTime->hourOfDay = hour;
+		m_MetarInfo->observationTime->minuteOfHour = minute;
+	}
+
+	void Metar::setReportModifier(MetarModifier modifier) {
+
+	}
+
 	void Metar::processMetarElementReportType(cmatch metar) {
-		m_MetarInfo->reportType = (metar.str(1) == "METAR" ? METAR_REPORT_TYPE_METAR : METAR_REPORT_TYPE_SPECI);
+		static const int EXPR = 1;
+
+		setReportType(metar.str(EXPR));
 	}
 
 	void Metar::processMetarElementStationIdentifier(cmatch metar) {
-		strncpy(m_MetarInfo->stationIdentifier, metar.str(2).c_str() + '\0', 5);
+		static const int IDENT = 2;
+
+		setStationIdentifier(metar.str(IDENT));
 	}
 
 	void Metar::processMetarElementObservationTime(cmatch metar) {
 		MetarObservationTime *observationTime = new MetarObservationTime;
+		
+		static const int DAY = 1;
+		static const int HOUR = 2;
+		static const int MINUTE = 3;
 
-		observationTime->dayOfMonth = atoi(metar.str(1).c_str());
-		observationTime->hourOfDay = atoi(metar.str(2).c_str());
-		observationTime->minuteOfHour = atoi(metar.str(3).c_str());
+		try {
+			observationTime->dayOfMonth = stoi(metar.str(DAY));
+			observationTime->hourOfDay = stoi(metar.str(HOUR));
+			observationTime->minuteOfHour = stoi(metar.str(MINUTE));
+		} catch (invalid_argument const&) {
+			cerr << "One or more observation time elements were in the incorrect format" << endl;
+		}
 
 		m_MetarInfo->observationTime = observationTime;
 	}
@@ -162,17 +216,25 @@ namespace Meteorology {
 	}
 
 	void Metar::processMetarElementVisiblity(cmatch metar) {
-		if (metar.str(1) == "CAVOK") {
+		static const int EXPR = 1;
+		static const int FRACTIONAL = 3;
+		static const int FRAC_W = 4;
+		static const int FRAC_N = 5;
+		static const int FRAC_D = 6;
+		static const int VISIBILITY = 7;
+		static const int STATUTE = 8;
+
+		if (metar.str(EXPR) == "CAVOK") {
 			m_MetarInfo->visibility = (double)9999;
 		} else {
-			if (metar[3].matched) {
-				m_MetarInfo->visibility = (metar.length(4) ? (atof(metar.str(4).c_str())) : (double)0);
-				m_MetarInfo->visibility += atof(metar.str(5).c_str()) / atof(metar.str(6).c_str());
+			if (metar[FRACTIONAL].matched) {
+				m_MetarInfo->visibility = (metar.length(FRAC_W) ? (atof(metar.str(FRAC_W).c_str())) : (double)0);
+				m_MetarInfo->visibility += atof(metar.str(FRAC_N).c_str()) / atof(metar.str(FRAC_D).c_str());
 			} else {
-				m_MetarInfo->visibility = atof(metar.str(7).c_str());
+				m_MetarInfo->visibility = atof(metar.str(VISIBILITY).c_str());
 			}
 
-			if (metar[8].matched) {
+			if (metar[STATUTE].matched) {
 				m_MetarInfo->visibility *= 1609.344;
 			}
 		}
@@ -199,7 +261,8 @@ namespace Meteorology {
 	}
 
 	void Metar::processMetarElementAltimeter(cmatch metar) {
-
+		m_MetarInfo->altimeter = (metar.str(1) == "Q") ? (atof(metar.str(2).c_str()) / 0.33856) : atof(metar.str(2).c_str());
+		m_MetarInfo->altimeter /= 100;
 	}
 
 	void Metar::processMetarElementRemarks(cmatch metar) {
