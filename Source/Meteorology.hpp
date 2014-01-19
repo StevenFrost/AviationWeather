@@ -1,27 +1,38 @@
-/**
-* Module:		Meteorology.h
-* Author(s):	Steven Frost
-* Description:	This module defines the Weather class including general meteorology methods,
-*				meteorology-releated enumerations and type definitions for different meteorology
-*				properties.
-*
-* References:  (1) http://en.wikipedia.org/wiki/Weather
-*
-* Todo:        (1) Complete type definitions
-*              (2) Complete enumerated list of cloud type and cover
-*/
+/****************************** Module Header ******************************\
+Module Name:  Metar.hpp
+Project:      Meteorology
+Copyright (c) 2014 Steven Frost.
+
+This module defines the Weather class including general meteorology methods,
+meteorology-releated enumerations and type definitions for different
+meteorology properties.
+
+References:  (1) http://en.wikipedia.org/wiki/Weather
+
+Todo:        (1) Complete type definitions
+             (2) Complete enumerated list of cloud type and cover
+
+This source is subject to the MIT License.
+See http://opensource.org/licenses/MIT
+
+All other rights reserved.
+THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+\***************************************************************************/
 
 #ifndef METEORLOGY_H
 #define METEORLOGY_H
 
 namespace Meteorology {
-	/**
-	* Typedefs
-	*/
 	typedef double Altimeter;
 	typedef double Dewpoint;
 	typedef double Visibility;
 	typedef double Temperature;
+
+	static const double CENT_TO_FAR = 33.8;
+	static const double METRES_TO_FEET = 3.2808399;
+	static const double INHG_TO_HPA = 33.8638816;
 
 	/**
 	* WeatherIntensity
