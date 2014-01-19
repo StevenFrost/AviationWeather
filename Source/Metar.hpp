@@ -252,29 +252,29 @@ namespace Meteorology {
 		string getMetarString();
 		void getMetarStruct(MetarInfo &dest);
 
-		MetarReportType					getReportType()			{ return m_MetarInfo->reportType; }
-		StationIdentifier				getStationIdentifier()	{ return m_MetarInfo->stationIdentifier; }
-		MetarObservationTime *			getObservationTime()	{ return m_MetarInfo->observationTime; }
-		MetarModifier					getModifier()			{ return m_MetarInfo->modifier; }
-		MetarWind *						getWind()				{ return m_MetarInfo->wind; }
-		Visibility						getVisibilityF()		{ return m_MetarInfo->visibility * METRES_TO_FEET; }
-		Visibility						getVisibilityM()		{ return m_MetarInfo->visibility; }
-		list<MetarRunwayVisualRange *> *getRunwayVisualRange()	{ return m_MetarInfo->runwayVisualRange; }
-		list<MetarWeatherGroup *> *		getWeather()			{ return m_MetarInfo->weather; }
-		list<MetarSkyConditionGroup *> *getSkyCondition()		{ return m_MetarInfo->skyCondition; }
-		Temperature						getTemperatureC()		{ return m_MetarInfo->temperature; }
-		Temperature						getTemperatureF()		{ return m_MetarInfo->temperature * CENT_TO_FAR; }
-		Dewpoint						getDewpointC()			{ return m_MetarInfo->dewpoint; }
-		Dewpoint						getDewpointF()			{ return m_MetarInfo->dewpoint * CENT_TO_FAR; }
-		Altimeter						getAltimeterinHg()		{ return m_MetarInfo->altimeter; }
-		Altimeter						getAltimeterhPa()		{ return m_MetarInfo->altimeter * INHG_TO_HPA; }
-		string							getRemarks()			{ return m_MetarInfo->remarks; }
+		MetarReportType                 getReportType()         { return m_MetarInfo->reportType; }
+		StationIdentifier               getStationIdentifier()  { return m_MetarInfo->stationIdentifier; }
+		MetarObservationTime *          getObservationTime()    { return m_MetarInfo->observationTime; }
+		MetarModifier                   getModifier()           { return m_MetarInfo->modifier; }
+		MetarWind *                     getWind()               { return m_MetarInfo->wind; }
+		Visibility                      getVisibilityF()        { return m_MetarInfo->visibility * METRES_TO_FEET; }
+		Visibility                      getVisibilityM()        { return m_MetarInfo->visibility; }
+		list<MetarRunwayVisualRange *> *getRunwayVisualRange()  { return m_MetarInfo->runwayVisualRange; }
+		list<MetarWeatherGroup *> *     getWeather()            { return m_MetarInfo->weather; }
+		list<MetarSkyConditionGroup *> *getSkyCondition()       { return m_MetarInfo->skyCondition; }
+		Temperature                     getTemperatureC()       { return m_MetarInfo->temperature; }
+		Temperature                     getTemperatureF()       { return m_MetarInfo->temperature * CENT_TO_FAR; }
+		Dewpoint                        getDewpointC()          { return m_MetarInfo->dewpoint; }
+		Dewpoint                        getDewpointF()          { return m_MetarInfo->dewpoint * CENT_TO_FAR; }
+		Altimeter                       getAltimeterinHg()      { return m_MetarInfo->altimeter; }
+		Altimeter                       getAltimeterhPa()       { return m_MetarInfo->altimeter * INHG_TO_HPA; }
+		string                          getRemarks()            { return m_MetarInfo->remarks; }
 
 		void setMetarString(string metar);
 	private:
-		string m_Metar;						/* Full METAR string */
-		MetarInfo *m_MetarInfo;				/* Main Metar Info structure holds all native data */
-		static const string m_Patterns[];	/* List of Regular Expressions to obtain native METAR data */
+		string m_Metar;                     /* Full METAR string */
+		MetarInfo *m_MetarInfo;             /* Main Metar Info structure holds all native data */
+		static const string m_Patterns[];   /* List of Regular Expressions to obtain native METAR data */
 
 		void initialise();
 		void processMetar();
