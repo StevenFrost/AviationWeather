@@ -94,6 +94,11 @@
     </ClCompile>
     <ClCompile Include="TestMetar.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Source\Source.vcxproj">
+      <Project>{de59d0d5-d681-475a-8852-544d0921739a}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
