@@ -30,7 +30,7 @@ WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 namespace Meteorology {
 	const string Metar::m_Patterns[] = {
 		"^(METAR|SPECI) ",
-		"(^| )([A-Z]{4}) ",
+		"(^| )([A-Z0-9]{4}) ",
 		" ([0-9]{2})([0-9]{2})([0-9]{2})Z ",
 		" (AUTO|COR) ",
 		" ([0-9]{3}|VRB)([0-9]{2,3})(G([0-9]{2,3}))?(KT|MPS)( ([0-9]{3})V([0-9]{3}))? ",
@@ -44,35 +44,13 @@ namespace Meteorology {
 		" RMK (PK WND [0-9]{5,6}/([0-9]{2}|[0-9]{4}))?.*$"
 	};
 	
-	Metar::Metar(void) {
-		initialise();
-	}
-
-	Metar::Metar(string metar) {
-		initialise();
+	Metar::Metar(string metar) : m_MetarInfo(new MetarInfo) {
 		setMetarString(metar);
 		processMetar();
 	}
 
 	Metar::~Metar(void) {
 		delete(m_MetarInfo);
-	}
-
-	void Metar::initialise() {
-		m_MetarInfo = new MetarInfo;
-	}
-
-	string Metar::getMetarString() {
-		return m_Metar;
-	}
-
-	void Metar::getMetarStruct(MetarInfo &dest) {
-		dest = (*m_MetarInfo);
-	}
-
-	void Metar::setMetarString(string metar) {
-		m_Metar = metar;
-		processMetar();
 	}
 
 	void Metar::processMetar() {
