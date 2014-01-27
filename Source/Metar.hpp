@@ -42,11 +42,7 @@ namespace Meteorology {
 	class Metar {
 	public:
 		/**
-		* MetarElement
-		*   Enumerated list of METAR elements used to obtain individual
-		*   METAR elements from the MetarInfo structure.
-		*
-		* See: getElement()
+		* Enumerated list of internally supported METAR elements
 		*/
 		typedef enum MetarElement {
 			METAR_ELEMENT_REPORT_TYPE,
@@ -65,8 +61,7 @@ namespace Meteorology {
 		};
 
 		/**
-		* MetarReportType
-		*  Enumerated list of METAR report types
+		* Enumerated list of METAR report types
 		*/
 		typedef enum MetarReportType {
 			METAR_REPORT_TYPE_METAR,
@@ -74,15 +69,13 @@ namespace Meteorology {
 		};
 
 		/**
-		* Station Identifier
-		*  Type defining a valid METAR Station Identifier
+		* METAR Station Identifier
 		*/
 		typedef string StationIdentifier;
 
 		/**
-		* MetarModifier
-		*  Enumerated list of METAR modifiers, specifying wether the report
-		*  was modified before release.
+		* Enumerated list of METAR modifiers, specifying wether the report was
+		* modified before release.
 		*/
 		typedef enum MetarModifier {
 			METAR_MODIFIER_AUTO,
@@ -90,11 +83,8 @@ namespace Meteorology {
 		};
 
 		/**
-		* MetarObservationTime
-		*   The day of month, hour of day and minute of hour the
-		*   METAR report was compiled (format `MMhhmmZ`).
-		*
-		* See: Reference (1), 12.6.3
+		* The day of month, hour of day and minute of hour the METAR report was
+		* compiled (times are UTC/Zulu).
 		*/
 		typedef struct MetarObservationTime {
 			unsigned int dayOfMonth;
@@ -111,12 +101,9 @@ namespace Meteorology {
 		};
 
 		/**
-		* MetarWind
-		*   The direction, speed, gust and variance data associated
-		*   with the reported wind data, along with the unit of
-		*   speed measurement.
-		*
-		* See: Reference (1), 12.6.5
+		* Data structure containing the direction, speed, gust and variance of
+		* the wind, along with the unit of speed measurement.
+		* Any unknown or default quantities are represented by NULL.
 		*/
 		typedef struct MetarWind {
 			string unit;
@@ -136,11 +123,9 @@ namespace Meteorology {
 		};
 
 		/**
-		* MetarRunwayVisualRange
-		*   Data structure that contains details of the runway visual range
-		*   for one end of a runway.
-		*
-		* See: Reference (1), 12.6.7
+		* Data structure that contains details of the runway visual range for
+		* one end of a runway.
+		* Any unknown quantity is represented by NULL.
 		*/
 		typedef struct MetarRunwayVisualRange {
 			string unit;
@@ -151,18 +136,15 @@ namespace Meteorology {
 
 			MetarRunwayVisualRange() : unit("KT"),
 				runwayNum(NULL),
-				designator(NULL),
-				visibility(NULL),
+				designator('C'),
+				visibility(MAX_VISIBILITY),
 				visibilityVariation(NULL) {
 			};
 		};
 
 		/**
-		* MetarWeatherGroup
-		*   Data structure holding a single METAR weather group. Intensity,
-		*   descriptor and phenomena are contained in this structure.
-		*
-		* See: Reference (1), 12.6.8
+		* Data structure holding a single METAR weather group. Intensity,
+		* descriptor and phenomena are contained in this structure.
 		*/
 		typedef struct MetarWeatherGroup {
 			WeatherIntensity intensity;
@@ -171,7 +153,7 @@ namespace Meteorology {
 
 			MetarWeatherGroup() : intensity(WI_NONE),
 				descriptor(WD_NONE),
-				type(new list<WeatherPhenomena>()) {
+				type(new list<WeatherPhenomena>) {
 			};
 
 			~MetarWeatherGroup() {
@@ -180,14 +162,10 @@ namespace Meteorology {
 		};
 
 		/**
-		* MetarSkyConditionGroup
-		*   Data structure holding the sky cover grouped with the height of
-		*   the layer.
-		*
-		*   The height value is NULL if the cloud layer is below the station
-		*   reporting the METAR.
-		*
-		* See: Reference (1), 12.6.9
+		* Data structure holding the sky cover grouped with the height of the
+		* layer.
+		* The height value is NULL if the cloud layer is below the station
+		* reporting the METAR.
 		*/
 		typedef struct MetarSkyConditionGroup {
 			SkyCover skyCover;
@@ -201,16 +179,10 @@ namespace Meteorology {
 		};
 
 		/**
-		* MetarInfo
-		*  Structure holding the individual native data elements in the METAR
-		*  report.
-		*  The actual instance of this structure is private to the class and
-		*  elements can be accessed via getElement() or a copy can be returned
-		*  via getMetarStruct().
-		*
-		* See: getElement()
-		*      getMetarStruct()
-		*      Reference (1)
+		* Data structure holding the individual native data elements in the
+		* METAR report.
+		* The actual instance of this structure is private to the class and
+		* elements can be accessed via getters
 		*/
 		typedef struct MetarInfo {
 			MetarReportType reportType;
@@ -219,9 +191,9 @@ namespace Meteorology {
 			MetarModifier modifier;
 			MetarWind *wind;
 			Visibility visibility;
-			list<MetarRunwayVisualRange *> *runwayVisualRange;
-			list<MetarWeatherGroup *> *weather;
-			list<MetarSkyConditionGroup *> *skyCondition;
+			list<MetarRunwayVisualRange> *const runwayVisualRange;
+			list<MetarWeatherGroup> *const weather;
+			list<MetarSkyConditionGroup> *const skyCondition;
 			Temperature temperature;
 			Dewpoint dewpoint;
 			Altimeter altimeter;
@@ -231,49 +203,53 @@ namespace Meteorology {
 				observationTime(new MetarObservationTime),
 				modifier(METAR_MODIFIER_AUTO),
 				wind(new MetarWind),
-				visibility(9999),
-				runwayVisualRange(new list<MetarRunwayVisualRange *>),
-				weather(new list<MetarWeatherGroup *>),
-				skyCondition(new list<MetarSkyConditionGroup *>),
-				temperature(NULL),
-				dewpoint(NULL),
-				altimeter(9.0) {
+				visibility(MAX_VISIBILITY),
+				runwayVisualRange(new list<MetarRunwayVisualRange>),
+				weather(new list<MetarWeatherGroup>),
+				skyCondition(new list<MetarSkyConditionGroup>),
+				temperature(NAN),
+				dewpoint(NAN),
+				altimeter(NAN) {
 			};
 
 			~MetarInfo() {
+				stationIdentifier.clear();
+				runwayVisualRange->clear();
+				weather->clear();
+				skyCondition->clear();
+				remarks.clear();
+
 				delete(observationTime, wind, runwayVisualRange, weather, skyCondition);
 			}
 		};
 
-		Metar(void);
+		Metar(void) : m_MetarInfo(new MetarInfo) {}
 		Metar(string metar);
 		~Metar(void);
 
-		string getMetarString();
-		void getMetarStruct(MetarInfo &dest);
+		MetarReportType                     getReportType()        { return m_MetarInfo->reportType; }
+		StationIdentifier                   getStationIdentifier() { return m_MetarInfo->stationIdentifier; }
+		MetarObservationTime *              getObservationTime()   { return m_MetarInfo->observationTime; }
+		MetarModifier                       getModifier()          { return m_MetarInfo->modifier; }
+		MetarWind *                         getWind()              { return m_MetarInfo->wind; }
+		Visibility                          getVisibilityF()       { return m_MetarInfo->visibility * METRES_TO_FEET; }
+		Visibility                          getVisibilityM()       { return m_MetarInfo->visibility; }
+		list<MetarRunwayVisualRange> *const getRunwayVisualRange() { return m_MetarInfo->runwayVisualRange; }
+		list<MetarWeatherGroup> *const      getWeather()           { return m_MetarInfo->weather; }
+		list<MetarSkyConditionGroup> *const getSkyCondition()      { return m_MetarInfo->skyCondition; }
+		Temperature                         getTemperatureC()      { return m_MetarInfo->temperature; }
+		Temperature                         getTemperatureF()      { return m_MetarInfo->temperature * CENT_TO_FAR; }
+		Dewpoint                            getDewpointC()         { return m_MetarInfo->dewpoint; }
+		Dewpoint                            getDewpointF()         { return m_MetarInfo->dewpoint * CENT_TO_FAR; }
+		Altimeter                           getAltimeterinHg()     { return m_MetarInfo->altimeter; }
+		Altimeter                           getAltimeterhPa()      { return m_MetarInfo->altimeter * INHG_TO_HPA; }
+		string                              getRemarks()           { return m_MetarInfo->remarks; }
+		string                              getMetarString()       { return m_Metar; processMetar(); }
 
-		MetarReportType                 getReportType()         { return m_MetarInfo->reportType; }
-		StationIdentifier               getStationIdentifier()  { return m_MetarInfo->stationIdentifier; }
-		MetarObservationTime *          getObservationTime()    { return m_MetarInfo->observationTime; }
-		MetarModifier                   getModifier()           { return m_MetarInfo->modifier; }
-		MetarWind *                     getWind()               { return m_MetarInfo->wind; }
-		Visibility                      getVisibilityF()        { return m_MetarInfo->visibility * METRES_TO_FEET; }
-		Visibility                      getVisibilityM()        { return m_MetarInfo->visibility; }
-		list<MetarRunwayVisualRange *> *getRunwayVisualRange()  { return m_MetarInfo->runwayVisualRange; }
-		list<MetarWeatherGroup *> *     getWeather()            { return m_MetarInfo->weather; }
-		list<MetarSkyConditionGroup *> *getSkyCondition()       { return m_MetarInfo->skyCondition; }
-		Temperature                     getTemperatureC()       { return m_MetarInfo->temperature; }
-		Temperature                     getTemperatureF()       { return m_MetarInfo->temperature * CENT_TO_FAR; }
-		Dewpoint                        getDewpointC()          { return m_MetarInfo->dewpoint; }
-		Dewpoint                        getDewpointF()          { return m_MetarInfo->dewpoint * CENT_TO_FAR; }
-		Altimeter                       getAltimeterinHg()      { return m_MetarInfo->altimeter; }
-		Altimeter                       getAltimeterhPa()       { return m_MetarInfo->altimeter * INHG_TO_HPA; }
-		string                          getRemarks()            { return m_MetarInfo->remarks; }
-
-		void setMetarString(string metar);
+		void                                setMetarString(string metar) { m_Metar = metar; }
 	private:
 		string m_Metar;                     /* Full METAR string */
-		MetarInfo *m_MetarInfo;             /* Main Metar Info structure holds all native data */
+		MetarInfo *const m_MetarInfo;       /* Main Metar Info structure holds all native data */
 		static const string m_Patterns[];   /* List of Regular Expressions to obtain native METAR data */
 
 		void initialise();

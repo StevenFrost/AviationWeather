@@ -33,6 +33,7 @@ namespace Meteorology {
 	static const double CENT_TO_FAR = 33.8;
 	static const double METRES_TO_FEET = 3.2808399;
 	static const double INHG_TO_HPA = 33.8638816;
+	static const int MAX_VISIBILITY = 9999;
 
 	/**
 	* WeatherIntensity

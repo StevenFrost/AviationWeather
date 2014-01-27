@@ -52,11 +52,11 @@ namespace Tests {
 			Metar::MetarInfo data;
 
 			metar = new Metar("METAR KSFO 172256Z 00000KT 9SM CLR 19/04 A3012 ");
-			metar->getMetarStruct(data);
+			//metar->getMetarStruct(data);
 			Assert::AreEqual(30.12, data.altimeter, 0.005);
 
 			metar = new Metar("METAR KSFO 172256Z 00000KT 9SM CLR 19/04 Q1013 ");
-			metar->getMetarStruct(data);
+			//metar->getMetarStruct(data);
 			Assert::AreEqual(29.92, data.altimeter, 0.005);
 		}
 	};
