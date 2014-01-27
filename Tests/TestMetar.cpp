@@ -46,18 +46,5 @@ namespace Tests {
 			Assert::AreEqual(30.12, metar->getAltimeterinHg(), 0.01);
 			Assert::AreEqual(1019.98, metar->getAltimeterhPa(), 0.01);
 		}
-
-		TEST_METHOD(AltimeterTests) {
-			Metar *metar;
-			Metar::MetarInfo data;
-
-			metar = new Metar("METAR KSFO 172256Z 00000KT 9SM CLR 19/04 A3012 ");
-			//metar->getMetarStruct(data);
-			Assert::AreEqual(30.12, data.altimeter, 0.005);
-
-			metar = new Metar("METAR KSFO 172256Z 00000KT 9SM CLR 19/04 Q1013 ");
-			//metar->getMetarStruct(data);
-			Assert::AreEqual(29.92, data.altimeter, 0.005);
-		}
 	};
 }
