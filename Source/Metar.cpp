@@ -44,7 +44,7 @@ namespace Meteorology {
 		" RMK (PK WND [0-9]{5,6}/([0-9]{2}|[0-9]{4}))?.*$"
 	};
 	
-	Metar::Metar(string metar) : m_MetarInfo(new MetarInfo) {
+	Metar::Metar(const string &metar) : m_MetarInfo(new MetarInfo) {
 		setMetarString(metar);
 		processMetar();
 	}
@@ -53,18 +53,18 @@ namespace Meteorology {
 		delete(m_MetarInfo);
 	}
 
-	void Metar::processMetar() {
+	void Metar::processMetar(void) {
 		for (unsigned int i = 0; i < m_Patterns->size(); i++) {
 			regex regexp(m_Patterns[i].c_str());
 			cmatch result;
 
 			if (regex_search(m_Metar.c_str(), result, regexp)) {
-				processMetarElement((MetarElement)i, result);
+				processMetarElement(static_cast<MetarElement>(i), result);
 			}
 		}
 	}
 
-	void Metar::processMetarElement(MetarElement elem, cmatch metar) {
+	void Metar::processMetarElement(MetarElement elem, const cmatch &metar) {
 		switch (elem) {
 		case METAR_ELEMENT_REPORT_TYPE:
 			processMetarElementReportType(metar);
@@ -108,39 +108,7 @@ namespace Meteorology {
 		}
 	}
 
-	void Metar::setReportType(MetarReportType type) {
-		m_MetarInfo->reportType = type;
-	}
-
-	void Metar::setReportType(string type) {
-		if (type == "METAR") {
-			m_MetarInfo->reportType = METAR_REPORT_TYPE_METAR;
-		} else if (type == "SPECI") {
-			m_MetarInfo->reportType = METAR_REPORT_TYPE_SPECI;
-		} else {
-			throw new invalid_argument("The report type should be either METAR or SPECI");
-		}
-	}
-
-	void Metar::setStationIdentifier(string ident) {
-		m_MetarInfo->stationIdentifier = ident;
-	}
-
-	void Metar::setObservationTime(MetarObservationTime time) {
-		m_MetarInfo->observationTime = &time;
-	}
-
-	void Metar::setObservationTime(unsigned int day, unsigned int hour, unsigned int minute) {
-		m_MetarInfo->observationTime->dayOfMonth = day;
-		m_MetarInfo->observationTime->hourOfDay = hour;
-		m_MetarInfo->observationTime->minuteOfHour = minute;
-	}
-
-	void Metar::setReportModifier(MetarModifier modifier) {
-
-	}
-
-	void Metar::processMetarElementReportType(cmatch metar) {
+	void Metar::processMetarElementReportType(const cmatch &metar) {
 		static const int EXPR = 1;
 
 		setReportType(metar.str(EXPR));

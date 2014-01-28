@@ -157,6 +157,7 @@ namespace Meteorology {
 			};
 
 			~MetarWeatherGroup() {
+				type->clear();
 				delete(type);
 			}
 		};
@@ -224,46 +225,44 @@ namespace Meteorology {
 		};
 
 		Metar(void) : m_MetarInfo(new MetarInfo) {}
-		Metar(string metar);
+		Metar(const string &metar);
 		~Metar(void);
 
-		MetarReportType                     getReportType()        { return m_MetarInfo->reportType; }
-		StationIdentifier                   getStationIdentifier() { return m_MetarInfo->stationIdentifier; }
-		MetarObservationTime *              getObservationTime()   { return m_MetarInfo->observationTime; }
-		MetarModifier                       getModifier()          { return m_MetarInfo->modifier; }
-		MetarWind *                         getWind()              { return m_MetarInfo->wind; }
-		Visibility                          getVisibilityF()       { return m_MetarInfo->visibility * METRES_TO_FEET; }
-		Visibility                          getVisibilityM()       { return m_MetarInfo->visibility; }
-		list<MetarRunwayVisualRange> *const getRunwayVisualRange() { return m_MetarInfo->runwayVisualRange; }
-		list<MetarWeatherGroup> *const      getWeather()           { return m_MetarInfo->weather; }
-		list<MetarSkyConditionGroup> *const getSkyCondition()      { return m_MetarInfo->skyCondition; }
-		Temperature                         getTemperatureC()      { return m_MetarInfo->temperature; }
-		Temperature                         getTemperatureF()      { return m_MetarInfo->temperature * CENT_TO_FAR; }
-		Dewpoint                            getDewpointC()         { return m_MetarInfo->dewpoint; }
-		Dewpoint                            getDewpointF()         { return m_MetarInfo->dewpoint * CENT_TO_FAR; }
-		Altimeter                           getAltimeterinHg()     { return m_MetarInfo->altimeter; }
-		Altimeter                           getAltimeterhPa()      { return m_MetarInfo->altimeter * INHG_TO_HPA; }
-		string                              getRemarks()           { return m_MetarInfo->remarks; }
-		string                              getMetarString()       { return m_Metar; processMetar(); }
+		inline MetarReportType                     getReportType()        { return m_MetarInfo->reportType; }
+		inline StationIdentifier                   getStationIdentifier() { return m_MetarInfo->stationIdentifier; }
+		inline MetarObservationTime *const         getObservationTime()   { return m_MetarInfo->observationTime; }
+		inline MetarModifier                       getModifier()          { return m_MetarInfo->modifier; }
+		inline MetarWind *const                    getWind()              { return m_MetarInfo->wind; }
+		inline Visibility                          getVisibilityF()       { return m_MetarInfo->visibility * METRES_TO_FEET; }
+		inline Visibility                          getVisibilityM()       { return m_MetarInfo->visibility; }
+		inline list<MetarRunwayVisualRange> *const getRunwayVisualRange() { return m_MetarInfo->runwayVisualRange; }
+		inline list<MetarWeatherGroup> *const      getWeather()           { return m_MetarInfo->weather; }
+		inline list<MetarSkyConditionGroup> *const getSkyCondition()      { return m_MetarInfo->skyCondition; }
+		inline Temperature                         getTemperatureC()      { return m_MetarInfo->temperature; }
+		inline Temperature                         getTemperatureF()      { return m_MetarInfo->temperature * CENT_TO_FAR; }
+		inline Dewpoint                            getDewpointC()         { return m_MetarInfo->dewpoint; }
+		inline Dewpoint                            getDewpointF()         { return m_MetarInfo->dewpoint * CENT_TO_FAR; }
+		inline Altimeter                           getAltimeterinHg()     { return m_MetarInfo->altimeter; }
+		inline Altimeter                           getAltimeterhPa()      { return m_MetarInfo->altimeter * INHG_TO_HPA; }
+		inline string                              getRemarks()           { return m_MetarInfo->remarks; }
+		inline string                              getMetarString()       { return m_Metar; }
 
-		void                                setMetarString(string metar) { m_Metar = metar; }
+		inline void setMetarString(string metar)                          { m_Metar = metar; processMetar(); }
+		inline void setReportType(MetarReportType type)                   {}
+		inline void setReportType(const string &type)                     {}
+		inline void setStationIdentifier(const string &type)              {}
+		inline void setObservationTime(const MetarObservationTime &time)  {}
+		inline void setObservationTime(uint day, uint hour, uint minute)  {}
+		inline void setReportModifier(MetarModifier modifier)             {}
 	private:
 		string m_Metar;                     /* Full METAR string */
 		MetarInfo *const m_MetarInfo;       /* Main Metar Info structure holds all native data */
 		static const string m_Patterns[];   /* List of Regular Expressions to obtain native METAR data */
 
-		void initialise();
-		void processMetar();
-		void processMetarElement(MetarElement elem, cmatch result);
+		void processMetar(void);
+		void processMetarElement(MetarElement elem, const cmatch &metar);
 
-		void setReportType(MetarReportType type);
-		void setReportType(string type);
-		void setStationIdentifier(string ident);
-		void setObservationTime(MetarObservationTime time);
-		void setObservationTime(unsigned int day, unsigned int hour, unsigned int minute);
-		void setReportModifier(MetarModifier modifier);
-		
-		void processMetarElementReportType(cmatch metar);
+		void processMetarElementReportType(const cmatch &metar);
 		void processMetarElementStationIdentifier(cmatch metar);
 		void processMetarElementObservationTime(cmatch metar);
 		void processMetarElementReportModifier(cmatch metar);
