@@ -36,11 +36,8 @@ namespace Meteorology {
 	static const int MAX_VISIBILITY = 9999;
 
 	/**
-	* WeatherIntensity
-	*   Enumerated list of weather intesity options. Each element is
-	*   denoted by `-`, ``, `+` and `VC` respectively.
-	*
-	* See: Reference (1), Table 12-2
+	* Enumerated list of weather intesity options. Each element is denoted by
+	* `-`, ``, `+` and `VC` respectively.
 	*/
 	typedef enum WeatherIntensity {
 		WI_NONE,
@@ -51,11 +48,8 @@ namespace Meteorology {
 	};
 
 	/**
-	* WeatherDescriptor
-	*   Description of the present weather in a weather group. Only one
-	*   element can be active in a weather group.
-	*
-	* See: Reference (1), Table 12-2
+	* Description of the present weather in a weather group. Only one element
+	* can be active in a weather group.
 	*/
 	typedef enum WeatherDescriptor {
 		WD_NONE,
@@ -70,11 +64,8 @@ namespace Meteorology {
 	};
 
 	/**
-	* WeatherPhenomena
-	*   Enumerated list of valid weather phenomena represented in METAR
-	*   reports. Up to three can be used in one weather group.
-	*
-	* See: Reference (1), Table 12-2
+	* Enumerated list of valid weather phenomena represented in METAR reports.
+	* Up to three can be used in one weather group.
 	*/
 	typedef enum WeatherPhenomena {
 		WP_DRIZZLE,
@@ -102,10 +93,7 @@ namespace Meteorology {
 	};
 
 	/**
-	* SkyCover
-	*   Enumerated list of valid cloud layer coverage amounts.
-	*
-	* See: Reference (1), Table 12-3
+	* Enumerated list of valid cloud layer coverage amounts.
 	*/
 	typedef enum SkyCover {
 		SC_VERTICAL_VISIBILITY,
@@ -117,12 +105,9 @@ namespace Meteorology {
 	};
 
 	/**
-	* SkyCoverClouds
-	*   For manually edited METAR reports, cloud types may be appended
-	*   to the Sky Cover group. If this is available, the enumeration
-	*   will be set to a value other than NONE.
-	*
-	* See: Reference (1), Paragraph under Table 12-4
+	* For manually edited METAR reports, cloud types may be appended to the Sky
+	* Cover group. If this is available, the enumeration will be set to a value
+	* other than NONE.
 	*/
 	typedef enum SkyCoverClouds {
 		SCC_NONE,
