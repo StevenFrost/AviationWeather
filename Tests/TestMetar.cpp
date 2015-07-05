@@ -1,7 +1,7 @@
 /****************************** Module Header ******************************\
 Module Name:  TestMetar.cpp
 Project:      Meteorology
-Copyright (c) 2014 Steven Frost.
+Copyright (c) 2015 Steven Frost.
 
 This module defines and implements various tests for the Metar class.
 
@@ -24,44 +24,32 @@ WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 using namespace Meteorology;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace Tests {
-	static streambuf *strm_buffer;
-	static ofstream redirect_file("output.log");
+namespace Tests
+{
 
-	TEST_CLASS(TestMetar) {
-	private:
-		const double SM_TO_FT = 5280;
-		const double SM_TO_M = 1609.344;
-	public:
-		TEST_CLASS_INITIALIZE(initClass) {
-			strm_buffer = cout.rdbuf();
-			cout.rdbuf(redirect_file.rdbuf());
-		}
+TEST_CLASS(MetarTests)
+{
+private:
+    const double SM_TO_FT = 5280;
+    const double SM_TO_M = 1609.344;
 
-		TEST_CLASS_CLEANUP(cleanClass) {
-			cout.rdbuf(strm_buffer);
-		}
+public:
+    TEST_METHOD(METAR_Basic_KSFO)
+    {
+        auto metar = std::make_shared<Metar>("METAR KSFO 172256Z 00000KT 9SM CLR 19/04 A3012 ");
 
-		TEST_METHOD(StandardMetar) {
-			cout << "-- Running StandardMetar --" << endl;
+        Assert::AreEqual(std::string("KSFO"), metar->GetStationIdentifier());
+        Assert::AreEqual(17U, metar->GetObservationTime()->GetDayOfMonth());
+        Assert::AreEqual(22U, metar->GetObservationTime()->GetHourOfDay());
+        Assert::AreEqual(56U, metar->GetObservationTime()->GetMinuteOfHour());
+        Assert::AreEqual(0U, metar->GetWind()->GetSpeed());
+        Assert::AreEqual(0U, metar->GetWind()->GetDirection());
+        Assert::AreEqual(0U, metar->GetWind()->GetGustSpeed());
+        Assert::AreEqual(0U, metar->GetWind()->GetVariationLower());
+        Assert::AreEqual(0U, metar->GetWind()->GetVariationUpper());
+        Assert::AreEqual(9.0 * SM_TO_M, metar->GetVisibility(), 0.01);
+        Assert::AreEqual(1019.98, metar->GetAltimeter(), 0.01);
+    }
+};
 
-			Metar *metar = new Metar("METAR KSFO 172256Z 00000KT 9SM CLR 19/04 A3012 ");
-
-			Assert::AreEqual(Metar::StationIdentifier("KSFO"), metar->getStationIdentifier());
-			Assert::AreEqual(17U, metar->getObservationTime()->dayOfMonth);
-			Assert::AreEqual(22U, metar->getObservationTime()->hourOfDay);
-			Assert::AreEqual(56U, metar->getObservationTime()->minuteOfHour);
-			Assert::AreEqual(0U, metar->getWind()->speed);
-			Assert::AreEqual(0U, metar->getWind()->direction);
-			Assert::AreEqual(0U, metar->getWind()->gustSpeed);
-			Assert::AreEqual(0U, metar->getWind()->variationLower);
-			Assert::AreEqual(0U, metar->getWind()->variationUpper);
-			Assert::AreEqual(9.0 * SM_TO_FT, metar->getVisibilityF(), 0.01);
-			Assert::AreEqual(9.0 * SM_TO_M, metar->getVisibilityM(), 0.01);
-			Assert::AreEqual(30.12, metar->getAltimeterinHg(), 0.01);
-			Assert::AreEqual(1019.98, metar->getAltimeterhPa(), 0.01);
-
-			cout << "-- Finished StandardMetar --" << endl;
-		}
-	};
-}
+} // namespace Tests

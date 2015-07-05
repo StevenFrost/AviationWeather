@@ -21,98 +21,97 @@ EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
 WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 \***************************************************************************/
 
-#ifndef METEORLOGY_H
-#define METEORLOGY_H
+#pragma once
 
-namespace Meteorology {
-	typedef double Altimeter;
-	typedef double Dewpoint;
-	typedef double Visibility;
-	typedef double Temperature;
+//-----------------------------------------------------------------------------
 
-	static const double CENT_TO_FAR = 33.8;
-	static const double METRES_TO_FEET = 3.2808399;
-	static const double INHG_TO_HPA = 33.8638816;
-	static const int MAX_VISIBILITY = 9999;
+namespace Meteorology
+{
 
-	/**
-	* Enumerated list of weather intesity options. Each element is denoted by
-	* `-`, ``, `+` and `VC` respectively.
-	*/
-	typedef enum WeatherIntensity {
-		WI_NONE,
-		WI_LIGHT,
-		WI_MODERATE,
-		WI_HEAVY,
-		WI_IN_VICINITY
-	};
+//-----------------------------------------------------------------------------
 
-	/**
-	* Description of the present weather in a weather group. Only one element
-	* can be active in a weather group.
-	*/
-	typedef enum WeatherDescriptor {
-		WD_NONE,
-		WD_SHALLOW,
-		WD_PARTIAL,
-		WD_PATCHES,
-		WD_LOW_DRIFTING,
-		WD_BLOWING,
-		WD_SHOWERS,
-		WD_THUNDERSTORM,
-		WD_FREEZING
-	};
-
-	/**
-	* Enumerated list of valid weather phenomena represented in METAR reports.
-	* Up to three can be used in one weather group.
-	*/
-	typedef enum WeatherPhenomena {
-		WP_DRIZZLE,
-		WP_RAIN,
-		WP_SNOW,
-		WP_SNOW_GRAINS,
-		WP_ICE_CRYSTALS,
-		WP_ICE_PELLETS,
-		WP_HAIL,
-		WP_SMALL_HAIL,
-		WP_MIST,
-		WP_FOG,
-		WP_SMOKE,
-		WP_VOLCANIC_ASH,
-		WP_WIDESPREAD_DUST,
-		WP_SAND,
-		WP_HAZE,
-		WP_SPRAY,
-		WP_WELL_DEVELOPED_DUST_WHIRLS,
-		WP_SQUALLS,
-		WP_FUNNEL_CLOUD_TORNADO_WATERSPOUT,
-		WP_SANDSTORM,
-		WP_DUSTSTORM,
-		WP_UNKNOWN_PRECIPITATION
-	};
-
-	/**
-	* Enumerated list of valid cloud layer coverage amounts.
-	*/
-	typedef enum SkyCover {
-		SC_VERTICAL_VISIBILITY,
-		SC_CLEAR,
-		SC_FEW,
-		SC_SCATTERED,
-		SC_BROKEN,
-		SC_OVERCAST
-	};
-
-	/**
-	* For manually edited METAR reports, cloud types may be appended to the Sky
-	* Cover group. If this is available, the enumeration will be set to a value
-	* other than NONE.
-	*/
-	typedef enum SkyCoverClouds {
-		SCC_NONE,
-		SCC_CUMULONIMBUS,
-		SCC_TOWERING_CUMULUS
-	};
+inline double CentigradeToFahrenheit(double centigrade)
+{
+    return centigrade * 33.8;
 }
-#endif // !METEORLOGY_H
+
+inline double MetresToFeet(double metres)
+{
+    return metres * 3.2808399;
+}
+
+inline double InhgToHpa(double inhg)
+{
+    return inhg * 33.8638816;
+}
+
+//-----------------------------------------------------------------------------
+
+enum class WeatherIntensity
+{
+    None,
+    Light,
+    Moderate,
+    Heavy,
+    InVicinity
+};
+
+enum class WeatherDescriptor
+{
+    None,
+    Shallow,
+    Partial,
+    Patches,
+    LowDrifting,
+    Blowing,
+    Showers,
+    Thunderstorm,
+    Freezing
+};
+
+enum class WeatherPhenomena
+{
+    Drizzle,
+    Rain,
+    Snow,
+    SnowGrains,
+    IceCrystals,
+    IcePellets,
+    Hail,
+    SmallHail,
+    Mist,
+    Fog,
+    Smoke,
+    VolcanicAsh,
+    WidespreadDust,
+    Sand,
+    Haze,
+    Spray,
+    WellDevelopedDustWhirls,
+    Squalls,
+    FunnelCloudTornadoWaterspout,
+    Sandstorm,
+    Duststorm,
+    UnknownPrecipitation
+};
+
+enum class SkyCover
+{
+    VerticalVisibility,
+    Clear,
+    Few,
+    Scattered,
+    Broken,
+    Overcast
+};
+
+enum class SkyCoverClouds
+{
+    None,
+    Cumulonimbus,
+    ToweringCumulus
+};
+
+//-----------------------------------------------------------------------------
+
+} // namespace Meterology

@@ -1,9 +1,9 @@
 /****************************** Module Header ******************************\
 Module Name:  Metar.hpp
 Project:      Meteorology
-Copyright (c) 2014 Steven Frost.
+Copyright (c) 2015 Steven Frost.
 
-This module defines the METAR class used to download and/or process METAR 
+This module defines the METAR class used to download and/or process METAR
 data from reference (4). Key structures are also defined to make the
 transfer of full decoded METAR information much easier.
 This document currently complies with North-American standards ONLY and may
@@ -25,257 +25,210 @@ EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
 WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 \***************************************************************************/
 
-#include <ctime>
-#include <iostream>
+#pragma once
+
 #include <list>
-#include <regex>
-#include <sstream>
+#include <memory>
 #include <string>
-#include <vector>
+
 #include "Meteorology.hpp"
-using namespace std;
 
-#ifndef METEOROLOGY_METAR_H
-#define METEOROLOGY_METAR_H
+//-----------------------------------------------------------------------------
 
-namespace Meteorology {
-	class Metar {
-	public:
-		/**
-		* Enumerated list of internally supported METAR elements
-		*/
-		typedef enum MetarElement {
-			METAR_ELEMENT_REPORT_TYPE,
-			METAR_ELEMENT_STATION_IDENTIFIER,
-			METAR_ELEMENT_OBSERVATION_TIME,
-			METAR_ELEMENT_REPORT_MODIFIER,
-			METAR_ELEMENT_WIND,
-			METAR_ELEMENT_VISIBILITY,
-			METAR_ELEMENT_RUNWAY_VISUAL_RANGE,
-			METAR_ELEMENT_WEATHER_GROUP,
-			METAR_ELEMENT_SKY_CONDITION,
-			METAR_ELEMENT_TEMPERATURE,
-			METAR_ELEMENT_DEWPOINT,
-			METAR_ELEMENT_ALTIMETER,
-			METAR_ELEMENT_REMARKS
-		};
+namespace Meteorology
+{
 
-		/**
-		* Enumerated list of METAR report types
-		*/
-		typedef enum MetarReportType {
-			METAR_REPORT_TYPE_METAR,
-			METAR_REPORT_TYPE_SPECI
-		};
+//-----------------------------------------------------------------------------
 
-		/**
-		* METAR Station Identifier
-		*/
-		typedef string StationIdentifier;
+enum class MetarElement
+{
+    ReportType,
+    StationIdentifier,
+    ObservationTime,
+    ReportModifier,
+    Wind,
+    Visibility,
+    RunwayVisualRange,
+    WeatherGroup,
+    SkyCondition,
+    Temperature,
+    Dewpoint,
+    Altimeter,
+    Remarks
+};
 
-		/**
-		* Enumerated list of METAR modifiers, specifying wether the report was
-		* modified before release.
-		*/
-		typedef enum MetarModifier {
-			METAR_MODIFIER_AUTO,
-			METAR_MODIFIER_COR
-		};
+enum class MetarReportType
+{
+    Metar,
+    Special
+};
 
-		/**
-		* The day of month, hour of day and minute of hour the METAR report was
-		* compiled (times are UTC/Zulu).
-		*/
-		typedef struct MetarObservationTime {
-			unsigned int dayOfMonth;
-			unsigned int hourOfDay;
-			unsigned int minuteOfHour;
+enum class MetarModifier
+{
+    Automatic,
+    Corrected
+};
 
-			MetarObservationTime() {
-				time_t t = time(0);
-				struct tm *now = localtime(&t);
-				dayOfMonth = now->tm_mon;
-				hourOfDay = now->tm_hour;
-				minuteOfHour = now->tm_min;
-			}
-		};
+//-----------------------------------------------------------------------------
 
-		/**
-		* Data structure containing the direction, speed, gust and variance of
-		* the wind, along with the unit of speed measurement.
-		* Any unknown or default quantities are represented by NULL.
-		*/
-		typedef struct MetarWind {
-			string unit;
-			unsigned int direction;
-			unsigned int speed;
-			unsigned int gustSpeed;
-			unsigned int variationLower;
-			unsigned int variationUpper;
+class MetarObservationTime
+{
+public:
+    typedef std::shared_ptr<MetarObservationTime> Ptr;
 
-			MetarWind() : unit("KT"),
-				direction(NULL),
-				speed(NULL),
-				gustSpeed(NULL),
-				variationLower(NULL),
-				variationUpper(NULL) {
-			};
-		};
+    MetarObservationTime();
+    virtual ~MetarObservationTime() {}
 
-		/**
-		* Data structure that contains details of the runway visual range for
-		* one end of a runway.
-		* Any unknown quantity is represented by NULL.
-		*/
-		typedef struct MetarRunwayVisualRange {
-			string unit;
-			int runwayNum;
-			char designator;
-			int visibility;
-			int visibilityVariation;
+    unsigned int GetDayOfMonth()   const { return m_dayOfMonth;   }
+    unsigned int GetHourOfDay()    const { return m_hourOfDay;    }
+    unsigned int GetMinuteOfHour() const { return m_minuteOfHour; }
 
-			MetarRunwayVisualRange() : unit("KT"),
-				runwayNum(NULL),
-				designator('C'),
-				visibility(MAX_VISIBILITY),
-				visibilityVariation(NULL) {
-			};
-		};
+protected:
+    unsigned int m_dayOfMonth;
+    unsigned int m_hourOfDay;
+    unsigned int m_minuteOfHour;
+};
 
-		/**
-		* Data structure holding a single METAR weather group. Intensity,
-		* descriptor and phenomena are contained in this structure.
-		*/
-		typedef struct MetarWeatherGroup {
-			WeatherIntensity intensity;
-			WeatherDescriptor descriptor;
-			list<WeatherPhenomena> *type;
+//-----------------------------------------------------------------------------
 
-			MetarWeatherGroup() : intensity(WI_NONE),
-				descriptor(WD_NONE),
-				type(new list<WeatherPhenomena>) {
-			};
+class MetarWind
+{
+public:
+    typedef std::shared_ptr<MetarWind> Ptr;
 
-			~MetarWeatherGroup() {
-				type->clear();
-				delete(type);
-			}
-		};
+    MetarWind();
+    virtual ~MetarWind() {}
 
-		/**
-		* Data structure holding the sky cover grouped with the height of the
-		* layer.
-		* The height value is NULL if the cloud layer is below the station
-		* reporting the METAR.
-		*/
-		typedef struct MetarSkyConditionGroup {
-			SkyCover skyCover;
-			unsigned int height;
-			SkyCoverClouds cloudType;
+    std::string  GetUnit()           const { return m_unit;           }
+    unsigned int GetDirection()      const { return m_direction;      }
+    unsigned int GetSpeed()          const { return m_speed;          }
+    unsigned int GetGustSpeed()      const { return m_gustSpeed;      }
+    unsigned int GetVariationLower() const { return m_variationLower; }
+    unsigned int GetVariationUpper() const { return m_variationUpper; }
 
-			MetarSkyConditionGroup() : skyCover(SC_CLEAR),
-				height(NULL),
-				cloudType(SCC_NONE) {
-			};
-		};
+protected:
+    std::string  m_unit;
+    unsigned int m_direction;
+    unsigned int m_speed;
+    unsigned int m_gustSpeed;
+    unsigned int m_variationLower;
+    unsigned int m_variationUpper;
+};
 
-		/**
-		* Data structure holding the individual native data elements in the
-		* METAR report.
-		* The actual instance of this structure is private to the class and
-		* elements can be accessed via getters
-		*/
-		typedef struct MetarInfo {
-			MetarReportType reportType;
-			StationIdentifier stationIdentifier;
-			MetarObservationTime *observationTime;
-			MetarModifier modifier;
-			MetarWind *wind;
-			Visibility visibility;
-			list<MetarRunwayVisualRange> *const runwayVisualRange;
-			list<MetarWeatherGroup> *const weather;
-			list<MetarSkyConditionGroup> *const skyCondition;
-			Temperature temperature;
-			Dewpoint dewpoint;
-			Altimeter altimeter;
-			string remarks;
+//-----------------------------------------------------------------------------
 
-			MetarInfo(void) : reportType(METAR_REPORT_TYPE_METAR),
-				observationTime(new MetarObservationTime),
-				modifier(METAR_MODIFIER_AUTO),
-				wind(new MetarWind),
-				visibility(MAX_VISIBILITY),
-				runwayVisualRange(new list<MetarRunwayVisualRange>),
-				weather(new list<MetarWeatherGroup>),
-				skyCondition(new list<MetarSkyConditionGroup>),
-				temperature(NAN),
-				dewpoint(NAN),
-				altimeter(NAN) {
-			};
+class MetarRunwayVisualRange
+{
+public:
+    typedef std::shared_ptr<MetarRunwayVisualRange> Ptr;
 
-			~MetarInfo() {
-				stationIdentifier.clear();
-				runwayVisualRange->clear();
-				weather->clear();
-				skyCondition->clear();
-				remarks.clear();
+    MetarRunwayVisualRange();
+    virtual ~MetarRunwayVisualRange() {}
 
-				delete(observationTime, wind, runwayVisualRange, weather, skyCondition);
-			}
-		};
+    std::string  GetUnit()                const { return m_unit;                }
+    unsigned int GetRunwayNumber()        const { return m_runwayNumber;        }
+    char         GetDesignator()          const { return m_designator;          }
+    int          GetVisibility()          const { return m_visibility;          }
+    int          GetVisibilityVariation() const { return m_visibilityVariation; }
 
-		Metar(void) : m_MetarInfo(new MetarInfo) {}
-		Metar(const string &metar);
-		~Metar(void);
+protected:
+    std::string  m_unit;
+    unsigned int m_runwayNumber;
+    char         m_designator;
+    int          m_visibility;
+    int          m_visibilityVariation;
+};
 
-		inline MetarReportType                     getReportType()        { return m_MetarInfo->reportType; }
-		inline StationIdentifier                   getStationIdentifier() { return m_MetarInfo->stationIdentifier; }
-		inline MetarObservationTime *const         getObservationTime()   { return m_MetarInfo->observationTime; }
-		inline MetarModifier                       getModifier()          { return m_MetarInfo->modifier; }
-		inline MetarWind *const                    getWind()              { return m_MetarInfo->wind; }
-		inline Visibility                          getVisibilityF()       { return m_MetarInfo->visibility * METRES_TO_FEET; }
-		inline Visibility                          getVisibilityM()       { return m_MetarInfo->visibility; }
-		inline list<MetarRunwayVisualRange> *const getRunwayVisualRange() { return m_MetarInfo->runwayVisualRange; }
-		inline list<MetarWeatherGroup> *const      getWeather()           { return m_MetarInfo->weather; }
-		inline list<MetarSkyConditionGroup> *const getSkyCondition()      { return m_MetarInfo->skyCondition; }
-		inline Temperature                         getTemperatureC()      { return m_MetarInfo->temperature; }
-		inline Temperature                         getTemperatureF()      { return m_MetarInfo->temperature * CENT_TO_FAR; }
-		inline Dewpoint                            getDewpointC()         { return m_MetarInfo->dewpoint; }
-		inline Dewpoint                            getDewpointF()         { return m_MetarInfo->dewpoint * CENT_TO_FAR; }
-		inline Altimeter                           getAltimeterinHg()     { return m_MetarInfo->altimeter; }
-		inline Altimeter                           getAltimeterhPa()      { return m_MetarInfo->altimeter * INHG_TO_HPA; }
-		inline string                              getRemarks()           { return m_MetarInfo->remarks; }
-		inline string                              getMetarString()       { return m_Metar; }
+//-----------------------------------------------------------------------------
 
-		inline void setMetarString(string metar)                          { m_Metar = metar; processMetar(); }
-		inline void setReportType(MetarReportType type)                   {}
-		inline void setReportType(const string &type)                     {}
-		inline void setStationIdentifier(const string &type)              {}
-		inline void setObservationTime(const MetarObservationTime &time)  {}
-		inline void setObservationTime(uint day, uint hour, uint minute)  {}
-		inline void setReportModifier(MetarModifier modifier)             {}
-	private:
-		string m_Metar;                     /* Full METAR string */
-		MetarInfo *const m_MetarInfo;       /* Main Metar Info structure holds all native data */
-		static const string m_Patterns[];   /* List of Regular Expressions to obtain native METAR data */
+class MetarWeatherGroup
+{
+public:
+    typedef std::shared_ptr<MetarWeatherGroup> Ptr;
 
-		void processMetar(void);
-		void processMetarElement(MetarElement elem, const cmatch &metar);
+    MetarWeatherGroup();
+    virtual ~MetarWeatherGroup() {}
 
-		void processMetarElementReportType(const cmatch &metar);
-		void processMetarElementStationIdentifier(cmatch metar);
-		void processMetarElementObservationTime(cmatch metar);
-		void processMetarElementReportModifier(cmatch metar);
-		void processMetarElementWind(cmatch metar);
-		void processMetarElementVisiblity(cmatch metar);
-		void processMetarElementRunwayVisualRange(cmatch metar);
-		void processMetarElementWeather(cmatch metar);
-		void processMetarElementSkyCondition(cmatch metar);
-		void processMetarElementTemperature(cmatch metar);
-		void processMetarElementDewpoint(cmatch metar);
-		void processMetarElementAltimeter(cmatch metar);
-		void processMetarElementRemarks(cmatch metar);
-	};
-}
+    WeatherIntensity            GetIntensity()  const { return m_intensity;  }
+    WeatherDescriptor           GetDescriptor() const { return m_descriptor; }
+    std::list<WeatherPhenomena> GetTypes()      const { return m_types;      }
 
-#endif // METEOROLOGY_METAR_H
+protected:
+    WeatherIntensity            m_intensity;
+    WeatherDescriptor           m_descriptor;
+    std::list<WeatherPhenomena> m_types;
+};
+
+//-----------------------------------------------------------------------------
+
+class MetarSkyConditionGroup
+{
+public:
+    typedef std::shared_ptr<MetarSkyConditionGroup> Ptr;
+
+    MetarSkyConditionGroup();
+    virtual ~MetarSkyConditionGroup() {}
+
+    SkyCover       GetSkyCover()  const { return m_skyCover;  }
+    unsigned int   GetHeight()    const { return m_height;    }
+    SkyCoverClouds GetCloudType() const { return m_cloudType; }
+
+protected:
+    SkyCover       m_skyCover;
+    unsigned int   m_height;
+    SkyCoverClouds m_cloudType;
+};
+
+//-----------------------------------------------------------------------------
+
+class Metar
+{
+public:
+    Metar(std::string const& metar);
+
+    MetarReportType                        GetReportType()            const { return m_reportType;            }
+    std::string                            GetStationIdentifier()     const { return m_stationIdentifier;     }
+    MetarObservationTime::Ptr              GetObservationTime()       const { return m_observationTime;       }
+    MetarModifier                          GetModifier()              const { return m_modifier;              }
+    MetarWind::Ptr                         GetWind()                  const { return m_wind;                  }
+    double                                 GetVisibility()            const { return m_visibility;            }
+    std::list<MetarRunwayVisualRange::Ptr> GetRunwayVisualRangeList() const { return m_runwayVisualRangeList; }
+    std::list<MetarWeatherGroup::Ptr>      GetWeatherList()           const { return m_weatherList;           }
+    std::list<MetarSkyConditionGroup::Ptr> GetSkyConditionList()      const { return m_skyConditionList;      }
+    double                                 GetTemperature()           const { return m_temperature;           }
+    double                                 GetDewpoint()              const { return m_dewpoint;              }
+    double                                 GetAltimeter()             const { return m_altimeter;             }
+    std::string                            GetRemarks()               const { return m_remarks;               }
+
+private:
+    void Parse();
+
+    void ParseReportType();
+    void ParseStationIdentifier();
+    void ParseObservationTime();
+    void ParseModifier();
+    void ParseWind();
+    void ParseVisibility();
+    void ParseAltimeter();
+
+private:
+    std::string m_metar;
+
+    MetarReportType                        m_reportType;
+    std::string                            m_stationIdentifier;
+    MetarObservationTime::Ptr              m_observationTime;
+    MetarModifier                          m_modifier;
+    MetarWind::Ptr                         m_wind;
+    double                                 m_visibility;
+    std::list<MetarRunwayVisualRange::Ptr> m_runwayVisualRangeList;
+    std::list<MetarWeatherGroup::Ptr>      m_weatherList;
+    std::list<MetarSkyConditionGroup::Ptr> m_skyConditionList;
+    double                                 m_temperature;
+    double                                 m_dewpoint;
+    double                                 m_altimeter;
+    std::string                            m_remarks;
+};
+
+//-----------------------------------------------------------------------------
+
+} // namespace Meteorology

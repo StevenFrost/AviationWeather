@@ -1,10 +1,9 @@
-#ifndef STDAFX_H
-#define STDAFX_H
+#pragma once
 
-#include "targetver.hpp"
-
-#define WIN32_LEAN_AND_MEAN
-
-typedef unsigned int uint;
-
-#endif // !STDAFX_H
+#include <ctime>
+#include <iostream>
+#include <list>
+#include <regex>
+#include <sstream>
+#include <string>
+#include <vector>

@@ -76,7 +76,6 @@
     <ClInclude Include="Metar.hpp" />
     <ClInclude Include="Meteorology.hpp" />
     <ClInclude Include="stdafx.hpp" />
-    <ClInclude Include="targetver.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Metar.cpp" />
