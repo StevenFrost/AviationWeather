@@ -40,20 +40,29 @@ inline double MetresToFeet(double metres)
     return metres * 3.2808399;
 }
 
+inline double MilesToFeet(double miles)
+{
+    return miles * 5280;
+}
+
 inline double InhgToHpa(double inhg)
 {
     return inhg * 33.8638816;
+}
+
+inline double HpaToInhg(double hpa)
+{
+    return hpa / 33.8638816;
 }
 
 //-----------------------------------------------------------------------------
 
 enum class WeatherIntensity
 {
-    None,
     Light,
     Moderate,
     Heavy,
-    InVicinity
+    InTheVicinity
 };
 
 enum class WeatherDescriptor
@@ -71,6 +80,8 @@ enum class WeatherDescriptor
 
 enum class WeatherPhenomena
 {
+    None,
+
     Drizzle,
     Rain,
     Snow,
@@ -79,6 +90,8 @@ enum class WeatherPhenomena
     IcePellets,
     Hail,
     SmallHail,
+    UnknownPrecipitation,
+
     Mist,
     Fog,
     Smoke,
@@ -87,12 +100,12 @@ enum class WeatherPhenomena
     Sand,
     Haze,
     Spray,
+
     WellDevelopedDustWhirls,
     Squalls,
     FunnelCloudTornadoWaterspout,
     Sandstorm,
-    Duststorm,
-    UnknownPrecipitation
+    Duststorm
 };
 
 enum class SkyCover

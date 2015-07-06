@@ -49,10 +49,9 @@ enum class MetarElement
     Wind,
     Visibility,
     RunwayVisualRange,
-    WeatherGroup,
+    Weather,
     SkyCondition,
-    Temperature,
-    Dewpoint,
+    TemperatureDewpoint,
     Altimeter,
     Remarks
 };
@@ -67,6 +66,21 @@ enum class MetarModifier
 {
     Automatic,
     Corrected
+};
+
+enum class MetarRunwayDesignator
+{
+    None,
+    Left,
+    Right,
+    Center
+};
+
+enum class MetarVisibilityModifier
+{
+    None,
+    LessThan,
+    GreaterThan
 };
 
 //-----------------------------------------------------------------------------
@@ -125,49 +139,51 @@ public:
     MetarRunwayVisualRange();
     virtual ~MetarRunwayVisualRange() {}
 
-    std::string  GetUnit()                const { return m_unit;                }
-    unsigned int GetRunwayNumber()        const { return m_runwayNumber;        }
-    char         GetDesignator()          const { return m_designator;          }
-    int          GetVisibility()          const { return m_visibility;          }
-    int          GetVisibilityVariation() const { return m_visibilityVariation; }
+    std::string             GetUnit()                const { return m_unit;                }
+    unsigned int            GetRunwayNumber()        const { return m_runwayNumber;        }
+    MetarRunwayDesignator   GetDesignator()          const { return m_designator;          }
+    MetarVisibilityModifier GetVisibilityModifier()  const { return m_visibilityModifier;  }
+    int                     GetVisibility()          const { return m_visibility;          }
+    int                     GetVisibilityVariation() const { return m_visibilityVariation; }
 
 protected:
-    std::string  m_unit;
-    unsigned int m_runwayNumber;
-    char         m_designator;
-    int          m_visibility;
-    int          m_visibilityVariation;
+    std::string             m_unit;
+    unsigned int            m_runwayNumber;
+    MetarRunwayDesignator   m_designator;
+    MetarVisibilityModifier m_visibilityModifier;
+    int                     m_visibility;
+    int                     m_visibilityVariation;
 };
 
 //-----------------------------------------------------------------------------
 
-class MetarWeatherGroup
+class MetarWeather
 {
 public:
-    typedef std::shared_ptr<MetarWeatherGroup> Ptr;
+    typedef std::shared_ptr<MetarWeather> Ptr;
 
-    MetarWeatherGroup();
-    virtual ~MetarWeatherGroup() {}
+    MetarWeather();
+    virtual ~MetarWeather() {}
 
-    WeatherIntensity            GetIntensity()  const { return m_intensity;  }
-    WeatherDescriptor           GetDescriptor() const { return m_descriptor; }
-    std::list<WeatherPhenomena> GetTypes()      const { return m_types;      }
+    WeatherIntensity            GetIntensity()     const { return m_intensity;     }
+    WeatherDescriptor           GetDescriptor()    const { return m_descriptor;    }
+    std::list<WeatherPhenomena> GetPhenomenaList() const { return m_phenomenaList; }
 
 protected:
     WeatherIntensity            m_intensity;
     WeatherDescriptor           m_descriptor;
-    std::list<WeatherPhenomena> m_types;
+    std::list<WeatherPhenomena> m_phenomenaList;
 };
 
 //-----------------------------------------------------------------------------
 
-class MetarSkyConditionGroup
+class MetarSkyCondition
 {
 public:
-    typedef std::shared_ptr<MetarSkyConditionGroup> Ptr;
+    typedef std::shared_ptr<MetarSkyCondition> Ptr;
 
-    MetarSkyConditionGroup();
-    virtual ~MetarSkyConditionGroup() {}
+    MetarSkyCondition();
+    virtual ~MetarSkyCondition() {}
 
     SkyCover       GetSkyCover()  const { return m_skyCover;  }
     unsigned int   GetHeight()    const { return m_height;    }
@@ -193,23 +209,29 @@ public:
     MetarWind::Ptr                         GetWind()                  const { return m_wind;                  }
     double                                 GetVisibility()            const { return m_visibility;            }
     std::list<MetarRunwayVisualRange::Ptr> GetRunwayVisualRangeList() const { return m_runwayVisualRangeList; }
-    std::list<MetarWeatherGroup::Ptr>      GetWeatherList()           const { return m_weatherList;           }
-    std::list<MetarSkyConditionGroup::Ptr> GetSkyConditionList()      const { return m_skyConditionList;      }
-    double                                 GetTemperature()           const { return m_temperature;           }
-    double                                 GetDewpoint()              const { return m_dewpoint;              }
-    double                                 GetAltimeter()             const { return m_altimeter;             }
+    std::list<MetarWeather::Ptr>           GetWeatherList()           const { return m_weatherList;           }
+    std::list<MetarSkyCondition::Ptr>      GetSkyConditionList()      const { return m_skyConditionList;      }
+    int                                    GetTemperature()           const { return m_temperature;           }
+    int                                    GetDewpoint()              const { return m_dewpoint;              }
+    double                                 GetAltimeterhPa()          const { return InhgToHpa(m_altimeter);  }
+    double                                 GetAltimeterinHg()         const { return m_altimeter;             }
     std::string                            GetRemarks()               const { return m_remarks;               }
 
 private:
     void Parse();
 
-    void ParseReportType();
-    void ParseStationIdentifier();
-    void ParseObservationTime();
-    void ParseModifier();
-    void ParseWind();
-    void ParseVisibility();
-    void ParseAltimeter();
+    void ParseReportType(std::string& metar);
+    void ParseStationIdentifier(std::string& metar);
+    void ParseObservationTime(std::string& metar);
+    void ParseModifier(std::string& metar);
+    void ParseWind(std::string& metar);
+    void ParseVisibility(std::string& metar);
+    void ParseRunwayVisualRange(std::string& metar);
+    void ParseWeather(std::string& metar);
+    void ParseSkyCondition(std::string& metar);
+    void ParseTemperatureDewPoint(std::string& metar);
+    void ParseAltimeter(std::string& metar);
+    void ParseRemarks(std::string& metar);
 
 private:
     std::string m_metar;
@@ -221,10 +243,10 @@ private:
     MetarWind::Ptr                         m_wind;
     double                                 m_visibility;
     std::list<MetarRunwayVisualRange::Ptr> m_runwayVisualRangeList;
-    std::list<MetarWeatherGroup::Ptr>      m_weatherList;
-    std::list<MetarSkyConditionGroup::Ptr> m_skyConditionList;
-    double                                 m_temperature;
-    double                                 m_dewpoint;
+    std::list<MetarWeather::Ptr>           m_weatherList;
+    std::list<MetarSkyCondition::Ptr>      m_skyConditionList;
+    int                                    m_temperature;
+    int                                    m_dewpoint;
     double                                 m_altimeter;
     std::string                            m_remarks;
 };
