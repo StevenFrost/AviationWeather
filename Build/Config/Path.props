@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PathPropsImported>true</PathPropsImported>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IntDir>$(BuiltDir)Int\$(PlatformToolset)\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(BuiltDir)Out\$(PlatformToolset)\$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
+    <LibPath>$(BuiltDir)Out\$(PlatformToolset)\$(Platform)\$(Configuration)\</LibPath>
+    <BaseIntermediateOutputPath>$(IntDir)</BaseIntermediateOutputPath>
+  </PropertyGroup>
+</Project>

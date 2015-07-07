@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <DefaultLanguage>en-GB</DefaultLanguage>
+  </PropertyGroup>
+
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+
+  <PropertyGroup Label="Configuration">
+    <PlatformToolset>v120</PlatformToolset>
+    <UseDebugLibraries Condition="'$(Configuration)' == 'Debug'">true</UseDebugLibraries>
+    <UseDebugLibraries Condition="'$(Configuration)' != 'Debug'">false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+
+  <ItemDefinitionGroup>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding Condition="'$(Configuration)' == 'Release'">true</EnableCOMDATFolding>
+      <OptimizeReferences Condition="'$(Configuration)' == 'Release'">true</OptimizeReferences>
+    </Link>
+    <ClCompile>
+      <MinimalRebuild>false</MinimalRebuild>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization Condition="'$(Configuration)' == 'Release'">MaxSpeed</Optimization>
+      <Optimization Condition="'$(Configuration)' != 'Release'">Disabled</Optimization>
+      <BasicRuntimeChecks Condition="'$(Configuration)' == 'Release'"></BasicRuntimeChecks>
+
+      <PreprocessorDefinitions Condition="'$(Configuration)' == 'Debug'">_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)' != 'Debug'">NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(ConfigurationType)' == 'StaticLibrary'">_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+
+      <WarningLevel>Level4</WarningLevel>
+      <FunctionLevelLinking Condition="'$(Configuration)' == 'Release'">true</FunctionLevelLinking>
+      <IntrinsicFunctions Condition="'$(Configuration)' == 'Release'">true</IntrinsicFunctions>
+
+      <SDLCheck>true</SDLCheck>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <Import Condition="'$(PathPropsImported)' != 'true'" Project="Path.Props" />
+
+  <PropertyGroup>
+    <TargetName>$(ProjectName)</TargetName>
+  </PropertyGroup>
+</Project>
