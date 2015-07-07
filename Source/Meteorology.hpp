@@ -32,7 +32,7 @@ namespace Meteorology
 
 inline double CelsiusToFahrenheit(double celsius)
 {
-    return celsius * 9 / 5 + 32;
+    return celsius * ((9.0 / 5.0) + 32);
 }
 
 inline double MetresToFeet(double metres)
