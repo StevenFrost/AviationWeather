@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <IntDir>$(BuiltDir)Int\$(PlatformToolset)\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <OutDir>$(BuiltDir)Out\$(PlatformToolset)\$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
-    <LibPath>$(BuiltDir)Out\$(PlatformToolset)\$(Platform)\$(Configuration)\</LibPath>
+    <IntDir>$(BuiltDirectory)Int\$(PlatformToolset)\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(BuiltDirectory)Out\$(PlatformToolset)\$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
+    <LibPath>$(BuiltDirectory)Out\$(PlatformToolset)\$(Platform)\$(Configuration)\</LibPath>
     <BaseIntermediateOutputPath>$(IntDir)</BaseIntermediateOutputPath>
   </PropertyGroup>
 </Project>

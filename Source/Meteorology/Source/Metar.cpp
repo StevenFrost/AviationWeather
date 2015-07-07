@@ -26,7 +26,7 @@ WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 
 #include "MeteorologyPch.h"
 
-#include <Meteorology/Meteorology.h>
+#include <Meteorology/Metar.h>
 
 #include <ctime>
 #include <regex>
@@ -85,11 +85,21 @@ public:
 MetarObservationTime::MetarObservationTime()
 {
     time_t t = time(0);
-    struct tm *now = localtime(&t);
+    struct tm *now = nullptr;
+    localtime_s(now, &t);
 
-    m_dayOfMonth   = now->tm_mon;
-    m_hourOfDay    = now->tm_hour;
-    m_minuteOfHour = now->tm_min;
+    if (now != nullptr)
+    {
+        m_dayOfMonth = now->tm_mon;
+        m_hourOfDay = now->tm_hour;
+        m_minuteOfHour = now->tm_min;
+    }
+    else
+    {
+        m_dayOfMonth = 0U;
+        m_hourOfDay = 0U;
+        m_minuteOfHour = 0U;
+    }
 }
 
 //-----------------------------------------------------------------------------

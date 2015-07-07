@@ -12,9 +12,6 @@
     <Import Project="$(ConfigDirectory)Configurations.props" />
     <Import Project="$(ConfigDirectory)Cpp.props" />
   </ImportGroup>
-  <PropertyGroup>
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="$(SourceDirectory)\Meteorology\Build\Meteorology.vcxproj">
       <Project>{DE59D0D5-D681-475A-8852-544D0921739A}</Project>

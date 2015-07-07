@@ -16,6 +16,10 @@
 
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
 
+  <PropertyGroup>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+
   <ItemDefinitionGroup>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -39,6 +43,15 @@
       <WarningLevel>Level4</WarningLevel>
       <FunctionLevelLinking Condition="'$(Configuration)' == 'Release'">true</FunctionLevelLinking>
       <IntrinsicFunctions Condition="'$(Configuration)' == 'Release'">true</IntrinsicFunctions>
+
+      <!-- Disable 'unreferenced formal parameter' warning (W4100) -->
+      <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+
+      <!-- Disable 'conditional expression is constant' warning (W4127) -->
+      <DisableSpecificWarnings>4127;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      
+      <!-- Disable 'unreferenced local function has been removed' warning (C4505) -->
+      <DisableSpecificWarnings>4505;%(DisableSpecificWarnings)</DisableSpecificWarnings>
 
       <SDLCheck>true</SDLCheck>
       <TreatWarningAsError>true</TreatWarningAsError>

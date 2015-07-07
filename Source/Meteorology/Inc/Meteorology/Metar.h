@@ -31,7 +31,7 @@ WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 #include <memory>
 #include <string>
 
-#include <Meteorology\Meteorology.h>
+#include <Meteorology/Meteorology.h>
 
 //-----------------------------------------------------------------------------
 

@@ -48,10 +48,10 @@ public:
         Assert::AreEqual(MilesToFeet(9.0), metar->GetVisibility(), 0.01);
 
         auto weatherList = metar->GetWeatherList();
-        Assert::AreEqual(0U, weatherList.size());
+        Assert::AreEqual(0U, static_cast<unsigned int>(weatherList.size()));
 
         auto skyConditionList = metar->GetSkyConditionList();
-        Assert::AreEqual(1U, skyConditionList.size());
+        Assert::AreEqual(1U, static_cast<unsigned int>(skyConditionList.size()));
 
         auto it = skyConditionList.front();
         Assert::AreEqual(static_cast<unsigned int>(SkyCover::Clear), static_cast<unsigned int>(it->GetSkyCover()));
@@ -85,10 +85,10 @@ public:
         Assert::AreEqual(MilesToFeet(15.0), metar->GetVisibility(), 0.01);
 
         auto weatherList = metar->GetWeatherList();
-        Assert::AreEqual(0U, weatherList.size());
+        Assert::AreEqual(0U, static_cast<unsigned int>(weatherList.size()));
 
         auto skyConditionList = metar->GetSkyConditionList();
-        Assert::AreEqual(3U, skyConditionList.size());
+        Assert::AreEqual(3U, static_cast<unsigned int>(skyConditionList.size()));
 
         auto it = skyConditionList.begin();
         auto item1 = *it;
@@ -133,10 +133,10 @@ public:
         Assert::AreEqual(MilesToFeet(10.0), metar->GetVisibility(), 0.01);
 
         auto weatherList = metar->GetWeatherList();
-        Assert::AreEqual(0U, weatherList.size());
+        Assert::AreEqual(0U, static_cast<unsigned int>(weatherList.size()));
 
         auto skyConditionList = metar->GetSkyConditionList();
-        Assert::AreEqual(1U, skyConditionList.size());
+        Assert::AreEqual(1U, static_cast<unsigned int>(skyConditionList.size()));
 
         auto it = skyConditionList.front();
         Assert::AreEqual(static_cast<unsigned int>(SkyCover::Broken), static_cast<unsigned int>(it->GetSkyCover()));
@@ -170,10 +170,10 @@ public:
         Assert::AreEqual(MilesToFeet(10.0), metar->GetVisibility(), 0.01);
 
         auto weatherList = metar->GetWeatherList();
-        Assert::AreEqual(0U, weatherList.size());
+        Assert::AreEqual(0U, static_cast<unsigned int>(weatherList.size()));
 
         auto skyConditionList = metar->GetSkyConditionList();
-        Assert::AreEqual(4U, skyConditionList.size());
+        Assert::AreEqual(4U, static_cast<unsigned int>(skyConditionList.size()));
 
         auto it = skyConditionList.begin();
         auto item1 = *it;
@@ -223,17 +223,17 @@ public:
         Assert::AreEqual(MilesToFeet(10.0), metar->GetVisibility(), 0.01);
 
         auto weatherList = metar->GetWeatherList();
-        Assert::AreEqual(1U, weatherList.size());
+        Assert::AreEqual(1U, static_cast<unsigned int>(weatherList.size()));
 
         auto weatherIt = weatherList.begin();
         auto weatherItem1 = *weatherIt;
         auto weatherItem1PhenomenaList = weatherItem1->GetPhenomenaList();
         Assert::AreEqual(static_cast<unsigned int>(WeatherIntensity::Moderate), static_cast<unsigned int>(weatherItem1->GetIntensity()));
         Assert::AreEqual(static_cast<unsigned int>(WeatherDescriptor::Thunderstorm), static_cast<unsigned int>(weatherItem1->GetDescriptor()));
-        Assert::AreEqual(0U, weatherItem1PhenomenaList.size());
+        Assert::AreEqual(0U, static_cast<unsigned int>(weatherItem1PhenomenaList.size()));
 
         auto skyConditionList = metar->GetSkyConditionList();
-        Assert::AreEqual(2U, skyConditionList.size());
+        Assert::AreEqual(2U, static_cast<unsigned int>(skyConditionList.size()));
 
         auto skyConditionIt = skyConditionList.begin();
         auto skyConditionItem1 = *skyConditionIt;
@@ -273,18 +273,18 @@ public:
         Assert::AreEqual(MilesToFeet(10.0), metar->GetVisibility(), 0.01);
 
         auto weatherList = metar->GetWeatherList();
-        Assert::AreEqual(1U, weatherList.size());
+        Assert::AreEqual(1U, static_cast<unsigned int>(weatherList.size()));
 
         auto weatherIt = weatherList.begin();
         auto weatherItem1 = *weatherIt;
         auto weatherItem1PhenomenaList = weatherItem1->GetPhenomenaList();
         Assert::AreEqual(static_cast<unsigned int>(WeatherIntensity::Heavy), static_cast<unsigned int>(weatherItem1->GetIntensity()));
         Assert::AreEqual(static_cast<unsigned int>(WeatherDescriptor::Thunderstorm), static_cast<unsigned int>(weatherItem1->GetDescriptor()));
-        Assert::AreEqual(1U, weatherItem1PhenomenaList.size());
+        Assert::AreEqual(1U, static_cast<unsigned int>(weatherItem1PhenomenaList.size()));
         Assert::AreEqual(static_cast<unsigned int>(WeatherPhenomena::Rain), static_cast<unsigned int>(weatherItem1PhenomenaList.front()));
 
         auto skyConditionList = metar->GetSkyConditionList();
-        Assert::AreEqual(3U, skyConditionList.size());
+        Assert::AreEqual(3U, static_cast<unsigned int>(skyConditionList.size()));
 
         auto skyConditionIt = skyConditionList.begin();
         auto skyConditionItem1 = *skyConditionIt;
