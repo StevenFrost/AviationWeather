@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D4BB149E-F399-4C3A-8D91-FC54EED4EB5E}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectName>Meteorology.Test</ProjectName>
+    <RootNamespace>Meteorology</RootNamespace>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(SolutionDir)..\Root.props" />
+    <Import Project="$(ConfigDirectory)Configurations.props" />
+    <Import Project="$(ConfigDirectory)Cpp.props" />
+  </ImportGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(SourceDirectory)\Meteorology\Build\Meteorology.vcxproj">
+      <Project>{DE59D0D5-D681-475A-8852-544D0921739A}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+      <UseLibraryDependencyImports>false</UseLibraryDependencyImports>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>
+        $(VCInstallDir)UnitTest\include;
+        $(SourceDirectory)\Meteorology\Inc;
+        %(AdditionalIncludeDirectories)
+      </AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Meteorology.TestPch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>
+        $(VCInstallDir)UnitTest\lib;
+        %(AdditionalLibraryDirectories)
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+        $(LibPath)\Meteorology\Meteorology.lib;
+        %(AdditionalDependencies)
+      </AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Source\Meteorology.TestPch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Source\Meteorology.TestPch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Source\MetarTests.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets"></ImportGroup>
+</Project>

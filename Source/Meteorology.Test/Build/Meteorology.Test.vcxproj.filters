@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{da4bef0e-0087-4814-b6d7-ddcf65a996f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Private Headers">
+      <UniqueIdentifier>{f57e6a76-d667-437f-af51-3898ee4e4738}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Source\Meteorology.TestPch.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\MetarTests.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Source\Meteorology.TestPch.h">
+      <Filter>Private Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
