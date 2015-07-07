@@ -889,7 +889,7 @@ void Metar::ParseAltimeter(std::string& metar)
 
         try
         {
-            auto altimeter = atof(regex.str(EXPR_ALT).c_str());
+            auto altimeter = atof(regex.str(EXPR_ALT).c_str()) / 100.0;
             if (regex.str(EXPR_SETTING) == "Q")
             {
                 altimeter = HpaToInhg(altimeter);

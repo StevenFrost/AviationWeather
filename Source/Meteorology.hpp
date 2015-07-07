@@ -30,14 +30,14 @@ namespace Meteorology
 
 //-----------------------------------------------------------------------------
 
-inline double CentigradeToFahrenheit(double centigrade)
+inline double CelsiusToFahrenheit(double celsius)
 {
-    return centigrade * 33.8;
+    return celsius * 9 / 5 + 32;
 }
 
 inline double MetresToFeet(double metres)
 {
-    return metres * 3.2808399;
+    return metres / 0.3048;
 }
 
 inline double MilesToFeet(double miles)

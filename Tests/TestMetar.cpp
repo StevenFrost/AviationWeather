@@ -61,8 +61,8 @@ public:
         Assert::AreEqual(19, metar->GetTemperature());
         Assert::AreEqual(4, metar->GetDewpoint());
 
-        Assert::AreEqual(InhgToHpa(3012.0), metar->GetAltimeterhPa(), 0.01);
-        Assert::AreEqual(3012.0, metar->GetAltimeterinHg(), 0.01);
+        Assert::AreEqual(InhgToHpa(30.12), metar->GetAltimeterhPa(), 0.01);
+        Assert::AreEqual(30.12, metar->GetAltimeterinHg(), 0.01);
 
         Assert::AreEqual(std::string(""), metar->GetRemarks());
     }
@@ -109,8 +109,8 @@ public:
         Assert::AreEqual(24, metar->GetTemperature());
         Assert::AreEqual(10, metar->GetDewpoint());
 
-        Assert::AreEqual(InhgToHpa(2989.0), metar->GetAltimeterhPa(), 0.01);
-        Assert::AreEqual(2989.0, metar->GetAltimeterinHg(), 0.01);
+        Assert::AreEqual(InhgToHpa(29.89), metar->GetAltimeterhPa(), 0.01);
+        Assert::AreEqual(29.89, metar->GetAltimeterinHg(), 0.01);
 
         Assert::AreEqual(std::string("AC1AC2CI4 SLP123 DENSITY ALT 1200FT"), metar->GetRemarks());
     }
@@ -146,8 +146,8 @@ public:
         Assert::AreEqual(28, metar->GetTemperature());
         Assert::AreEqual(14, metar->GetDewpoint());
 
-        Assert::AreEqual(InhgToHpa(2996.0), metar->GetAltimeterhPa(), 0.01);
-        Assert::AreEqual(2996.0, metar->GetAltimeterinHg(), 0.01);
+        Assert::AreEqual(InhgToHpa(29.96), metar->GetAltimeterhPa(), 0.01);
+        Assert::AreEqual(29.96, metar->GetAltimeterinHg(), 0.01);
 
         Assert::AreEqual(std::string("AO2 PK WND 16029/2305 SLP135 T02830139 10372 20283 53030"), metar->GetRemarks());
     }
@@ -199,8 +199,8 @@ public:
         Assert::AreEqual(20, metar->GetTemperature());
         Assert::AreEqual(18, metar->GetDewpoint());
 
-        Assert::AreEqual(InhgToHpa(2990.0), metar->GetAltimeterhPa(), 0.01);
-        Assert::AreEqual(2990.0, metar->GetAltimeterinHg(), 0.01);
+        Assert::AreEqual(InhgToHpa(29.90), metar->GetAltimeterhPa(), 0.01);
+        Assert::AreEqual(29.90, metar->GetAltimeterinHg(), 0.01);
 
         Assert::AreEqual(std::string("AO2 SLP122 FRQ LTGICCGCA DSNT N CB DSNT N-NE T02000178 10200 20189 50014 $"), metar->GetRemarks());
     }
@@ -249,8 +249,8 @@ public:
         Assert::AreEqual(28, metar->GetTemperature());
         Assert::AreEqual(13, metar->GetDewpoint());
 
-        Assert::AreEqual(InhgToHpa(3006.0), metar->GetAltimeterhPa(), 0.01);
-        Assert::AreEqual(3006.0, metar->GetAltimeterinHg(), 0.01);
+        Assert::AreEqual(InhgToHpa(30.06), metar->GetAltimeterhPa(), 0.01);
+        Assert::AreEqual(30.06, metar->GetAltimeterinHg(), 0.01);
 
         Assert::AreEqual(std::string("AO2 PK WND 31027/0109 RAB03E20 PRESRR SLP119 OCNL LTGIC NW TS NW MOV W CB DSNT N S SH VC SW NW P0000 T02830128"), metar->GetRemarks());
     }
@@ -305,8 +305,8 @@ public:
         Assert::AreEqual(29, metar->GetTemperature());
         Assert::AreEqual(13, metar->GetDewpoint());
 
-        Assert::AreEqual(InhgToHpa(3007.0), metar->GetAltimeterhPa(), 0.01);
-        Assert::AreEqual(3007.0, metar->GetAltimeterinHg(), 0.01);
+        Assert::AreEqual(InhgToHpa(30.07), metar->GetAltimeterhPa(), 0.01);
+        Assert::AreEqual(30.07, metar->GetAltimeterinHg(), 0.01);
 
         Assert::AreEqual(std::string("AO2 PK WND 09032/0155 WSHFT 0130 RAB32 TSB02 PRESRR SLP120 FRQ LTGCGIC OHD NE-E TS OHD NE-E MOV N P0000 T02890128"), metar->GetRemarks());
     }
