@@ -9,10 +9,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Sourec\MetarTests.cpp">
+    <ClCompile Include="..\Source\Meteorology.TestPch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\Meteorology.TestPch.cpp">
+    <ClCompile Include="..\Source\MetarTests.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

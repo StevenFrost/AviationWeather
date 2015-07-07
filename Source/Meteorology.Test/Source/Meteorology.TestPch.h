@@ -1,7 +1,3 @@
-#ifndef STDAFX_H
-#define STDAFX_H
+#pragma once
 
-#include "targetver.hpp"
 #include "CppUnitTest.h"
-
-#endif // !STDAFX_H

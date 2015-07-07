@@ -14,12 +14,12 @@ EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
 WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 \***************************************************************************/
 
-#include "stdafx.hpp"
-#include <iostream>
-#include <fstream>
-#include "CppUnitTest.h"
-#include "../Source/Metar.hpp"
-#include "../Source/Meteorology.hpp"
+#include "Meteorology.TestPch.h"
+
+#include <string>
+
+#include <Meteorology/Metar.h>
+#include <Meteorology/Meteorology.h>
 
 using namespace Meteorology;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

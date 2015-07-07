@@ -14,6 +14,10 @@
   </ImportGroup>
   <ItemDefinitionGroup>
     <ClCompile>
+      <AdditionalIncludeDirectories>
+        $(SourceDirectory)Meteorology\Inc;
+        %(AdditionalIncludeDirectories)
+      </AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>MeteorologyPch.h</PrecompiledHeaderFile>
     </ClCompile>

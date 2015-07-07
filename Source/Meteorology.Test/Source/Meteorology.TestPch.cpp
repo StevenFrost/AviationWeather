@@ -1,1 +1,1 @@
-#include "stdafx.hpp"
+#include "Meteorology.TestPch.h"
