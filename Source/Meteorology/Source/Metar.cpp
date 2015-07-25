@@ -85,14 +85,14 @@ public:
 MetarObservationTime::MetarObservationTime()
 {
     time_t t = time(0);
-    struct tm *now = nullptr;
-    localtime_s(now, &t);
+    struct tm now;
+    auto result = localtime_s(&now, &t);
 
-    if (now != nullptr)
+    if (result != EINVAL)
     {
-        m_dayOfMonth = now->tm_mon;
-        m_hourOfDay = now->tm_hour;
-        m_minuteOfHour = now->tm_min;
+        m_dayOfMonth = now.tm_mon;
+        m_hourOfDay = now.tm_hour;
+        m_minuteOfHour = now.tm_min;
     }
     else
     {
