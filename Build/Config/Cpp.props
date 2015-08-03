@@ -7,7 +7,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
 
   <PropertyGroup Label="Configuration">
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
     <UseDebugLibraries Condition="'$(Configuration)' == 'Debug'">true</UseDebugLibraries>
     <UseDebugLibraries Condition="'$(Configuration)' != 'Debug'">false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -55,6 +55,8 @@
 
       <SDLCheck>true</SDLCheck>
       <TreatWarningAsError>true</TreatWarningAsError>
+
+      <ProgramDataBaseFileName>$(IntDir)$(ProjectName).pdb</ProgramDataBaseFileName>
     </ClCompile>
   </ItemDefinitionGroup>
 

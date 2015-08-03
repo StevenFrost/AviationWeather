@@ -1,0 +1,17 @@
+Meteorology Changelog
+=====================
+
+Known Issues
+------------
+  - Some international METARs may not be parsed correctly
+  - Altimeter conversion has some outstanding bugs
+  - Remarks are not parsed at all and are instead represented by a string
+
+
+v0.1.0.0 - 2015/08/03
+---------------------
+General
+  - NuGet package creation & initial publish
+
+Build
+  - Support for v120 and v140 targets
