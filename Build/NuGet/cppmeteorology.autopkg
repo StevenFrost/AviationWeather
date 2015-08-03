@@ -20,6 +20,7 @@ nuget {
         owners: { Steven Frost };
         licenseUrl: "http://opensource.org/licenses/MIT";
         projectUrl: "https://github.com/StevenFrost/Meteorology";
+        iconUrl: "https://raw.githubusercontent.com/StevenFrost/Meteorology/master/Source/Meteorology/Media/icon.png";
         requireLicenseAcceptance:false; 
         summary: "A C++ library for formatting and parsing various meteorology related data structures";
         description: "A C++ library for formatting and parsing various meteorology related data structures";
