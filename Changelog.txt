@@ -14,4 +14,4 @@ General
   - NuGet package creation & initial publish
 
 Build
-  - Retarget solution to v140 (Visual Studio 2015)
+  - Support for v120 and v140 targets

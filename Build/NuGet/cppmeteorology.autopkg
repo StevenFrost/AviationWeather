@@ -1,7 +1,7 @@
 configurations {
     Toolset {
         key : "PlatformToolset";
-        choices: { v140 };
+        choices: { v120, v140 };
     };
 }
 
@@ -42,6 +42,25 @@ nuget {
 
         doc: { ${ROOT_DIR}Changelog.txt };
 
+        // VS2013
+        [desktop,v120,win32,debug,static] {
+            lib: { ${BUILT_DIR}Out\v120\Win32\Debug\Meteorology\Meteorology.lib };
+            pdb: { ${BUILT_DIR}Int\v120\Win32\Debug\Meteorology\Meteorology.pdb };
+        };
+        [desktop,v120,win32,release,static] {
+            lib: { ${BUILT_DIR}Out\v120\Win32\Release\Meteorology\Meteorology.lib };
+            pdb: { ${BUILT_DIR}Int\v120\Win32\Release\Meteorology\Meteorology.pdb };
+        };
+        [desktop,v120,x64,debug,static] {
+            lib: { ${BUILT_DIR}Out\v120\x64\Debug\Meteorology\Meteorology.lib };
+            pdb: { ${BUILT_DIR}Int\v120\x64\Debug\Meteorology\Meteorology.pdb };
+        };
+        [desktop,v120,x64,release,static] {
+            lib: { ${BUILT_DIR}Out\v120\x64\Release\Meteorology\Meteorology.lib };
+            pdb: { ${BUILT_DIR}Int\v120\x64\Release\Meteorology\Meteorology.pdb };
+        };
+
+        // VS2015
         [desktop,v140,win32,debug,static] {
             lib: { ${BUILT_DIR}Out\v140\Win32\Debug\Meteorology\Meteorology.lib };
             pdb: { ${BUILT_DIR}Int\v140\Win32\Debug\Meteorology\Meteorology.pdb };
