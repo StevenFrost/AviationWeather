@@ -15,39 +15,8 @@
 
 #pragma once
 
-//-----------------------------------------------------------------------------
-
 namespace aw
 {
-
-//-----------------------------------------------------------------------------
-
-inline double CelsiusToFahrenheit(double celsius)
-{
-    return celsius * ((9.0 / 5.0) + 32);
-}
-
-inline double MetresToFeet(double metres)
-{
-    return metres / 0.3048;
-}
-
-inline double MilesToFeet(double miles)
-{
-    return miles * 5280;
-}
-
-inline double InhgToHpa(double inhg)
-{
-    return inhg * 33.8638816;
-}
-
-inline double HpaToInhg(double hpa)
-{
-    return hpa / 33.8638816;
-}
-
-//-----------------------------------------------------------------------------
 
 enum class weather_intensity
 {
@@ -125,8 +94,10 @@ enum class speed_unit
 
 enum class distance_unit
 {
-    ft = 0, // Feet
-    m  = 1  // Metres
+    feet           = 0,
+    metres         = 1,
+    miles          = 2,
+    nautical_miles = 3
 };
 
 enum class pressure_unit
@@ -134,7 +105,5 @@ enum class pressure_unit
     hPa  = 0, // Hectopascals
     inHg = 1  // Inches of mercury
 };
-
-//-----------------------------------------------------------------------------
 
 } // namespace aw

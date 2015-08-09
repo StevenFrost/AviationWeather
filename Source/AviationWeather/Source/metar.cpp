@@ -286,10 +286,10 @@ sky_cover_cloud_type decode_sky_cover_cloud_type(std::string const& symbol)
 distance_unit decode_distance_unit(std::string const& symbol)
 {
     if (symbol == "FT") {
-        return distance_unit::ft;
+        return distance_unit::feet;
     }
     else {
-        return distance_unit::m;
+        return distance_unit::metres;
     }
 }
 
@@ -502,13 +502,15 @@ void parse_visibility(metar_info& info, std::string& metar)
 
         if (regex.str(EXPR_ALL) == "CAVOK")
         {
-            info.visibility = visibility(UINT16_MAX);
+            info.visibility_group = visibility(UINT16_MAX);
             return;
         }
 
         try
         {
-            double visibilityVal = 0.0;
+            double hpv = 0.0;
+            auto visibilityGroup = visibility(0U, distance_unit::feet);
+
             if (regex[EXPR_FRACTIONAL].matched)
             {
                 double fracN = atof(regex.str(EXPR_FRAC_N).c_str());
@@ -516,20 +518,22 @@ void parse_visibility(metar_info& info, std::string& metar)
 
                 if (regex[EXPR_FRAC_W].matched)
                 {
-                    visibilityVal = atof(regex.str(EXPR_FRAC_W).c_str());
+                    hpv = atof(regex.str(EXPR_FRAC_W).c_str());
                 }
-                visibilityVal += fracN / fracD;
+                hpv += fracN / fracD;
             }
             else
             {
-                visibilityVal = atof(regex.str(EXPR_VISIBILITY).c_str());
+                hpv = atof(regex.str(EXPR_VISIBILITY).c_str());
             }
 
             if (regex[EXPR_STATUTE].matched)
             {
-                visibilityVal = MilesToFeet(visibilityVal);
+                visibilityGroup.unit = distance_unit::miles;
             }
-            info.visibility = visibility(static_cast<uint32_t>(visibilityVal));
+
+            visibilityGroup.distance = static_cast<uint32_t>(hpv);
+            info.visibility_group = visibilityGroup;
         }
         catch (std::invalid_argument const&)
         {
@@ -596,7 +600,7 @@ void parse_runway_visual_range(metar_info& info, std::string& metar)
             }
 
             runway_visual_range rvr;
-            rvr.unit = distance_unit::ft;
+            rvr.unit = distance_unit::feet;
             rvr.runway_number = runwayNumber;
             rvr.runway_designator = runwayDesignator;
             rvr.visibility_modifier = visibilityModifier;
@@ -792,13 +796,19 @@ void parse_altimeter(metar_info& info, std::string& metar)
 
         try
         {
-            auto altimeter = atof(regex.str(EXPR_ALT).c_str()) / 100.0;
+            altimeter altimeterGroup;
+            altimeterGroup.pressure = atof(regex.str(EXPR_ALT).c_str()) / 100.0;
+
             if (regex.str(EXPR_SETTING) == "Q")
             {
-                altimeter = HpaToInhg(altimeter);
+                altimeterGroup.unit = pressure_unit::hPa;
+            }
+            else
+            {
+                altimeterGroup.unit = pressure_unit::inHg;
             }
 
-            info.altimeter = altimeter;
+            info.altimeter_group = altimeterGroup;
         }
         catch (std::invalid_argument const&)
         {
@@ -827,18 +837,38 @@ void parse_remarks(metar_info& info, std::string& metar)
 //-----------------------------------------------------------------------------
 
 visibility::visibility() :
-    unit(distance_unit::ft),
+    unit(distance_unit::feet),
     distance(UINT32_MAX)
 {}
 
-visibility::visibility(uint32_t distance, distance_unit unit) :
+visibility::visibility(double distance, distance_unit unit) :
     unit(unit),
     distance(distance)
 {}
 
+visibility::visibility(visibility && other) :
+    unit(distance_unit::feet),
+    distance(UINT32_MAX)
+{
+    *this = std::move(other);
+}
+
+visibility& visibility::operator=(visibility && rhs)
+{
+    if (this != &rhs)
+    {
+        unit = rhs.unit;
+        distance = rhs.distance;
+
+        rhs.unit = distance_unit::feet;
+        rhs.distance = UINT32_MAX;
+    }
+    return *this;
+}
+
 bool visibility::operator==(visibility const& rhs) const
 {
-    return detail::comparison_conversion_helper<double>(distance_unit::ft, unit, rhs.unit, distance, rhs.distance,
+    return detail::comparison_conversion_helper<double>(distance_unit::feet, unit, rhs.unit, distance, rhs.distance,
         [](double && l, double && r)
     {
         return l == r;
@@ -852,7 +882,7 @@ bool visibility::operator!=(visibility const& rhs) const
 
 bool visibility::operator<=(visibility const& rhs) const
 {
-    return detail::comparison_conversion_helper<double>(distance_unit::ft, unit, rhs.unit, distance, rhs.distance,
+    return detail::comparison_conversion_helper<double>(distance_unit::feet, unit, rhs.unit, distance, rhs.distance,
         [](double && l, double && r)
     {
         return l <= r;
@@ -861,7 +891,7 @@ bool visibility::operator<=(visibility const& rhs) const
 
 bool visibility::operator>=(visibility const& rhs) const
 {
-    return detail::comparison_conversion_helper<double>(distance_unit::ft, unit, rhs.unit, distance, rhs.distance,
+    return detail::comparison_conversion_helper<double>(distance_unit::feet, unit, rhs.unit, distance, rhs.distance,
         [](double && l, double && r)
     {
         return l >= r;
@@ -870,7 +900,7 @@ bool visibility::operator>=(visibility const& rhs) const
 
 bool visibility::operator<(visibility const& rhs) const
 {
-    return detail::comparison_conversion_helper<double>(distance_unit::ft, unit, rhs.unit, distance, rhs.distance,
+    return detail::comparison_conversion_helper<double>(distance_unit::feet, unit, rhs.unit, distance, rhs.distance,
         [](double && l, double && r)
     {
         return l < r;
@@ -879,7 +909,7 @@ bool visibility::operator<(visibility const& rhs) const
 
 bool visibility::operator>(visibility const& rhs) const
 {
-    return detail::comparison_conversion_helper<double>(distance_unit::ft, unit, rhs.unit, distance, rhs.distance,
+    return detail::comparison_conversion_helper<double>(distance_unit::feet, unit, rhs.unit, distance, rhs.distance,
         [](double && l, double && r)
     {
         return l > r;
@@ -890,13 +920,33 @@ bool visibility::operator>(visibility const& rhs) const
 
 altimeter::altimeter() :
     unit(pressure_unit::hPa),
-    pressure(1013.25)
+    pressure(0.0)
 {}
 
 altimeter::altimeter(double pressure, pressure_unit unit) :
     unit(unit),
     pressure(pressure)
 {}
+
+altimeter::altimeter(altimeter && other) :
+    unit(pressure_unit::hPa),
+    pressure(0.0)
+{
+    *this = std::move(other);
+}
+
+altimeter& altimeter::operator=(altimeter && rhs)
+{
+    if (this != &rhs)
+    {
+        unit = rhs.unit;
+        pressure = rhs.pressure;
+
+        rhs.unit = pressure_unit::hPa;
+        rhs.pressure = 0.0;
+    }
+    return *this;
+}
 
 bool altimeter::operator==(altimeter const& rhs) const
 {
@@ -976,6 +1026,29 @@ observation_time::observation_time(time_t time) :
     }
 }
 
+observation_time::observation_time(observation_time && other) :
+    day_of_month(1),
+    hour_of_day(0),
+    minute_of_hour(0)
+{
+    *this = std::move(other);
+}
+
+observation_time& observation_time::operator=(observation_time && rhs)
+{
+    if (this != &rhs)
+    {
+        day_of_month = rhs.day_of_month;
+        hour_of_day = rhs.hour_of_day;
+        minute_of_hour = rhs.minute_of_hour;
+
+        rhs.day_of_month = 1;
+        rhs.hour_of_day = 0;
+        rhs.minute_of_hour = 0;
+    }
+    return *this;
+}
+
 bool observation_time::operator== (observation_time const& rhs) const
 {
     return (day_of_month == rhs.day_of_month) &&
@@ -998,6 +1071,38 @@ wind::wind() :
     variation_lower(UINT16_MAX),
     variation_upper(UINT16_MAX)
 {}
+
+wind::wind(wind && other) :
+    unit(speed_unit::kt),
+    direction(UINT16_MAX),
+    wind_speed(0),
+    gust_speed(0),
+    variation_lower(UINT16_MAX),
+    variation_upper(UINT16_MAX)
+{
+    *this = std::move(other);
+}
+
+wind& wind::operator=(wind && rhs)
+{
+    if (this != &rhs)
+    {
+        unit = rhs.unit;
+        direction = rhs.direction;
+        wind_speed = rhs.wind_speed;
+        gust_speed = rhs.gust_speed;
+        variation_lower = rhs.variation_lower;
+        variation_upper = rhs.variation_upper;
+
+        rhs.unit = speed_unit::kt;
+        rhs.direction = UINT16_MAX;
+        rhs.wind_speed = 0;
+        rhs.gust_speed = 0;
+        rhs.variation_lower = UINT16_MAX;
+        rhs.variation_upper = UINT16_MAX;
+    }
+    return *this;
+}
 
 bool wind::operator== (wind const& rhs) const
 {
@@ -1037,13 +1142,45 @@ double wind::crosswind_component(double heading, bool useGusts) const
 //-----------------------------------------------------------------------------
 
 runway_visual_range::runway_visual_range() :
-    unit(distance_unit::ft),
+    unit(distance_unit::feet),
     runway_number(0U),
     runway_designator(runway_designator_type::none),
     visibility_modifier(visibility_modifier_type::none),
     visibility_min(UINT16_MAX),
     visibility_max(UINT16_MAX)
-{};
+{}
+
+runway_visual_range::runway_visual_range(runway_visual_range && other) :
+    unit(distance_unit::feet),
+    runway_number(0U),
+    runway_designator(runway_designator_type::none),
+    visibility_modifier(visibility_modifier_type::none),
+    visibility_min(UINT16_MAX),
+    visibility_max(UINT16_MAX)
+{
+    *this = std::move(other);
+}
+
+runway_visual_range& runway_visual_range::operator=(runway_visual_range && rhs)
+{
+    if (this != &rhs)
+    {
+        unit = rhs.unit;
+        runway_number = rhs.runway_number;
+        runway_designator = rhs.runway_designator;
+        visibility_modifier = rhs.visibility_modifier;
+        visibility_min = rhs.visibility_min;
+        visibility_max = rhs.visibility_max;
+
+        unit = distance_unit::feet;
+        runway_number = 0U;
+        runway_designator = runway_designator_type::none;
+        visibility_modifier = visibility_modifier_type::none;
+        visibility_min = UINT16_MAX;
+        visibility_max = UINT16_MAX;
+    }
+    return *this;
+}
 
 bool runway_visual_range::operator== (runway_visual_range const& rhs) const
 {
@@ -1070,7 +1207,29 @@ bool runway_visual_range::is_variable() const
 weather::weather() :
     intensity(weather_intensity::moderate),
     descriptor(weather_descriptor::none)
-{};
+{}
+
+weather::weather(weather && other) :
+    intensity(weather_intensity::moderate),
+    descriptor(weather_descriptor::none)
+{
+    *this = std::move(other);
+}
+
+weather& weather::operator=(weather && rhs)
+{
+    if (this != &rhs)
+    {
+        intensity = rhs.intensity;
+        descriptor = rhs.descriptor;
+        phenomena = std::move(rhs.phenomena);
+
+        rhs.intensity = weather_intensity::moderate;
+        rhs.descriptor = weather_descriptor::none;
+        rhs.phenomena.clear();
+    }
+    return *this;
+}
 
 bool weather::operator== (weather const& rhs) const
 {
@@ -1087,10 +1246,37 @@ bool weather::operator!= (weather const& rhs) const
 //-----------------------------------------------------------------------------
 
 cloud_layer::cloud_layer() :
+    unit(distance_unit::feet),
     sky_cover(sky_cover_type::clear),
-    layer_height(0U),
+    layer_height(UINT32_MAX),
     cloud_type(sky_cover_cloud_type::none)
-{};
+{}
+
+cloud_layer::cloud_layer(cloud_layer && other) :
+    unit(distance_unit::feet),
+    sky_cover(sky_cover_type::clear),
+    layer_height(UINT32_MAX),
+    cloud_type(sky_cover_cloud_type::none)
+{
+    *this = std::move(other);
+}
+
+cloud_layer& cloud_layer::operator=(cloud_layer && rhs)
+{
+    if (this != &rhs)
+    {
+        unit = rhs.unit;
+        sky_cover = rhs.sky_cover;
+        layer_height = rhs.layer_height;
+        cloud_type = rhs.cloud_type;
+
+        rhs.unit = distance_unit::feet;
+        rhs.sky_cover = sky_cover_type::clear;
+        rhs.layer_height = UINT32_MAX;
+        rhs.cloud_type = sky_cover_cloud_type::none;
+    }
+    return *this;
+}
 
 bool cloud_layer::operator== (cloud_layer const& rhs) const
 {
@@ -1118,6 +1304,55 @@ metar_info::metar_info(std::string const& metar) :
     parse();
 }
 
+metar_info::metar_info(metar_info && other) :
+    metar(""),
+    type(report_type::metar),
+    station_identifier(""),
+    modifier(modifier_type::automatic),
+    temperature(0),
+    dewpoint(0),
+    remarks("")
+{
+    *this = std::move(other);
+}
+
+metar_info& metar_info::operator=(metar_info && rhs)
+{
+    if (this != &rhs)
+    {
+        metar = std::move(rhs.metar);
+        type = rhs.type;
+        station_identifier = std::move(rhs.station_identifier);
+        report_time = std::move(rhs.report_time);
+        modifier = rhs.modifier;
+        wind_group = std::move(rhs.wind_group);
+        visibility_group = std::move(rhs.visibility_group);
+        runway_visual_range_group = std::move(rhs.runway_visual_range_group);
+        weather_group = std::move(rhs.weather_group);
+        sky_condition_group = std::move(rhs.sky_condition_group);
+        temperature = rhs.temperature;
+        dewpoint = rhs.dewpoint;
+        altimeter_group = std::move(rhs.altimeter_group);
+        remarks = std::move(rhs.remarks);
+
+        rhs.metar = "";
+        rhs.type = report_type::metar;
+        rhs.station_identifier = "";
+        rhs.report_time = observation_time();
+        rhs.modifier = modifier_type::automatic;
+        rhs.wind_group = wind();
+        rhs.visibility_group = visibility();
+        rhs.runway_visual_range_group.clear();
+        rhs.weather_group.clear();
+        rhs.sky_condition_group.clear();
+        rhs.temperature = 0;
+        rhs.dewpoint = 0;
+        rhs.altimeter_group = altimeter();
+        rhs.remarks = "";
+    }
+    return *this;
+}
+
 bool metar_info::operator== (metar_info const& rhs) const
 {
     return (type == rhs.type) &&
@@ -1125,13 +1360,13 @@ bool metar_info::operator== (metar_info const& rhs) const
         (report_time == rhs.report_time) &&
         (modifier == rhs.modifier) &&
         (wind_group == rhs.wind_group) &&
-        (visibility == rhs.visibility) &&
+        (visibility_group == rhs.visibility_group) &&
         (runway_visual_range_group == rhs.runway_visual_range_group) &&
         (weather_group == rhs.weather_group) &&
         (sky_condition_group == rhs.sky_condition_group) &&
         (temperature == rhs.temperature) &&
         (dewpoint == rhs.dewpoint) &&
-        (altimeter == rhs.altimeter) &&
+        (altimeter_group == rhs.altimeter_group) &&
         (remarks == rhs.remarks);
 }
 

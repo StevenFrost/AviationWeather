@@ -82,17 +82,13 @@ public:
     typedef std::unique_ptr<visibility> unique_pointer;
 
     visibility();
-    visibility(uint32_t distance, distance_unit unit = distance_unit::ft);
+    explicit visibility(double distance, distance_unit unit = distance_unit::feet);
 
     visibility(visibility const& other) = default;
-#if (_MSC_VER >= 1900)
-    visibility(visibility && other) = default;
-#endif // _MSC_VER >= 1900
+    visibility(visibility && other);
 
     visibility& operator=(visibility const& rhs) = default;
-#if (_MSC_VER >= 1900)
-    visibility& operator=(visibility && rhs) = default;
-#endif // _MSC_VER >= 1900
+    visibility& operator=(visibility && rhs);
 
     bool operator== (visibility const& rhs) const;
     bool operator!= (visibility const& rhs) const;
@@ -104,8 +100,8 @@ public:
     bool operator> (visibility const& rhs) const;
 
 public:
-    distance_unit unit;
-    uint32_t      distance;
+    distance_unit unit;     // Unit of distance
+    double        distance; // Visibility distance in distance_units
 };
 
 //-----------------------------------------------------------------------------
@@ -117,17 +113,13 @@ public:
     typedef std::unique_ptr<altimeter> unique_pointer;
 
     altimeter();
-    altimeter(double pressure, pressure_unit unit = pressure_unit::hPa);
+    explicit altimeter(double pressure, pressure_unit unit = pressure_unit::hPa);
 
     altimeter(altimeter const& other) = default;
-#if (_MSC_VER >= 1900)
-    altimeter(altimeter && other) = default;
-#endif // _MSC_VER >= 1900
+    altimeter(altimeter && other);
 
     altimeter& operator= (altimeter const& rhs) = default;
-#if (_MSC_VER >= 1900)
-    altimeter& operator= (altimeter && rhs) = default;
-#endif // _MSC_VER >= 1900
+    altimeter& operator= (altimeter && rhs);
 
     bool operator== (altimeter const& rhs) const;
     bool operator!= (altimeter const& rhs) const;
@@ -139,8 +131,8 @@ public:
     bool operator> (altimeter const& rhs) const;
 
 public:
-    pressure_unit unit;
-    double        pressure;
+    pressure_unit unit;     // Unit of pressure
+    double        pressure; // Pressure in pressure_units
 };
 
 //-----------------------------------------------------------------------------
@@ -156,14 +148,10 @@ public:
     observation_time(time_t time);
 
     observation_time(observation_time const& other) = default;
-#if (_MSC_VER >= 1900)
-    observation_time(observation_time && other) = default;
-#endif // _MSC_VER >= 1900
+    observation_time(observation_time && other);
 
     observation_time& operator= (observation_time const& rhs) = default;
-#if (_MSC_VER >= 1900)
-    observation_time& operator= (observation_time && rhs) = default;
-#endif // _MSC_VER >= 1900
+    observation_time& operator= (observation_time && rhs);
 
     bool operator== (observation_time const& rhs) const;
     bool operator!= (observation_time const& rhs) const;
@@ -185,14 +173,10 @@ public:
     wind();
 
     wind(wind const& other) = default;
-#if (_MSC_VER >= 1900)
-    wind(wind && other) = default;
-#endif // _MSC_VER >= 1900
+    wind(wind && other);
 
     wind& operator= (wind const& rhs) = default;
-#if (_MSC_VER >= 1900)
-    wind& operator= (wind && rhs) = default;
-#endif // _MSC_VER >= 1900
+    wind& operator= (wind && rhs);
 
     bool operator== (wind const& rhs) const;
     bool operator!= (wind const& rhs) const;
@@ -224,14 +208,10 @@ public:
     runway_visual_range();
 
     runway_visual_range(runway_visual_range const& other) = default;
-#if (_MSC_VER >= 1900)
-    runway_visual_range(runway_visual_range && other) = default;
-#endif // _MSC_VER >= 1900
+    runway_visual_range(runway_visual_range && other);
 
     runway_visual_range& operator=(runway_visual_range const& rhs) = default;
-#if (_MSC_VER >= 1900)
-    runway_visual_range& operator=(runway_visual_range && rhs) = default;
-#endif // _MSC_VER >= 1900
+    runway_visual_range& operator=(runway_visual_range && rhs);
 
     bool operator== (runway_visual_range const& rhs) const;
     bool operator!= (runway_visual_range const& rhs) const;
@@ -258,22 +238,18 @@ public:
     weather();
 
     weather(weather const& other) = default;
-#if (_MSC_VER >= 1900)
-    weather(weather && other) = default;
-#endif // _MSC_VER >= 1900
+    weather(weather && other);
 
     weather& operator= (weather const& rhs) = default;
-#if (_MSC_VER >= 1900)
-    weather& operator= (weather && rhs) = default;
-#endif // _MSC_VER >= 1900
+    weather& operator= (weather && rhs);
 
     bool operator== (weather const& rhs) const;
     bool operator!= (weather const& rhs) const;
 
 public:
-    weather_intensity              intensity;
-    weather_descriptor             descriptor;
-    std::vector<weather_phenomena> phenomena;
+    weather_intensity              intensity;   // Weather intensity (moderate, heavy, etc.)
+    weather_descriptor             descriptor;  // Weather desciptor
+    std::vector<weather_phenomena> phenomena;   // List of present weather phenomena
 };
 
 //-----------------------------------------------------------------------------
@@ -287,22 +263,19 @@ public:
     cloud_layer();
 
     cloud_layer(cloud_layer const& other) = default;
-#if (_MSC_VER >= 1900)
-    cloud_layer(cloud_layer && other) = default;
-#endif // _MSC_VER >= 1900
+    cloud_layer(cloud_layer && other);
 
     cloud_layer& operator= (cloud_layer const& rhs) = default;
-#if (_MSC_VER >= 1900)
-    cloud_layer& operator= (cloud_layer && rhs) = default;
-#endif // _MSC_VER >= 1900
+    cloud_layer& operator= (cloud_layer && rhs);
 
     bool operator== (cloud_layer const& rhs) const;
     bool operator!= (cloud_layer const& rhs) const;
 
 public:
-    sky_cover_type       sky_cover;
-    uint32_t             layer_height;
-    sky_cover_cloud_type cloud_type;
+    distance_unit        unit;          // Unit of layer_height
+    sky_cover_type       sky_cover;     // Sky cloud coverage
+    uint32_t             layer_height;  // Cloud layer height above ground level
+    sky_cover_cloud_type cloud_type;    // Layer cloud type
 };
 
 //-----------------------------------------------------------------------------
@@ -316,14 +289,10 @@ public:
     metar_info(std::string const& metar);
 
     metar_info(metar_info const& other) = default;
-#if (_MSC_VER >= 1900)
-    metar_info(metar_info && other) = default;
-#endif // _MSC_VER >= 1900
+    metar_info(metar_info && other);
 
     metar_info& operator= (metar_info const& rhs) = default;
-#if (_MSC_VER >= 1900)
-    metar_info& operator= (metar_info && rhs) = default;
-#endif // _MSC_VER >= 1900
+    metar_info& operator= (metar_info && rhs);
 
     bool operator== (metar_info const& rhs) const;
     bool operator!= (metar_info const& rhs) const;
@@ -338,13 +307,13 @@ public:
     observation_time                 report_time;
     modifier_type                    modifier;
     wind                             wind_group;
-    visibility                       visibility;
+    visibility                       visibility_group;
     std::vector<runway_visual_range> runway_visual_range_group;
     std::vector<weather>             weather_group;
     std::vector<cloud_layer>         sky_condition_group;
     uint8_t                          temperature;
     uint8_t                          dewpoint;
-    altimeter                        altimeter;
+    altimeter                        altimeter_group;
     std::string                      remarks;
 };
 
