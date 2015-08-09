@@ -1,1 +1,0 @@
-#include "Meteorology.TestPch.h"

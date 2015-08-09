@@ -1,0 +1,85 @@
+configurations {
+    Toolset {
+        key : "PlatformToolset";
+        choices: { v120, v140 };
+    };
+}
+
+nuget {
+    #defines {
+        ROOT_DIR  = ..\..\;
+        BUILT_DIR = ..\..\Built\;
+        INC_DIR   = ..\..\Source\AviationWeather\Inc\;
+    };
+
+    nuspec {
+        id = aviation-weather;
+        version : 0.2.0.0;
+        title: Aviation Weather;
+        authors: { Steven Frost, Orion Lyau };
+        owners: { Steven Frost, Orion Lyau };
+        licenseUrl: "http://opensource.org/licenses/MIT";
+        projectUrl: "https://github.com/StevenFrost/AviationWeather";
+        iconUrl: "https://raw.githubusercontent.com/StevenFrost/AviationWeather/master/Media/icon.png";
+        requireLicenseAcceptance:false; 
+        summary: "A C++ library for aviation weather products and calculations.";
+        description: "A C++ library for aviation weather products and calculations.";
+        copyright: "Copyright (c) 2015 Steven Frost, Orion Lyau";
+        releaseNotes: "Initial public release";
+        tags: { Aviation, Weather, Meteorology, METAR, native };
+    };
+
+    files {
+        pdb += {
+            #flatten = true;
+            #destination = ${d_lib};
+        };
+
+        nestedInclude: {
+            #destination = ${d_include}\AviationWeather;
+            "${INC_DIR}**\*.h";
+        };
+
+        doc: { ${ROOT_DIR}Changelog.txt };
+
+        // VS2013
+        [desktop,v120,win32,debug,static] {
+            lib: { ${BUILT_DIR}Out\v120\Win32\Debug\AviationWeather\AviationWeather.lib };
+            pdb: { ${BUILT_DIR}Int\v120\Win32\Debug\AviationWeather\AviationWeather.pdb };
+        };
+        [desktop,v120,win32,release,static] {
+            lib: { ${BUILT_DIR}Out\v120\Win32\Release\AviationWeather\AviationWeather.lib };
+            pdb: { ${BUILT_DIR}Int\v120\Win32\Release\AviationWeather\AviationWeather.pdb };
+        };
+        [desktop,v120,x64,debug,static] {
+            lib: { ${BUILT_DIR}Out\v120\x64\Debug\AviationWeather\AviationWeather.lib };
+            pdb: { ${BUILT_DIR}Int\v120\x64\Debug\AviationWeather\AviationWeather.pdb };
+        };
+        [desktop,v120,x64,release,static] {
+            lib: { ${BUILT_DIR}Out\v120\x64\Release\AviationWeather\AviationWeather.lib };
+            pdb: { ${BUILT_DIR}Int\v120\x64\Release\AviationWeather\AviationWeather.pdb };
+        };
+
+        // VS2015
+        [desktop,v140,win32,debug,static] {
+            lib: { ${BUILT_DIR}Out\v140\Win32\Debug\AviationWeather\AviationWeather.lib };
+            pdb: { ${BUILT_DIR}Int\v140\Win32\Debug\AviationWeather\AviationWeather.pdb };
+        };
+        [desktop,v140,win32,release,static] {
+            lib: { ${BUILT_DIR}Out\v140\Win32\Release\AviationWeather\AviationWeather.lib };
+            pdb: { ${BUILT_DIR}Int\v140\Win32\Release\AviationWeather\AviationWeather.pdb };
+        };
+        [desktop,v140,x64,debug,static] {
+            lib: { ${BUILT_DIR}Out\v140\x64\Debug\AviationWeather\AviationWeather.lib };
+            pdb: { ${BUILT_DIR}Int\v140\x64\Debug\AviationWeather\AviationWeather.pdb };
+        };
+        [desktop,v140,x64,release,static] {
+            lib: { ${BUILT_DIR}Out\v140\x64\Release\AviationWeather\AviationWeather.lib };
+            pdb: { ${BUILT_DIR}Int\v140\x64\Release\AviationWeather\AviationWeather.pdb };
+        };
+    };
+
+    targets {
+        Defines += HAS_AVIATIONWEATHER;
+    }
+}

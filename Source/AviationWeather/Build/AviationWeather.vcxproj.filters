@@ -12,22 +12,28 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Source\Metar.cpp">
+    <ClCompile Include="..\Source\metar.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\MeteorologyPch.cpp">
+    <ClCompile Include="..\Source\AviationWeatherPch.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\converters.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Inc\Meteorology\Metar.h">
+    <ClInclude Include="..\Inc\AviationWeather\metar.h">
       <Filter>Public Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\Inc\Meteorology\Meteorology.h">
-      <Filter>Public Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\MeteorologyPch.h">
+    <ClInclude Include="..\Source\AviationWeatherPch.h">
       <Filter>Private Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Inc\AviationWeather\types.h">
+      <Filter>Public Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Inc\AviationWeather\converters.h">
+      <Filter>Public Headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

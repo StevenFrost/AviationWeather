@@ -3,8 +3,8 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DE59D0D5-D681-475A-8852-544D0921739A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <ProjectName>Meteorology</ProjectName>
-    <RootNamespace>Meteorology</RootNamespace>
+    <ProjectName>AviationWeather</ProjectName>
+    <RootNamespace>aw</RootNamespace>
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <ImportGroup Label="PropertySheets">
@@ -15,24 +15,27 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>
-        $(SourceDirectory)Meteorology\Inc;
+        $(SourceDirectory)AviationWeather\Inc;
         %(AdditionalIncludeDirectories)
       </AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>MeteorologyPch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>AviationWeatherPch.h</PrecompiledHeaderFile>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\Inc\Meteorology\Metar.h" />
-    <ClInclude Include="..\Inc\Meteorology\Meteorology.h" />
-    <ClInclude Include="..\Source\MeteorologyPch.h" />
+    <ClInclude Include="..\Inc\AviationWeather\converters.h" />
+    <ClInclude Include="..\Inc\AviationWeather\metar.h" />
+    <ClInclude Include="..\Inc\AviationWeather\types.h" />
+    <ClInclude Include="..\Source\AviationWeatherPch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Source\Metar.cpp" />
-    <ClCompile Include="..\Source\MeteorologyPch.cpp">
+    <ClCompile Include="..\Source\converters.cpp" />
+    <ClCompile Include="..\Source\metar.cpp" />
+    <ClCompile Include="..\Source\AviationWeatherPch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets"></ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
 </Project>
