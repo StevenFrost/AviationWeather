@@ -39,8 +39,8 @@ std::array<double, DISTANCE_UNIT_VALUES * DISTANCE_UNIT_VALUES> distance_unit_co
 std::array<double, PRESSURE_UNIT_VALUES * PRESSURE_UNIT_VALUES> pressure_unit_conversion_ratio_table =
 {
     /*     hPa     */ /* inHg */
-    1.0             , 33.768500, /* hPa  */
-    0.02961339710085, 1.0        /* inHg */
+    1.0             , 33.86389 , /* hPa  */
+    1.0 / 33.86389  , 1.0        /* inHg */
 };
 
 //-----------------------------------------------------------------------------
