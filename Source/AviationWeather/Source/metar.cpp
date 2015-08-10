@@ -502,14 +502,14 @@ void parse_visibility(metar_info& info, std::string& metar)
 
         if (regex.str(EXPR_ALL) == "CAVOK")
         {
-            info.visibility_group = visibility(UINT16_MAX);
+            info.visibility_group = visibility(UINT16_MAX, distance_unit::metres);
             return;
         }
 
         try
         {
             double hpv = 0.0;
-            auto visibilityGroup = visibility(0U, distance_unit::feet);
+            auto visibilityGroup = visibility(0U, distance_unit::metres);
 
             if (regex[EXPR_FRACTIONAL].matched)
             {
@@ -529,7 +529,7 @@ void parse_visibility(metar_info& info, std::string& metar)
 
             if (regex[EXPR_STATUTE].matched)
             {
-                visibilityGroup.unit = distance_unit::miles;
+                visibilityGroup.unit = distance_unit::statute_miles;
             }
 
             visibilityGroup.distance = static_cast<uint32_t>(hpv);

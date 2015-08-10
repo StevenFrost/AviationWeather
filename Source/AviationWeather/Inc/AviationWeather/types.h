@@ -96,7 +96,7 @@ enum class distance_unit
 {
     feet           = 0,
     metres         = 1,
-    miles          = 2,
+    statute_miles  = 2,
     nautical_miles = 3
 };
 

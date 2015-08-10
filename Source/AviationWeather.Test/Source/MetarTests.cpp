@@ -50,7 +50,7 @@ public:
         Assert::AreEqual(static_cast<uint32_t>(0), static_cast<uint32_t>(metar.wind_group.variation_lower));
         Assert::AreEqual(static_cast<uint32_t>(0), static_cast<uint32_t>(metar.wind_group.variation_upper));
 
-        Assert::AreEqual(static_cast<uint8_t>(aw::distance_unit::miles), static_cast<uint8_t>(metar.visibility_group.unit));
+        Assert::AreEqual(static_cast<uint8_t>(aw::distance_unit::statute_miles), static_cast<uint8_t>(metar.visibility_group.unit));
         Assert::AreEqual(9.0, metar.visibility_group.distance);
 
         Assert::AreEqual(0U, static_cast<uint32_t>(metar.weather_group.size()));
@@ -91,7 +91,7 @@ public:
         Assert::AreEqual(static_cast<uint32_t>(0), static_cast<uint32_t>(metar.wind_group.variation_lower));
         Assert::AreEqual(static_cast<uint32_t>(0), static_cast<uint32_t>(metar.wind_group.variation_upper));
 
-        Assert::AreEqual(static_cast<uint8_t>(aw::distance_unit::miles), static_cast<uint8_t>(metar.visibility_group.unit));
+        Assert::AreEqual(static_cast<uint8_t>(aw::distance_unit::statute_miles), static_cast<uint8_t>(metar.visibility_group.unit));
         Assert::AreEqual(15.0, metar.visibility_group.distance);
 
         Assert::AreEqual(0U, static_cast<uint32_t>(metar.weather_group.size()));
@@ -142,7 +142,7 @@ public:
         Assert::AreEqual(static_cast<uint32_t>(0), static_cast<uint32_t>(metar.wind_group.variation_lower));
         Assert::AreEqual(static_cast<uint32_t>(0), static_cast<uint32_t>(metar.wind_group.variation_upper));
 
-        Assert::AreEqual(static_cast<uint8_t>(aw::distance_unit::miles), static_cast<uint8_t>(metar.visibility_group.unit));
+        Assert::AreEqual(static_cast<uint8_t>(aw::distance_unit::statute_miles), static_cast<uint8_t>(metar.visibility_group.unit));
         Assert::AreEqual(10.0, metar.visibility_group.distance);
 
         Assert::AreEqual(0U, static_cast<uint32_t>(metar.weather_group.size()));
@@ -183,7 +183,7 @@ public:
         Assert::AreEqual(static_cast<uint32_t>(0), static_cast<uint32_t>(metar.wind_group.variation_lower));
         Assert::AreEqual(static_cast<uint32_t>(0), static_cast<uint32_t>(metar.wind_group.variation_upper));
 
-        Assert::AreEqual(static_cast<uint8_t>(aw::distance_unit::miles), static_cast<uint8_t>(metar.visibility_group.unit));
+        Assert::AreEqual(static_cast<uint8_t>(aw::distance_unit::statute_miles), static_cast<uint8_t>(metar.visibility_group.unit));
         Assert::AreEqual(10.0, metar.visibility_group.distance);
 
         Assert::AreEqual(0U, static_cast<uint32_t>(metar.weather_group.size()));
@@ -239,7 +239,7 @@ public:
         Assert::AreEqual(static_cast<uint32_t>(0), static_cast<uint32_t>(metar.wind_group.variation_lower));
         Assert::AreEqual(static_cast<uint32_t>(0), static_cast<uint32_t>(metar.wind_group.variation_upper));
 
-        Assert::AreEqual(static_cast<uint8_t>(aw::distance_unit::miles), static_cast<uint8_t>(metar.visibility_group.unit));
+        Assert::AreEqual(static_cast<uint8_t>(aw::distance_unit::statute_miles), static_cast<uint8_t>(metar.visibility_group.unit));
         Assert::AreEqual(10.0, metar.visibility_group.distance);
 
         Assert::AreEqual(1U, static_cast<uint32_t>(metar.weather_group.size()));
@@ -290,7 +290,7 @@ public:
         Assert::AreEqual(static_cast<uint32_t>(0), static_cast<uint32_t>(metar.wind_group.variation_lower));
         Assert::AreEqual(static_cast<uint32_t>(0), static_cast<uint32_t>(metar.wind_group.variation_upper));
 
-        Assert::AreEqual(static_cast<uint8_t>(aw::distance_unit::miles), static_cast<uint8_t>(metar.visibility_group.unit));
+        Assert::AreEqual(static_cast<uint8_t>(aw::distance_unit::statute_miles), static_cast<uint8_t>(metar.visibility_group.unit));
         Assert::AreEqual(10.0, metar.visibility_group.distance);
 
         Assert::AreEqual(1U, static_cast<uint32_t>(metar.weather_group.size()));

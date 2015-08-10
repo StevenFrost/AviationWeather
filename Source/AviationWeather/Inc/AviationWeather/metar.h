@@ -82,7 +82,7 @@ public:
     typedef std::unique_ptr<visibility> unique_pointer;
 
     visibility();
-    explicit visibility(double distance, distance_unit unit = distance_unit::feet);
+    visibility(double distance, distance_unit unit);
 
     visibility(visibility const& other) = default;
     visibility(visibility && other);
@@ -113,7 +113,7 @@ public:
     typedef std::unique_ptr<altimeter> unique_pointer;
 
     altimeter();
-    explicit altimeter(double pressure, pressure_unit unit = pressure_unit::hPa);
+    altimeter(double pressure, pressure_unit unit);
 
     altimeter(altimeter const& other) = default;
     altimeter(altimeter && other);
