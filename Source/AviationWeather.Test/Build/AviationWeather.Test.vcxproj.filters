@@ -9,7 +9,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Source\Meteorology.TestPch.cpp">
+    <ClCompile Include="..\Source\AviationWeather.TestPch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\MetarTests.cpp">
@@ -17,7 +17,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Source\Meteorology.TestPch.h">
+    <ClInclude Include="..\Source\AviationWeather.TestPch.h">
       <Filter>Private Headers</Filter>
     </ClInclude>
   </ItemGroup>

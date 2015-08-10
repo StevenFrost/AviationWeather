@@ -3,33 +3,34 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D4BB149E-F399-4C3A-8D91-FC54EED4EB5E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <ProjectName>Meteorology.Test</ProjectName>
-    <RootNamespace>Meteorology</RootNamespace>
+    <ProjectName>AviationWeather.Test</ProjectName>
+    <RootNamespace>aw.test</RootNamespace>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <TestProject>true</TestProject>
   </PropertyGroup>
   <ImportGroup Label="PropertySheets">
     <Import Project="$(SolutionDir)..\Root.props" />
     <Import Project="$(ConfigDirectory)Configurations.props" />
     <Import Project="$(ConfigDirectory)Cpp.props" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ItemGroup>
-    <ProjectReference Include="$(SourceDirectory)\Meteorology\Build\Meteorology.vcxproj">
+    <ProjectReference Include="$(SourceDirectory)\AviationWeather\Build\AviationWeather.vcxproj">
       <Project>{DE59D0D5-D681-475A-8852-544D0921739A}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <LinkLibraryDependencies>false</LinkLibraryDependencies>
-      <UseLibraryDependencyImports>false</UseLibraryDependencyImports>
     </ProjectReference>
   </ItemGroup>
+  <PropertyGroup>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>
         $(VCInstallDir)UnitTest\include;
-        $(SourceDirectory)\Meteorology\Inc;
+        $(SourceDirectory)\AviationWeather\Inc;
         %(AdditionalIncludeDirectories)
       </AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>Meteorology.TestPch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>AviationWeather.TestPch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>
@@ -37,20 +38,21 @@
         %(AdditionalLibraryDirectories)
       </AdditionalLibraryDirectories>
       <AdditionalDependencies>
-        $(LibPath)\Meteorology\Meteorology.lib;
+        $(LibPath)\AviationWeather\AviationWeather.lib;
         %(AdditionalDependencies)
       </AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\Source\Meteorology.TestPch.h" />
+    <ClInclude Include="..\Source\AviationWeather.TestPch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Source\Meteorology.TestPch.cpp">
+    <ClCompile Include="..\Source\AviationWeather.TestPch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\Source\MetarTests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets"></ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
 </Project>

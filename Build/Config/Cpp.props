@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?> 
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Globals">
     <DefaultLanguage>en-GB</DefaultLanguage>
   </PropertyGroup>
@@ -10,8 +10,9 @@
     <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
     <UseDebugLibraries Condition="'$(Configuration)' == 'Debug'">true</UseDebugLibraries>
     <UseDebugLibraries Condition="'$(Configuration)' != 'Debug'">false</UseDebugLibraries>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <WholeProgramOptimization Condition="'$(Configuration)' != 'Debug'">true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
 
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -22,13 +23,14 @@
 
   <ItemDefinitionGroup>
     <Link>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding Condition="'$(Configuration)' == 'Release'">true</EnableCOMDATFolding>
       <OptimizeReferences Condition="'$(Configuration)' == 'Release'">true</OptimizeReferences>
     </Link>
     <ClCompile>
+      <UseFullPaths>true</UseFullPaths>
       <MinimalRebuild>false</MinimalRebuild>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization Condition="'$(Configuration)' == 'Release'">MaxSpeed</Optimization>
       <Optimization Condition="'$(Configuration)' != 'Release'">Disabled</Optimization>
       <BasicRuntimeChecks Condition="'$(Configuration)' == 'Release'"></BasicRuntimeChecks>
@@ -56,7 +58,8 @@
       <SDLCheck>true</SDLCheck>
       <TreatWarningAsError>true</TreatWarningAsError>
 
-      <ProgramDataBaseFileName>$(IntDir)$(ProjectName).pdb</ProgramDataBaseFileName>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName Condition="'$(TestProject)' != 'true'">$(IntDir)$(ProjectName).pdb</ProgramDataBaseFileName>
     </ClCompile>
   </ItemDefinitionGroup>
 
