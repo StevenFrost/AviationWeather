@@ -271,6 +271,8 @@ public:
     bool operator== (cloud_layer const& rhs) const;
     bool operator!= (cloud_layer const& rhs) const;
 
+    bool is_unlimited() const;
+
 public:
     distance_unit        unit;          // Unit of layer_height
     sky_cover_type       sky_cover;     // Sky cloud coverage
@@ -296,6 +298,8 @@ public:
 
     bool operator== (metar_info const& rhs) const;
     bool operator!= (metar_info const& rhs) const;
+
+    cloud_layer ceiling() const;
 
 private:
     void parse();
