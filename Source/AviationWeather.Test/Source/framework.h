@@ -49,6 +49,7 @@ DEFINE_ENUM_TOSTRING_GROUP(aw::weather_descriptor)
 DEFINE_ENUM_TOSTRING_GROUP(aw::weather_phenomena)
 DEFINE_ENUM_TOSTRING_GROUP(aw::sky_cover_type)
 DEFINE_ENUM_TOSTRING_GROUP(aw::sky_cover_cloud_type)
+DEFINE_ENUM_TOSTRING_GROUP(aw::flight_category);
 DEFINE_ENUM_TOSTRING_GROUP(aw::speed_unit)
 DEFINE_ENUM_TOSTRING_GROUP(aw::distance_unit)
 DEFINE_ENUM_TOSTRING_GROUP(aw::pressure_unit)

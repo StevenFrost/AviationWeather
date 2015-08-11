@@ -73,11 +73,11 @@ public:
         Assert::AreEqual(std::string(""), metar.remarks);
 
         auto ceiling = metar.ceiling();
-        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_type::clear), static_cast<uint8_t>(ceiling.sky_cover));
-        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_cloud_type::none), static_cast<uint8_t>(ceiling.cloud_type));
+        Assert::AreEqual(aw::sky_cover_type::clear, ceiling.sky_cover);
+        Assert::AreEqual(aw::sky_cover_cloud_type::none, ceiling.cloud_type);
         Assert::IsTrue(ceiling.is_unlimited());
 
-        Assert::AreEqual(static_cast<uint8_t>(aw::flight_category::vfr), static_cast<uint8_t>(metar.flight_category()));
+        Assert::AreEqual(aw::flight_category::vfr, metar.flight_category());
     }
 
     TEST_METHOD(METAR_CYUL)
@@ -131,12 +131,12 @@ public:
         Assert::AreEqual(std::string("AC1AC2CI4 SLP123 DENSITY ALT 1200FT"), metar.remarks);
 
         auto ceiling = metar.ceiling();
-        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_type::broken), static_cast<uint8_t>(ceiling.sky_cover));
-        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_cloud_type::none), static_cast<uint8_t>(ceiling.cloud_type));
+        Assert::AreEqual(aw::sky_cover_type::broken, ceiling.sky_cover);
+        Assert::AreEqual(aw::sky_cover_cloud_type::none, ceiling.cloud_type);
         Assert::AreEqual(24000U, ceiling.layer_height);
         Assert::IsFalse(ceiling.is_unlimited());
 
-        Assert::AreEqual(static_cast<uint8_t>(aw::flight_category::vfr), static_cast<uint8_t>(metar.flight_category()));
+        Assert::AreEqual(aw::flight_category::vfr, metar.flight_category());
     }
 
     TEST_METHOD(METAR_KVNY)
@@ -180,12 +180,12 @@ public:
         Assert::AreEqual(std::string("AO2 PK WND 16029/2305 SLP135 T02830139 10372 20283 53030"), metar.remarks);
 
         auto ceiling = metar.ceiling();
-        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_type::broken), static_cast<uint8_t>(ceiling.sky_cover));
-        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_cloud_type::none), static_cast<uint8_t>(ceiling.cloud_type));
+        Assert::AreEqual(aw::sky_cover_type::broken, ceiling.sky_cover);
+        Assert::AreEqual(aw::sky_cover_cloud_type::none, ceiling.cloud_type);
         Assert::AreEqual(15000U, ceiling.layer_height);
         Assert::IsFalse(ceiling.is_unlimited());
 
-        Assert::AreEqual(static_cast<uint8_t>(aw::flight_category::vfr), static_cast<uint8_t>(metar.flight_category()));
+        Assert::AreEqual(aw::flight_category::vfr, metar.flight_category());
     }
 
     TEST_METHOD(METAR_KLAX)
@@ -244,12 +244,12 @@ public:
         Assert::AreEqual(std::string("AO2 SLP122 FRQ LTGICCGCA DSNT N CB DSNT N-NE T02000178 10200 20189 50014 $"), metar.remarks);
 
         auto ceiling = metar.ceiling();
-        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_type::broken), static_cast<uint8_t>(ceiling.sky_cover));
-        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_cloud_type::none), static_cast<uint8_t>(ceiling.cloud_type));
+        Assert::AreEqual(aw::sky_cover_type::broken, ceiling.sky_cover);
+        Assert::AreEqual(aw::sky_cover_cloud_type::none, ceiling.cloud_type);
         Assert::AreEqual(25000U, ceiling.layer_height);
         Assert::IsFalse(ceiling.is_unlimited());
 
-        Assert::AreEqual(static_cast<uint8_t>(aw::flight_category::vfr), static_cast<uint8_t>(metar.flight_category()));
+        Assert::AreEqual(aw::flight_category::vfr, metar.flight_category());
     }
 
     TEST_METHOD(METAR_KRNO_1)
@@ -303,12 +303,12 @@ public:
         Assert::AreEqual(std::string("AO2 PK WND 31027/0109 RAB03E20 PRESRR SLP119 OCNL LTGIC NW TS NW MOV W CB DSNT N S SH VC SW NW P0000 T02830128"), metar.remarks);
 
         auto ceiling = metar.ceiling();
-        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_type::broken), static_cast<uint8_t>(ceiling.sky_cover));
-        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_cloud_type::none), static_cast<uint8_t>(ceiling.cloud_type));
+        Assert::AreEqual(aw::sky_cover_type::broken, ceiling.sky_cover);
+        Assert::AreEqual(aw::sky_cover_cloud_type::none, ceiling.cloud_type);
         Assert::AreEqual(18000U, ceiling.layer_height);
         Assert::IsFalse(ceiling.is_unlimited());
 
-        Assert::AreEqual(static_cast<uint8_t>(aw::flight_category::vfr), static_cast<uint8_t>(metar.flight_category()));
+        Assert::AreEqual(aw::flight_category::vfr, metar.flight_category());
     }
 
     TEST_METHOD(METAR_KRNO_2)
@@ -369,36 +369,35 @@ public:
         Assert::AreEqual(std::string("AO2 PK WND 09032/0155 WSHFT 0130 RAB32 TSB02 PRESRR SLP120 FRQ LTGCGIC OHD NE-E TS OHD NE-E MOV N P0000 T02890128"), metar.remarks);
 
         auto ceiling = metar.ceiling();
-        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_type::broken), static_cast<uint8_t>(ceiling.sky_cover));
-        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_cloud_type::cumulonimbus), static_cast<uint8_t>(ceiling.cloud_type));
+        Assert::AreEqual(aw::sky_cover_type::broken, ceiling.sky_cover);
+        Assert::AreEqual(aw::sky_cover_cloud_type::cumulonimbus, ceiling.cloud_type);
         Assert::AreEqual(9000U, ceiling.layer_height);
         Assert::IsFalse(ceiling.is_unlimited());
         
-        Assert::AreEqual(static_cast<uint8_t>(aw::flight_category::vfr), static_cast<uint8_t>(metar.flight_category()));
+        Assert::AreEqual(aw::flight_category::vfr, metar.flight_category());
     }
 
-
-    TEST_METHOD(METAR_FLIGHT_CATEGORY)
+    TEST_METHOD(METAR_FlightCategory)
     {
         aw::metar::metar_info krhv_metar("KRHV 102347Z 32017KT 10SM SCT180 26/15 A2991");
         aw::metar::metar_info ksts_metar("KSTS 102353Z 23009KT 10SM SCT150 30/13 A2983 RMK AO2 SLP094 T03000128 10311 20211 56014");
-        Assert::AreEqual(static_cast<uint8_t>(aw::flight_category::vfr), static_cast<uint8_t>(krhv_metar.flight_category()));
-        Assert::AreEqual(static_cast<uint8_t>(aw::flight_category::vfr), static_cast<uint8_t>(ksts_metar.flight_category()));
+        Assert::AreEqual(aw::flight_category::vfr, krhv_metar.flight_category());
+        Assert::AreEqual(aw::flight_category::vfr, ksts_metar.flight_category());
 
         aw::metar::metar_info koak_metar("KOAK 102353Z 26016KT 10SM BKN012 BKN200 21/15 A2993 RMK AO2 SLP135 T02060150 10228 20200 58011");
         aw::metar::metar_info ksfo_metar("KSFO 102356Z 27019G24KT 10SM FEW008 SCT012 BKN015 21/14 A2994 RMK AO2 PK WND 27028/2303 SLP137 T02060144 10228 20200 58012");
-        Assert::AreEqual(static_cast<uint8_t>(aw::flight_category::mvfr), static_cast<uint8_t>(koak_metar.flight_category()));
-        Assert::AreEqual(static_cast<uint8_t>(aw::flight_category::mvfr), static_cast<uint8_t>(ksfo_metar.flight_category()));
+        Assert::AreEqual(aw::flight_category::mvfr, koak_metar.flight_category());
+        Assert::AreEqual(aw::flight_category::mvfr, ksfo_metar.flight_category());
 
         aw::metar::metar_info kcec_metar("KCEC 102356Z AUTO 26009KT 10SM OVC009 18/14 A2997 RMK AO2 SLP149 T01780144 10206 20161 50001");
         aw::metar::metar_info kacv_metar("KACV 102353Z AUTO 28007KT 10SM OVC009 18/16 A2997 RMK AO2 SLP152 T01830156 10217 20178 51001");
-        Assert::AreEqual(static_cast<uint8_t>(aw::flight_category::ifr), static_cast<uint8_t>(kcec_metar.flight_category()));
-        Assert::AreEqual(static_cast<uint8_t>(aw::flight_category::ifr), static_cast<uint8_t>(kacv_metar.flight_category()));
+        Assert::AreEqual(aw::flight_category::ifr, kcec_metar.flight_category());
+        Assert::AreEqual(aw::flight_category::ifr, kacv_metar.flight_category());
 
         aw::metar::metar_info konp_metar("KONP 102355Z AUTO 27003KT 1 1/2SM BR OVC003 16/14 A3000 RMK AO2");
         aw::metar::metar_info kcho_metar("KCHO 102353Z 16007KT 2SM BR OVC003 22/21 A2991 RMK AO2 RAE48 SLP122 P0002 60003 T02220211 10233 20222 56011");
-        Assert::AreEqual(static_cast<uint8_t>(aw::flight_category::lifr), static_cast<uint8_t>(konp_metar.flight_category()));
-        Assert::AreEqual(static_cast<uint8_t>(aw::flight_category::lifr), static_cast<uint8_t>(kcho_metar.flight_category()));
+        Assert::AreEqual(aw::flight_category::lifr, konp_metar.flight_category());
+        Assert::AreEqual(aw::flight_category::lifr, kcho_metar.flight_category());
     }
 
     TEST_METHOD(METAR_VariableWinds)
