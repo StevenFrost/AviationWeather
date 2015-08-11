@@ -86,6 +86,14 @@ enum class sky_cover_cloud_type
     towering_cumulus
 };
 
+enum class flight_category
+{
+    vfr,
+    mvfr,
+    ifr,
+    lifr
+};
+
 enum class speed_unit
 {
     kt  = 0, // Knots

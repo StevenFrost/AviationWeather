@@ -1409,7 +1409,21 @@ cloud_layer metar_info::ceiling() const
             return *it;
         }
     }
+    // check vertical visibility?
     return cloud_layer();
+}
+
+flight_category metar_info::flight_category() const
+{
+    auto ceiling = metar_info::ceiling();
+    if (visibility_group >= visibility(3.0, distance_unit::statute_miles) && ceiling.layer_height >= 1000L)
+    {
+        return (visibility_group >= visibility(5.0, distance_unit::statute_miles) && ceiling.layer_height >= 3000L) ? flight_category::vfr : flight_category::mvfr;
+    }
+    else 
+    {
+        return (visibility_group >= visibility(1.0, distance_unit::statute_miles) && ceiling.layer_height >= 500L) ? flight_category::ifr : flight_category::lifr;
+    }
 }
 
 //-----------------------------------------------------------------------------

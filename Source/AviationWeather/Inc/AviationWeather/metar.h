@@ -301,6 +301,8 @@ public:
 
     cloud_layer ceiling() const;
 
+    flight_category flight_category() const;
+
 private:
     void parse();
 
