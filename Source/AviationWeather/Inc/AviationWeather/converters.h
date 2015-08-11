@@ -41,6 +41,10 @@ double lookup_ratio(pressure_unit from, pressure_unit to);
 template <class TReturn = double, class TValue, class TA, class TB>
 TReturn convert(TValue const& value, TA const& from, TB const& to)
 {
+    if (from == to)
+    {
+        return value;
+    }
     return static_cast<TReturn>(value * detail::lookup_ratio(from, to));
 }
 

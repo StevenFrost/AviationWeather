@@ -451,8 +451,13 @@ void parse_wind(metar_info& info, std::string& metar)
         try
         {
             auto unit = decode_speed_unit(regex[EXPR_UNIT]);
-            auto direction = static_cast<uint16_t>(atoi(regex.str(EXPR_DIRECTION).c_str()));
             auto speed = static_cast<uint8_t>(atoi(regex.str(EXPR_SPEED).c_str()));
+
+            uint16_t direction = UINT16_MAX;
+            if (regex.str(EXPR_DIRECTION) != "VRB")
+            {
+                direction = static_cast<uint16_t>(atoi(regex.str(EXPR_DIRECTION).c_str()));
+            }
 
             uint8_t gustSpeed = 0U;
             if (regex[EXPR_GUST].matched)
@@ -460,8 +465,8 @@ void parse_wind(metar_info& info, std::string& metar)
                 gustSpeed = static_cast<uint8_t>(atoi(regex.str(EXPR_GUST_SPEED).c_str()));
             }
 
-            uint16_t variationLower = 0U;
-            uint16_t variationUpper = 0U;
+            uint16_t variationLower = UINT16_MAX;
+            uint16_t variationUpper = UINT16_MAX;
             if (regex[EXPR_VAR].matched)
             {
                 variationLower = static_cast<uint16_t>(atoi(regex.str(EXPR_VAR_LOWER).c_str()));
@@ -1121,7 +1126,7 @@ bool wind::operator!= (wind const& rhs) const
 
 bool wind::is_variable() const
 {
-    return direction == UINT16_MAX;
+    return (direction == UINT16_MAX) || (variation_lower != UINT16_MAX && variation_upper != UINT16_MAX);
 }
 
 uint8_t wind::gust_factor() const
