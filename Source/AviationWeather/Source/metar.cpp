@@ -18,6 +18,7 @@
 #include <AviationWeather/converters.h>
 #include <AviationWeather/metar.h>
 
+#include <algorithm>
 #include <ctime>
 #include <regex>
 #include <string>
@@ -1402,27 +1403,23 @@ void metar_info::parse()
 
 cloud_layer metar_info::ceiling() const
 {
-    for (auto it = sky_condition_group.begin(); it != sky_condition_group.end(); ++it)
+    auto result = std::find_if(sky_condition_group.begin(), sky_condition_group.end(), [](cloud_layer layer)
     {
-        if (it->sky_cover == sky_cover_type::broken || it->sky_cover == sky_cover_type::overcast)
-        {
-            return *it;
-        }
-    }
-    // check vertical visibility?
-    return cloud_layer();
+        return layer.sky_cover == sky_cover_type::broken || layer.sky_cover == sky_cover_type::overcast || layer.sky_cover == sky_cover_type::vertical_visibility;
+    });
+    return result != sky_condition_group.end() ? *result : cloud_layer();
 }
 
 flight_category metar_info::flight_category() const
 {
     auto ceiling = metar_info::ceiling();
-    if (visibility_group >= visibility(3.0, distance_unit::statute_miles) && ceiling.layer_height >= 1000L)
+    if (aw::convert(visibility_group.distance, visibility_group.unit, distance_unit::statute_miles) >= 3.0 && ceiling.layer_height >= 1000L)
     {
-        return (visibility_group >= visibility(5.0, distance_unit::statute_miles) && ceiling.layer_height >= 3000L) ? flight_category::vfr : flight_category::mvfr;
+        return (aw::convert(visibility_group.distance, visibility_group.unit, distance_unit::statute_miles) >= 5.0 && ceiling.layer_height >= 3000L) ? flight_category::vfr : flight_category::mvfr;
     }
     else 
     {
-        return (visibility_group >= visibility(1.0, distance_unit::statute_miles) && ceiling.layer_height >= 500L) ? flight_category::ifr : flight_category::lifr;
+        return (aw::convert(visibility_group.distance, visibility_group.unit, distance_unit::statute_miles) >= 1.0 && ceiling.layer_height >= 500L) ? flight_category::ifr : flight_category::lifr;
     }
 }
 
