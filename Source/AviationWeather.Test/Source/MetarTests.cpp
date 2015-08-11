@@ -69,6 +69,11 @@ public:
         Assert::AreEqual(30.12, metar.altimeter_group.pressure, 0.01);
 
         Assert::AreEqual(std::string(""), metar.remarks);
+
+        auto ceiling = metar.ceiling();
+        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_type::clear), static_cast<uint8_t>(ceiling.sky_cover));
+        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_cloud_type::none), static_cast<uint8_t>(ceiling.cloud_type));
+        Assert::IsTrue(ceiling.is_unlimited());
     }
 
     TEST_METHOD(METAR_CYUL)
@@ -120,6 +125,12 @@ public:
         Assert::AreEqual(29.89, metar.altimeter_group.pressure, 0.01);
 
         Assert::AreEqual(std::string("AC1AC2CI4 SLP123 DENSITY ALT 1200FT"), metar.remarks);
+
+        auto ceiling = metar.ceiling();
+        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_type::broken), static_cast<uint8_t>(ceiling.sky_cover));
+        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_cloud_type::none), static_cast<uint8_t>(ceiling.cloud_type));
+        Assert::AreEqual(24000U, ceiling.layer_height);
+        Assert::IsFalse(ceiling.is_unlimited());
     }
 
     TEST_METHOD(METAR_KVNY)
@@ -161,6 +172,12 @@ public:
         Assert::AreEqual(29.96, metar.altimeter_group.pressure, 0.01);
 
         Assert::AreEqual(std::string("AO2 PK WND 16029/2305 SLP135 T02830139 10372 20283 53030"), metar.remarks);
+
+        auto ceiling = metar.ceiling();
+        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_type::broken), static_cast<uint8_t>(ceiling.sky_cover));
+        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_cloud_type::none), static_cast<uint8_t>(ceiling.cloud_type));
+        Assert::AreEqual(15000U, ceiling.layer_height);
+        Assert::IsFalse(ceiling.is_unlimited());
     }
 
     TEST_METHOD(METAR_KLAX)
@@ -217,6 +234,12 @@ public:
         Assert::AreEqual(29.90, metar.altimeter_group.pressure, 0.01);
 
         Assert::AreEqual(std::string("AO2 SLP122 FRQ LTGICCGCA DSNT N CB DSNT N-NE T02000178 10200 20189 50014 $"), metar.remarks);
+
+        auto ceiling = metar.ceiling();
+        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_type::broken), static_cast<uint8_t>(ceiling.sky_cover));
+        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_cloud_type::none), static_cast<uint8_t>(ceiling.cloud_type));
+        Assert::AreEqual(25000U, ceiling.layer_height);
+        Assert::IsFalse(ceiling.is_unlimited());
     }
 
     TEST_METHOD(METAR_KRNO_1)
@@ -268,6 +291,12 @@ public:
         Assert::AreEqual(30.06, metar.altimeter_group.pressure, 0.01);
 
         Assert::AreEqual(std::string("AO2 PK WND 31027/0109 RAB03E20 PRESRR SLP119 OCNL LTGIC NW TS NW MOV W CB DSNT N S SH VC SW NW P0000 T02830128"), metar.remarks);
+
+        auto ceiling = metar.ceiling();
+        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_type::broken), static_cast<uint8_t>(ceiling.sky_cover));
+        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_cloud_type::none), static_cast<uint8_t>(ceiling.cloud_type));
+        Assert::AreEqual(18000U, ceiling.layer_height);
+        Assert::IsFalse(ceiling.is_unlimited());
     }
 
     TEST_METHOD(METAR_KRNO_2)
@@ -326,6 +355,12 @@ public:
         Assert::AreEqual(30.07, metar.altimeter_group.pressure, 0.01);
 
         Assert::AreEqual(std::string("AO2 PK WND 09032/0155 WSHFT 0130 RAB32 TSB02 PRESRR SLP120 FRQ LTGCGIC OHD NE-E TS OHD NE-E MOV N P0000 T02890128"), metar.remarks);
+
+        auto ceiling = metar.ceiling();
+        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_type::broken), static_cast<uint8_t>(ceiling.sky_cover));
+        Assert::AreEqual(static_cast<uint8_t>(aw::sky_cover_cloud_type::cumulonimbus), static_cast<uint8_t>(ceiling.cloud_type));
+        Assert::AreEqual(9000U, ceiling.layer_height);
+        Assert::IsFalse(ceiling.is_unlimited());
     }
 };
 

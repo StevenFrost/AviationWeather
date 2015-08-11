@@ -1290,6 +1290,11 @@ bool cloud_layer::operator!= (cloud_layer const& rhs) const
     return !(*this == rhs);
 }
 
+bool cloud_layer::is_unlimited() const
+{
+    return layer_height == UINT32_MAX;
+}
+
 //-----------------------------------------------------------------------------
 
 metar_info::metar_info(std::string const& metar) :
@@ -1393,6 +1398,18 @@ void metar_info::parse()
     detail::parse_sky_condition(*this, baseMetar);
     detail::parse_temperature_dewpoint(*this, baseMetar);
     detail::parse_altimeter(*this, baseMetar);
+}
+
+cloud_layer metar_info::ceiling() const
+{
+    for (auto it = sky_condition_group.begin(); it != sky_condition_group.end(); ++it)
+    {
+        if (it->sky_cover == sky_cover_type::broken || it->sky_cover == sky_cover_type::overcast)
+        {
+            return *it;
+        }
+    }
+    return cloud_layer();
 }
 
 //-----------------------------------------------------------------------------
