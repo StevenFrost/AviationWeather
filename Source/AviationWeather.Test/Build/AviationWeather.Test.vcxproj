@@ -45,6 +45,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\AviationWeather.TestPch.h" />
+    <ClInclude Include="..\Source\framework.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\AviationWeather.TestPch.cpp">
