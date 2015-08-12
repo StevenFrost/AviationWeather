@@ -72,7 +72,8 @@ enum class weather_phenomena
 enum class sky_cover_type
 {
     vertical_visibility,
-    clear,
+    sky_clear,
+    clear_below_12000,
     few,
     scattered,
     broken,
@@ -81,6 +82,7 @@ enum class sky_cover_type
 
 enum class sky_cover_cloud_type
 {
+    unspecified,
     none,
     cumulonimbus,
     towering_cumulus

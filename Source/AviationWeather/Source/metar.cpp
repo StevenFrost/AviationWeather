@@ -263,7 +263,7 @@ sky_cover_type decode_sky_cover(std::string const& symbol)
         return sky_cover_type::overcast;
     }
     else {
-        return sky_cover_type::clear;
+        return sky_cover_type::sky_clear;
     }
 }
 
@@ -278,7 +278,7 @@ sky_cover_cloud_type decode_sky_cover_cloud_type(std::string const& symbol)
         return sky_cover_cloud_type::towering_cumulus;
     }
     else {
-        return sky_cover_cloud_type::none;
+        return sky_cover_cloud_type::unspecified;
     }
 }
 
@@ -716,18 +716,26 @@ void parse_sky_condition(metar_info& info, std::string& metar)
 {
     auto result = ParseForEachMatch(metar, element_type::sky_condition, [&](std::cmatch regex)
     {
-        static const unsigned short EXPR_CLEAR = 1;
+        static const unsigned short EXPR_CLEAR = 2;
         static const unsigned short EXPR_LAYER = 4;
         static const unsigned short EXPR_LAYER_ALTITUDE = 5;
         static const unsigned short EXPR_MANUAL = 6;
 
         try
         {
-            auto skyCover = sky_cover_type::clear;
+            auto skyCover = sky_cover_type::sky_clear;
             auto altitude = 0U;
-            auto cloudType = sky_cover_cloud_type::none;
+            auto cloudType = sky_cover_cloud_type::unspecified;
 
-            if (!regex[EXPR_CLEAR].matched)
+            if (regex[EXPR_CLEAR].matched)
+            {
+                altitude = UINT32_MAX;
+                cloudType = sky_cover_cloud_type::none;
+                if (regex.str(EXPR_CLEAR) == "CLR") {
+                    skyCover = sky_cover_type::clear_below_12000;
+                }
+            }
+            else
             {
                 skyCover = decode_sky_cover(regex.str(EXPR_LAYER).c_str());
 
@@ -1253,16 +1261,16 @@ bool weather::operator!= (weather const& rhs) const
 
 cloud_layer::cloud_layer() :
     unit(distance_unit::feet),
-    sky_cover(sky_cover_type::clear),
+    sky_cover(sky_cover_type::sky_clear),
     layer_height(UINT32_MAX),
-    cloud_type(sky_cover_cloud_type::none)
+    cloud_type(sky_cover_cloud_type::unspecified)
 {}
 
 cloud_layer::cloud_layer(cloud_layer && other) :
     unit(distance_unit::feet),
-    sky_cover(sky_cover_type::clear),
+    sky_cover(sky_cover_type::sky_clear),
     layer_height(UINT32_MAX),
-    cloud_type(sky_cover_cloud_type::none)
+    cloud_type(sky_cover_cloud_type::unspecified)
 {
     *this = std::move(other);
 }
@@ -1277,9 +1285,9 @@ cloud_layer& cloud_layer::operator=(cloud_layer && rhs)
         cloud_type = rhs.cloud_type;
 
         rhs.unit = distance_unit::feet;
-        rhs.sky_cover = sky_cover_type::clear;
+        rhs.sky_cover = sky_cover_type::sky_clear;
         rhs.layer_height = UINT32_MAX;
-        rhs.cloud_type = sky_cover_cloud_type::none;
+        rhs.cloud_type = sky_cover_cloud_type::unspecified;
     }
     return *this;
 }
@@ -1410,7 +1418,7 @@ cloud_layer metar_info::ceiling() const
 {
     auto result = std::find_if(sky_condition_group.begin(), sky_condition_group.end(), [](cloud_layer layer)
     {
-        return layer.sky_cover == sky_cover_type::broken || layer.sky_cover == sky_cover_type::overcast || layer.sky_cover == sky_cover_type::vertical_visibility;
+        return layer.sky_cover == sky_cover_type::broken || layer.sky_cover == sky_cover_type::overcast || layer.sky_cover == sky_cover_type::vertical_visibility || layer.sky_cover == sky_cover_type::sky_clear || layer.sky_cover == sky_cover_type::clear_below_12000;
     });
     return result != sky_condition_group.end() ? *result : cloud_layer();
 }
