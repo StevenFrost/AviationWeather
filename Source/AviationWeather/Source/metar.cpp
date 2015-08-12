@@ -731,7 +731,8 @@ void parse_sky_condition(metar_info& info, std::string& metar)
             {
                 altitude = UINT32_MAX;
                 cloudType = sky_cover_cloud_type::none;
-                if (regex.str(EXPR_CLEAR) == "CLR") {
+                if (regex.str(EXPR_CLEAR) == "CLR")
+                {
                     skyCover = sky_cover_type::clear_below_12000;
                 }
             }
