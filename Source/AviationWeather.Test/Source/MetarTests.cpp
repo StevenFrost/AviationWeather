@@ -402,11 +402,11 @@ public:
 
     TEST_METHOD(METAR_VariableWinds)
     {
-        aw::metar::metar_info m1("KSFO 112056Z VRB17KT 10SM FEW010 SCT180 22/12 A2994 RMK AO2 SLP137 T02220122 58006");
+        aw::metar::metar_info m1("KSFO 112056Z VRB03KT 10SM FEW010 SCT180 22/12 A2994 RMK AO2 SLP137 T02220122 58006");
 
         Assert::IsTrue(m1.wind_group.is_variable());
         Assert::AreEqual(UINT16_MAX, m1.wind_group.direction);
-        Assert::AreEqual(static_cast<uint8_t>(17), m1.wind_group.wind_speed);
+        Assert::AreEqual(static_cast<uint8_t>(3), m1.wind_group.wind_speed);
         Assert::AreEqual(static_cast<uint8_t>(0), m1.wind_group.gust_speed);
         Assert::AreEqual(static_cast<uint8_t>(0), m1.wind_group.gust_factor());
         Assert::AreEqual(UINT16_MAX, m1.wind_group.variation_lower);
@@ -422,25 +422,15 @@ public:
         Assert::AreEqual(UINT16_MAX, m2.wind_group.variation_lower);
         Assert::AreEqual(UINT16_MAX, m2.wind_group.variation_upper);
 
-        aw::metar::metar_info m3("KRHV 101850Z VRB14G18KT 10SM SKC 27/13 A2990");
+        aw::metar::metar_info m3("KRHV 101850Z VRB02G06KT 10SM SKC 27/13 A2990");
 
         Assert::IsTrue(m3.wind_group.is_variable());
         Assert::AreEqual(UINT16_MAX, m3.wind_group.direction);
-        Assert::AreEqual(static_cast<uint8_t>(14), m3.wind_group.wind_speed);
-        Assert::AreEqual(static_cast<uint8_t>(18), m3.wind_group.gust_speed);
+        Assert::AreEqual(static_cast<uint8_t>(2), m3.wind_group.wind_speed);
+        Assert::AreEqual(static_cast<uint8_t>(6), m3.wind_group.gust_speed);
         Assert::AreEqual(static_cast<uint8_t>(4), m3.wind_group.gust_factor());
         Assert::AreEqual(UINT16_MAX, m3.wind_group.variation_lower);
         Assert::AreEqual(UINT16_MAX, m3.wind_group.variation_upper);
-
-        aw::metar::metar_info m4("KRHV 102102Z VRB12G15KT 200V250 10SM SKC 27/13 A2990");
-
-        Assert::IsTrue(m4.wind_group.is_variable());
-        Assert::AreEqual(UINT16_MAX, m4.wind_group.direction);
-        Assert::AreEqual(static_cast<uint8_t>(12), m4.wind_group.wind_speed);
-        Assert::AreEqual(static_cast<uint8_t>(15), m4.wind_group.gust_speed);
-        Assert::AreEqual(static_cast<uint8_t>(3), m4.wind_group.gust_factor());
-        Assert::AreEqual(static_cast<uint16_t>(200), m4.wind_group.variation_lower);
-        Assert::AreEqual(static_cast<uint16_t>(250), m4.wind_group.variation_upper);
 
         aw::metar::metar_info m5("KRHV 112150Z 22512G15KT 200V250 10SM SKC 27/13 A2990");
 
