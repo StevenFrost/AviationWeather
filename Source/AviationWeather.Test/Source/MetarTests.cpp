@@ -60,9 +60,9 @@ public:
         Assert::AreEqual(1U, static_cast<uint32_t>(metar.sky_condition_group.size()));
 
         auto it = metar.sky_condition_group.begin();
-        Assert::AreEqual(aw::sky_cover_type::clear, it->sky_cover);
+        Assert::AreEqual(aw::sky_cover_type::clear_below_12000, it->sky_cover);
         Assert::AreEqual(aw::sky_cover_cloud_type::none, it->cloud_type);
-        Assert::AreEqual(0U, it->layer_height);
+        Assert::IsTrue(it->is_unlimited());
 
         Assert::AreEqual(static_cast<uint8_t>(19), metar.temperature);
         Assert::AreEqual(static_cast<uint8_t>(4), metar.dewpoint);
@@ -73,7 +73,55 @@ public:
         Assert::AreEqual(std::string(""), metar.remarks);
 
         auto ceiling = metar.ceiling();
-        Assert::AreEqual(aw::sky_cover_type::clear, ceiling.sky_cover);
+        Assert::AreEqual(aw::sky_cover_type::clear_below_12000, ceiling.sky_cover);
+        Assert::AreEqual(aw::sky_cover_cloud_type::none, ceiling.cloud_type);
+        Assert::IsTrue(ceiling.is_unlimited());
+
+        Assert::AreEqual(aw::flight_category::vfr, metar.flight_category());
+    }
+
+    TEST_METHOD(METAR_KRHV)
+    {
+        aw::metar::metar_info metar("KRHV 122047Z 32009KT 10SM SKC 28/11 A3002");
+
+        Assert::AreEqual(aw::metar::report_type::metar, metar.type);
+
+        Assert::AreEqual(std::string("KRHV"), metar.station_identifier);
+
+        Assert::AreEqual(static_cast<uint8_t>(12), metar.report_time.day_of_month);
+        Assert::AreEqual(static_cast<uint8_t>(20), metar.report_time.hour_of_day);
+        Assert::AreEqual(static_cast<uint8_t>(47), metar.report_time.minute_of_hour);
+
+        Assert::AreEqual(aw::metar::modifier_type::automatic, metar.modifier);
+
+        Assert::AreEqual(static_cast<uint16_t>(320), metar.wind_group.direction);
+        Assert::AreEqual(static_cast<uint8_t>(9), metar.wind_group.wind_speed);
+        Assert::AreEqual(static_cast<uint8_t>(0), metar.wind_group.gust_speed);
+        Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_lower);
+        Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_upper);
+
+        Assert::AreEqual(aw::distance_unit::statute_miles, metar.visibility_group.unit);
+        Assert::AreEqual(10.0, metar.visibility_group.distance);
+
+        Assert::AreEqual(0U, static_cast<uint32_t>(metar.weather_group.size()));
+
+        Assert::AreEqual(1U, static_cast<uint32_t>(metar.sky_condition_group.size()));
+
+        auto it = metar.sky_condition_group.begin();
+        Assert::AreEqual(aw::sky_cover_type::sky_clear, it->sky_cover);
+        Assert::AreEqual(aw::sky_cover_cloud_type::none, it->cloud_type);
+        Assert::IsTrue(it->is_unlimited());
+
+        Assert::AreEqual(static_cast<uint8_t>(28), metar.temperature);
+        Assert::AreEqual(static_cast<uint8_t>(11), metar.dewpoint);
+
+        Assert::AreEqual(aw::pressure_unit::inHg, metar.altimeter_group.unit);
+        Assert::AreEqual(30.02, metar.altimeter_group.pressure, 0.01);
+
+        Assert::AreEqual(std::string(""), metar.remarks);
+
+        auto ceiling = metar.ceiling();
+        Assert::AreEqual(aw::sky_cover_type::sky_clear, ceiling.sky_cover);
         Assert::AreEqual(aw::sky_cover_cloud_type::none, ceiling.cloud_type);
         Assert::IsTrue(ceiling.is_unlimited());
 
@@ -109,17 +157,17 @@ public:
 
         auto it = metar.sky_condition_group.begin();
         Assert::AreEqual(aw::sky_cover_type::few, it->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::none, it->cloud_type);
+        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, it->cloud_type);
         Assert::AreEqual(12000U, it->layer_height);
 
         ++it;
         Assert::AreEqual(aw::sky_cover_type::scattered, it->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::none, it->cloud_type);
+        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, it->cloud_type);
         Assert::AreEqual(17000U, it->layer_height);
 
         ++it;
         Assert::AreEqual(aw::sky_cover_type::broken, it->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::none, it->cloud_type);
+        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, it->cloud_type);
         Assert::AreEqual(24000U, it->layer_height);
 
         Assert::AreEqual(static_cast<uint8_t>(24), metar.temperature);
@@ -132,7 +180,7 @@ public:
 
         auto ceiling = metar.ceiling();
         Assert::AreEqual(aw::sky_cover_type::broken, ceiling.sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::none, ceiling.cloud_type);
+        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, ceiling.cloud_type);
         Assert::AreEqual(24000U, ceiling.layer_height);
         Assert::IsFalse(ceiling.is_unlimited());
 
@@ -168,7 +216,7 @@ public:
 
         auto it = metar.sky_condition_group.begin();
         Assert::AreEqual(aw::sky_cover_type::broken, it->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::none, it->cloud_type);
+        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, it->cloud_type);
         Assert::AreEqual(15000U, it->layer_height);
 
         Assert::AreEqual(static_cast<uint8_t>(28), metar.temperature);
@@ -181,7 +229,7 @@ public:
 
         auto ceiling = metar.ceiling();
         Assert::AreEqual(aw::sky_cover_type::broken, ceiling.sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::none, ceiling.cloud_type);
+        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, ceiling.cloud_type);
         Assert::AreEqual(15000U, ceiling.layer_height);
         Assert::IsFalse(ceiling.is_unlimited());
 
@@ -217,22 +265,22 @@ public:
 
         auto it = metar.sky_condition_group.begin();
         Assert::AreEqual(aw::sky_cover_type::few, it->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::none, it->cloud_type);
+        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, it->cloud_type);
         Assert::AreEqual(700U, it->layer_height);
 
         ++it;
         Assert::AreEqual(aw::sky_cover_type::scattered, it->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::none, it->cloud_type);
+        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, it->cloud_type);
         Assert::AreEqual(5000U, it->layer_height);
 
         ++it;
         Assert::AreEqual(aw::sky_cover_type::scattered, it->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::none, it->cloud_type);
+        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, it->cloud_type);
         Assert::AreEqual(16000U, it->layer_height);
 
         ++it;
         Assert::AreEqual(aw::sky_cover_type::broken, it->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::none, it->cloud_type);
+        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, it->cloud_type);
         Assert::AreEqual(25000U, it->layer_height);
 
         Assert::AreEqual(static_cast<uint8_t>(20), metar.temperature);
@@ -245,7 +293,7 @@ public:
 
         auto ceiling = metar.ceiling();
         Assert::AreEqual(aw::sky_cover_type::broken, ceiling.sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::none, ceiling.cloud_type);
+        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, ceiling.cloud_type);
         Assert::AreEqual(25000U, ceiling.layer_height);
         Assert::IsFalse(ceiling.is_unlimited());
 
@@ -291,7 +339,7 @@ public:
 
         ++itSky;
         Assert::AreEqual(aw::sky_cover_type::broken, itSky->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::none, itSky->cloud_type);
+        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, itSky->cloud_type);
         Assert::AreEqual(18000U, itSky->layer_height);
 
         Assert::AreEqual(static_cast<uint8_t>(28), metar.temperature);
@@ -304,7 +352,7 @@ public:
 
         auto ceiling = metar.ceiling();
         Assert::AreEqual(aw::sky_cover_type::broken, ceiling.sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::none, ceiling.cloud_type);
+        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, ceiling.cloud_type);
         Assert::AreEqual(18000U, ceiling.layer_height);
         Assert::IsFalse(ceiling.is_unlimited());
 
@@ -352,12 +400,12 @@ public:
 
         ++itSky;
         Assert::AreEqual(aw::sky_cover_type::broken, itSky->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::none, itSky->cloud_type);
+        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, itSky->cloud_type);
         Assert::AreEqual(16000U, itSky->layer_height);
 
         ++itSky;
         Assert::AreEqual(aw::sky_cover_type::broken, itSky->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::none, itSky->cloud_type);
+        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, itSky->cloud_type);
         Assert::AreEqual(25000U, itSky->layer_height);
 
         Assert::AreEqual(static_cast<uint8_t>(29), metar.temperature);
