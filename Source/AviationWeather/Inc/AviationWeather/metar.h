@@ -82,7 +82,7 @@ public:
     typedef std::unique_ptr<visibility> unique_pointer;
 
     visibility();
-    visibility(double distance, distance_unit unit);
+    visibility(double distance, distance_unit unit, visibility_modifier_type modifier = visibility_modifier_type::none);
 
     visibility(visibility const& other) = default;
     visibility(visibility && other);
@@ -100,8 +100,9 @@ public:
     bool operator> (visibility const& rhs) const;
 
 public:
-    distance_unit unit;     // Unit of distance
-    double        distance; // Visibility distance in distance_units
+    distance_unit            unit;     // Unit of distance
+    double                   distance; // Visibility distance in distance_units
+    visibility_modifier_type modifier; // Visibility modifier (only none, less_than are valid)
 };
 
 //-----------------------------------------------------------------------------
