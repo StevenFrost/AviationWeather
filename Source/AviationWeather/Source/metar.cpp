@@ -1429,7 +1429,7 @@ flight_category metar_info::flight_category() const
     auto ceiling = metar_info::ceiling();
     if (aw::convert(visibility_group.distance, visibility_group.unit, distance_unit::statute_miles) >= 3.0 && ceiling.layer_height >= 1000L)
     {
-        return (aw::convert(visibility_group.distance, visibility_group.unit, distance_unit::statute_miles) >= 5.0 && ceiling.layer_height >= 3000L) ? flight_category::vfr : flight_category::mvfr;
+        return (aw::convert(visibility_group.distance, visibility_group.unit, distance_unit::statute_miles) > 5.0 && ceiling.layer_height > 3000L) ? flight_category::vfr : flight_category::mvfr;
     }
     else 
     {
