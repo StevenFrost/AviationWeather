@@ -515,7 +515,7 @@ void parse_visibility(metar_info& info, std::string& metar)
 
         try
         {
-            double hpv = 0.0;
+            double distance = 0.0;
             auto visibilityGroup = visibility(0U, distance_unit::metres, visibility_modifier_type::none);
 
             if (regex[EXPR_LESS_THAN].matched)
@@ -530,13 +530,13 @@ void parse_visibility(metar_info& info, std::string& metar)
 
                 if (regex[EXPR_FRAC_W].matched)
                 {
-                    hpv = atof(regex.str(EXPR_FRAC_W).c_str());
+                    distance = atof(regex.str(EXPR_FRAC_W).c_str());
                 }
-                hpv += fracN / fracD;
+                distance += fracN / fracD;
             }
             else
             {
-                hpv = atof(regex.str(EXPR_VISIBILITY).c_str());
+                distance = atof(regex.str(EXPR_VISIBILITY).c_str());
             }
 
             if (regex[EXPR_STATUTE].matched)
@@ -544,7 +544,7 @@ void parse_visibility(metar_info& info, std::string& metar)
                 visibilityGroup.unit = distance_unit::statute_miles;
             }
 
-            visibilityGroup.distance = hpv;
+            visibilityGroup.distance = distance;
             info.visibility_group = visibilityGroup;
         }
         catch (std::invalid_argument const&)
