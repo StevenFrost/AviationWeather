@@ -432,10 +432,16 @@ public:
         Assert::AreEqual(aw::flight_category::vfr, krhv_metar.flight_category());
         Assert::AreEqual(aw::flight_category::vfr, ksts_metar.flight_category());
 
-        aw::metar::metar_info koak_metar("KOAK 102353Z 26016KT 10SM BKN012 BKN200 21/15 A2993 RMK AO2 SLP135 T02060150 10228 20200 58011");
-        aw::metar::metar_info ksfo_metar("KSFO 102356Z 27019G24KT 10SM FEW008 SCT012 BKN015 21/14 A2994 RMK AO2 PK WND 27028/2303 SLP137 T02060144 10228 20200 58012");
-        Assert::AreEqual(aw::flight_category::mvfr, koak_metar.flight_category());
-        Assert::AreEqual(aw::flight_category::mvfr, ksfo_metar.flight_category());
+        aw::metar::metar_info koak_mvfr_metar("KOAK 102353Z 26016KT 10SM BKN012 BKN200 21/15 A2993 RMK AO2 SLP135 T02060150 10228 20200 58011");
+        aw::metar::metar_info ksfo_mvfr_metar("KSFO 102356Z 27019G24KT 10SM FEW008 SCT012 BKN015 21/14 A2994 RMK AO2 PK WND 27028/2303 SLP137 T02060144 10228 20200 58012");
+        aw::metar::metar_info ksts_mvfr_metar("KSTS 152153Z 24008KT 3SM HZ FU CLR 35/09 A2989 RMK AO2 SLP116 T03500089");
+        aw::metar::metar_info kpao_mvfr_metar("KPAO 152147Z 34010KT 4SM HZ SCT150 34/12 2992");
+        aw::metar::metar_info kapc_mvfr_metar("KAPC 151954Z 21007KT 170V230 5SM HZ FU CLR 31/12 A2996 RMK AO2 SLP135 SMOKE ALQDS UP TO 7500 MSL FLIGHT VIS 4-5 MI T03110117");
+        Assert::AreEqual(aw::flight_category::mvfr, koak_mvfr_metar.flight_category());
+        Assert::AreEqual(aw::flight_category::mvfr, ksfo_mvfr_metar.flight_category());
+        Assert::AreEqual(aw::flight_category::mvfr, ksts_mvfr_metar.flight_category());
+        Assert::AreEqual(aw::flight_category::mvfr, kpao_mvfr_metar.flight_category());
+        Assert::AreEqual(aw::flight_category::mvfr, kapc_mvfr_metar.flight_category());
 
         aw::metar::metar_info kcec_metar("KCEC 102356Z AUTO 26009KT 10SM OVC009 18/14 A2997 RMK AO2 SLP149 T01780144 10206 20161 50001");
         aw::metar::metar_info kacv_metar("KACV 102353Z AUTO 28007KT 10SM OVC009 18/16 A2997 RMK AO2 SLP152 T01830156 10217 20178 51001");
