@@ -45,7 +45,7 @@ static const int MAX_VISIBILITY = 9999;
 #define REGEX_OBSERVATION_TIME "([0-9]{2})([0-9]{2})([0-9]{2})Z "
 #define REGEX_REPORT_MODIFIER  "(AUTO|COR) "
 #define REGEX_WIND             "([0-9]{3}|VRB)([0-9]{2,3})(G([0-9]{2,3}))?(KT|MPS)( ([0-9]{3})V([0-9]{3}))? "
-#define REGEX_VISIBILITY       "(CAVOK|((M?([12]?)[ ]?([0-9])/([0-9]))|([0-9]{1,5}))(SM)?) "
+#define REGEX_VISIBILITY       "(CAVOK|(((M)?([12]?)[ ]?([0-9])/([0-9]))|([0-9]{1,5}))(SM)?) "
 #define REGEX_RVR              "R([0-9]{2})([LRC])?/([MP]?)([0-9]{4})(V([0-9]{4}))?FT "
 #define REGEX_WEATHER          "([+-]|VC)?((MI|PR|BC|DR|BL)?((DZ|RA|SN|SG|IC|PL|GR|GS|UP){1,3}|(BR|FG|FU|VA|DU|SA|HZ|PY|PO|SQ|FC|SS|DS)) |(SH)(RA|SN|PL|GS|GR){0,3} |(TS)(RA|SN|PL|GS|GR){0,3} |(FZ)(FG|DZ|RA){1,3} )"
 #define REGEX_SKY_CONDITION    "((SKC|CLR) )|((VV|FEW|SCT|BKN|OVC)([0-9]{3}|///))(CB|TCU)? "
@@ -500,11 +500,12 @@ void parse_visibility(metar_info& info, std::string& metar)
     {
         static const unsigned short EXPR_ALL = 1;
         static const unsigned short EXPR_FRACTIONAL = 3;
-        static const unsigned short EXPR_FRAC_W = 4;
-        static const unsigned short EXPR_FRAC_N = 5;
-        static const unsigned short EXPR_FRAC_D = 6;
-        static const unsigned short EXPR_VISIBILITY = 7;
-        static const unsigned short EXPR_STATUTE = 8;
+        static const unsigned short EXPR_LESS_THAN = 4;
+        static const unsigned short EXPR_FRAC_W = 5;
+        static const unsigned short EXPR_FRAC_N = 6;
+        static const unsigned short EXPR_FRAC_D = 7;
+        static const unsigned short EXPR_VISIBILITY = 8;
+        static const unsigned short EXPR_STATUTE = 9;
 
         if (regex.str(EXPR_ALL) == "CAVOK")
         {
@@ -514,8 +515,13 @@ void parse_visibility(metar_info& info, std::string& metar)
 
         try
         {
-            double hpv = 0.0;
-            auto visibilityGroup = visibility(0U, distance_unit::metres);
+            double distance = 0.0;
+            auto visibilityGroup = visibility(0U, distance_unit::metres, visibility_modifier_type::none);
+
+            if (regex[EXPR_LESS_THAN].matched)
+            {
+                visibilityGroup.modifier = visibility_modifier_type::less_than;
+            }
 
             if (regex[EXPR_FRACTIONAL].matched)
             {
@@ -524,13 +530,13 @@ void parse_visibility(metar_info& info, std::string& metar)
 
                 if (regex[EXPR_FRAC_W].matched)
                 {
-                    hpv = atof(regex.str(EXPR_FRAC_W).c_str());
+                    distance = atof(regex.str(EXPR_FRAC_W).c_str());
                 }
-                hpv += fracN / fracD;
+                distance += fracN / fracD;
             }
             else
             {
-                hpv = atof(regex.str(EXPR_VISIBILITY).c_str());
+                distance = atof(regex.str(EXPR_VISIBILITY).c_str());
             }
 
             if (regex[EXPR_STATUTE].matched)
@@ -538,7 +544,7 @@ void parse_visibility(metar_info& info, std::string& metar)
                 visibilityGroup.unit = distance_unit::statute_miles;
             }
 
-            visibilityGroup.distance = static_cast<uint32_t>(hpv);
+            visibilityGroup.distance = distance;
             info.visibility_group = visibilityGroup;
         }
         catch (std::invalid_argument const&)
@@ -853,17 +859,20 @@ void parse_remarks(metar_info& info, std::string& metar)
 
 visibility::visibility() :
     unit(distance_unit::feet),
-    distance(UINT32_MAX)
+    distance(UINT32_MAX),
+    modifier(visibility_modifier_type::none)
 {}
 
-visibility::visibility(double distance, distance_unit unit) :
+visibility::visibility(double distance, distance_unit unit, visibility_modifier_type modifier) :
     unit(unit),
-    distance(distance)
+    distance(distance),
+    modifier(modifier)
 {}
 
 visibility::visibility(visibility && other) :
     unit(distance_unit::feet),
-    distance(UINT32_MAX)
+    distance(UINT32_MAX),
+    modifier(visibility_modifier_type::none)
 {
     *this = std::move(other);
 }
@@ -874,20 +883,24 @@ visibility& visibility::operator=(visibility && rhs)
     {
         unit = rhs.unit;
         distance = rhs.distance;
+        modifier = rhs.modifier;
 
         rhs.unit = distance_unit::feet;
         rhs.distance = UINT32_MAX;
+        rhs.modifier = visibility_modifier_type::none;
     }
     return *this;
 }
 
 bool visibility::operator==(visibility const& rhs) const
 {
-    return detail::comparison_conversion_helper<double>(distance_unit::feet, unit, rhs.unit, distance, rhs.distance,
+    auto distanceEqual = detail::comparison_conversion_helper<double>(distance_unit::feet, unit, rhs.unit, distance, rhs.distance,
         [](double && l, double && r)
     {
         return l == r;
     });
+
+    return distanceEqual && (modifier == rhs.modifier);
 }
 
 bool visibility::operator!=(visibility const& rhs) const
@@ -897,38 +910,40 @@ bool visibility::operator!=(visibility const& rhs) const
 
 bool visibility::operator<=(visibility const& rhs) const
 {
-    return detail::comparison_conversion_helper<double>(distance_unit::feet, unit, rhs.unit, distance, rhs.distance,
-        [](double && l, double && r)
-    {
-        return l <= r;
-    });
+    auto distanceLeft = convert(distance, unit, distance_unit::feet);
+    auto distanceRight = convert(rhs.distance, rhs.unit, distance_unit::feet);
+
+    return (distanceLeft == distanceRight) && (modifier == rhs.modifier) ||
+        (distanceLeft == distanceRight) && (modifier == visibility_modifier_type::less_than) ||
+        (distanceLeft < distanceRight);
 }
 
 bool visibility::operator>=(visibility const& rhs) const
 {
-    return detail::comparison_conversion_helper<double>(distance_unit::feet, unit, rhs.unit, distance, rhs.distance,
-        [](double && l, double && r)
-    {
-        return l >= r;
-    });
+    auto distanceLeft = convert(distance, unit, distance_unit::feet);
+    auto distanceRight = convert(rhs.distance, rhs.unit, distance_unit::feet);
+
+    return (distanceLeft == distanceRight) && (modifier == rhs.modifier) ||
+        (distanceLeft == distanceRight) && (rhs.modifier == visibility_modifier_type::less_than) ||
+        (distanceLeft > distanceRight);
 }
 
 bool visibility::operator<(visibility const& rhs) const
 {
-    return detail::comparison_conversion_helper<double>(distance_unit::feet, unit, rhs.unit, distance, rhs.distance,
-        [](double && l, double && r)
-    {
-        return l < r;
-    });
+    auto distanceLeft = convert(distance, unit, distance_unit::feet);
+    auto distanceRight = convert(rhs.distance, rhs.unit, distance_unit::feet);
+
+    return (distanceLeft == distanceRight) && (modifier == visibility_modifier_type::less_than) ||
+        (distanceLeft < distanceRight);
 }
 
 bool visibility::operator>(visibility const& rhs) const
 {
-    return detail::comparison_conversion_helper<double>(distance_unit::feet, unit, rhs.unit, distance, rhs.distance,
-        [](double && l, double && r)
-    {
-        return l > r;
-    });
+    auto distanceLeft = convert(distance, unit, distance_unit::feet);
+    auto distanceRight = convert(rhs.distance, rhs.unit, distance_unit::feet);
+
+    return (distanceLeft == distanceRight) && (rhs.modifier == visibility_modifier_type::less_than) ||
+        (distanceLeft > distanceRight);
 }
 
 //-----------------------------------------------------------------------------
@@ -1431,10 +1446,7 @@ flight_category metar_info::flight_category() const
     {
         return (aw::convert(visibility_group.distance, visibility_group.unit, distance_unit::statute_miles) > 5.0 && ceiling.layer_height > 3000L) ? flight_category::vfr : flight_category::mvfr;
     }
-    else 
-    {
-        return (aw::convert(visibility_group.distance, visibility_group.unit, distance_unit::statute_miles) >= 1.0 && ceiling.layer_height >= 500L) ? flight_category::ifr : flight_category::lifr;
-    }
+    return (aw::convert(visibility_group.distance, visibility_group.unit, distance_unit::statute_miles) >= 1.0 && ceiling.layer_height >= 500L) ? flight_category::ifr : flight_category::lifr;
 }
 
 //-----------------------------------------------------------------------------
