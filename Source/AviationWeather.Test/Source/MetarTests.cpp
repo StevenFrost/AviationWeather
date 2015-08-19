@@ -597,6 +597,92 @@ public:
         Assert::IsTrue(v4 <= v3);  Assert::IsFalse(v4 >= v3);
         Assert::IsTrue(v4 < v3);   Assert::IsFalse(v4 > v3);
     }
+
+    TEST_METHOD(METAR_Phenomena)
+    {
+        aw::metar::metar_info m1("KCCR 181953Z 28011KT 10SM FU CLR 27/12 A2990 RMK AO2 SLP110 T02720122");
+
+        Assert::AreEqual(1U, static_cast<uint32_t>(m1.weather_group.size()));
+        auto it = m1.weather_group.begin();
+        Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
+        Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
+        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+        Assert::AreEqual(aw::weather_phenomena::smoke, it->phenomena.front());
+        
+        aw::metar::metar_info m2("KRHV 181947Z 33008/KT 6SM HZ SKC 29/12 A2992");
+
+        Assert::AreEqual(1U, static_cast<uint32_t>(m2.weather_group.size()));
+        it = m2.weather_group.begin();
+        Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
+        Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
+        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+        Assert::AreEqual(aw::weather_phenomena::haze, it->phenomena.front());
+
+        aw::metar::metar_info m3("KSTS 181253Z AUTO 00000KT 10SM -RA HZ FU OVC007 14/12 A2990 RMK AO2 RAB30 SLP116 P0000 T01390122");
+
+        Assert::AreEqual(3U, static_cast<uint32_t>(m3.weather_group.size()));
+        it = m3.weather_group.begin();
+        Assert::AreEqual(aw::weather_intensity::light, it->intensity);
+        Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
+        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+        Assert::AreEqual(aw::weather_phenomena::rain, it->phenomena.front());
+        it++;
+        Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
+        Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
+        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+        Assert::AreEqual(aw::weather_phenomena::haze, it->phenomena.front());
+        it++;
+        Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
+        Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
+        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+        Assert::AreEqual(aw::weather_phenomena::smoke, it->phenomena.front());
+
+        aw::metar::metar_info m4("KSTS 182253Z 19008KT 9SM FU HZ CLR 25/13 A2988 RMK AO2 SLP112 T02500133");
+
+        Assert::AreEqual(2U, static_cast<uint32_t>(m4.weather_group.size()));
+        it = m4.weather_group.begin();
+        Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
+        Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
+        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+        Assert::AreEqual(aw::weather_phenomena::smoke, it->phenomena.front());
+        it++;
+        Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
+        Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
+        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+        Assert::AreEqual(aw::weather_phenomena::haze, it->phenomena.front());
+
+        aw::metar::metar_info m5("KWVI 171553Z AUTO 00000KT 1 1/4SM BR OVC002 17/15 A2989 RMK AO2 SLP122 T01670150");
+
+        Assert::AreEqual(1U, static_cast<uint32_t>(m5.weather_group.size()));
+        it = m5.weather_group.begin();
+        Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
+        Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
+        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+        Assert::AreEqual(aw::weather_phenomena::mist, it->phenomena.front());
+
+        aw::metar::metar_info m6("KWVI 171453Z AUTO 00000KT 1/4SM FG VV002 16/15 A2989 RMK AO2 SLP119 T01610150 53007");
+
+        Assert::AreEqual(1U, static_cast<uint32_t>(m6.weather_group.size()));
+        it = m6.weather_group.begin();
+        Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
+        Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
+        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+        Assert::AreEqual(aw::weather_phenomena::fog, it->phenomena.front());
+
+        aw::metar::metar_info m7("KORD 190151Z 19010KT 5SM TSRA BR FEW027 BKN048CB OVC090 21/19 A2971 RMK AO2 PK WND 18028/0112 SLP057 FRQ LTGICCG OHD TS OHD MOV NE P0023 T02060194");
+
+        Assert::AreEqual(2U, static_cast<uint32_t>(m7.weather_group.size()));
+        it = m7.weather_group.begin();
+        Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
+        Assert::AreEqual(aw::weather_descriptor::thunderstorm, it->descriptor);
+        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+        Assert::AreEqual(aw::weather_phenomena::rain, it->phenomena.front());
+        it++;
+        Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
+        Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
+        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+        Assert::AreEqual(aw::weather_phenomena::mist, it->phenomena.front());
+    }
 };
 
 } // namespace test
