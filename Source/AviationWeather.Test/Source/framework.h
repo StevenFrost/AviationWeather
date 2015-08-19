@@ -25,6 +25,8 @@
 namespace
 {
 
+#define STRINGIFY(x) #x
+
 #define DEFINE_ENUM_TOSTRING_GROUP(x) \
     template<> inline std::wstring ToString<x>(const x& t) { RETURN_WIDE_STRING(static_cast<uint32_t>(t)); } \
     template<> inline std::wstring ToString<x>(const x* t) { RETURN_WIDE_STRING(t); } \

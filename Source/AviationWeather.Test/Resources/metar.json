@@ -1,0 +1,390 @@
+{
+    "module": "METAR",
+    "tests": [
+        {
+            "string": "METAR KSFO 172256Z 00000KT 9SM CLR 19/04 A3012",
+            "report_type": "metar",
+            "station_identifier": "KSFO",
+            "observation_time": {
+                "day_of_month": 17,
+                "hour_of_day": 22,
+                "minute_of_hour": 56
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 0,
+                "wind_speed": 0
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 9
+            },
+            "sky_condition": [
+                {
+                    "sky_cover": "clear_below_12000",
+                    "cloud_type": "none"
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 19,
+                "dewpoint": 4
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.12
+            }
+        },
+        {
+            "string": "KRHV 122047Z 32009KT 10SM SKC 28/11 A3002",
+            "station_identifier": "KRHV",
+            "observation_time": {
+                "day_of_month": 12,
+                "hour_of_day": 20,
+                "minute_of_hour": 47
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 320,
+                "wind_speed": 9
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 10
+            },
+            "sky_condition": [
+                {
+                    "sky_cover": "sky_clear",
+                    "cloud_type": "none"
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 28,
+                "dewpoint": 11
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.02
+            }
+        },
+        {
+            "string": "KEDU 181255Z AUTO 9SM CLR 15/11 A2982 RMK AO1",
+            "station_identifier": "KEDU",
+            "observation_time": {
+                "day_of_month": 18,
+                "hour_of_day": 12,
+                "minute_of_hour": 55
+            },
+            "report_modifier": "automatic",
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 9
+            },
+            "sky_condition": [
+                {
+                    "sky_cover": "clear_below_12000",
+                    "cloud_type": "none"
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 15,
+                "dewpoint": 11
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.82
+            },
+            "remarks": true
+        },
+        {
+            "string": "KWVI 171653Z AUTO 7SM OVC004 18/15 A2990 RMK AO2 SLP124 T01780150",
+            "station_identifier": "KWVI",
+            "observation_time": {
+                "day_of_month": 17,
+                "hour_of_day": 16,
+                "minute_of_hour": 53
+            },
+            "report_modifier": "automatic",
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 7
+            },
+            "sky_condition": [
+                {
+                    "sky_cover": "overcast",
+                    "layer_height": 400
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 18,
+                "dewpoint": 15
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.90
+            },
+            "remarks": true
+        },
+        {
+            "string": "KSTS 181253Z AUTO 00000KT 10SM -RA HZ FU OVC007 14/12 A2990 RMK AO2 RAB30 SLP116 P0000 T01390122",
+            "station_identifier": "KSTS",
+            "observation_time": {
+                "day_of_month": 18,
+                "hour_of_day": 12,
+                "minute_of_hour": 53
+            },
+            "report_modifier": "automatic",
+            "wind": {
+                "unit": "kt",
+                "direction": 0,
+                "wind_speed": 0
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 10
+            },
+            "weather": [
+                {
+                    "intensity": "light",
+                    "phenomena": [
+                        "rain"
+                    ]
+                },
+                {
+                    "phenomena": [
+                        "haze"
+                    ]
+                },
+                {
+                    "phenomena": [
+                        "smoke"
+                    ]
+                }
+            ],
+            "sky_condition": [
+                {
+                    "sky_cover": "overcast",
+                    "layer_height": 700
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 14,
+                "dewpoint": 12
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.90
+            },
+            "remarks": true
+        },
+        {
+            "string": "KWVI 171453Z AUTO 00000KT 1/4SM FG VV002 16/15 A2989 RMK AO2 SLP119 T01610150 53007",
+            "station_identifier": "KWVI",
+            "observation_time": {
+                "day_of_month": 17,
+                "hour_of_day": 14,
+                "minute_of_hour": 53
+            },
+            "report_modifier": "automatic",
+            "wind": {
+                "unit": "kt",
+                "direction": 0,
+                "wind_speed": 0
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 0.25
+            },
+            "weather": [
+                {
+                    "phenomena": [
+                        "fog"
+                    ]
+                }
+            ],
+            "sky_condition": [
+                {
+                    "sky_cover": "vertical_visibility",
+                    "layer_height": 200
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 16,
+                "dewpoint": 15
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.89
+            },
+            "remarks": true
+        },
+        {
+            "string": "KAPC 182254Z 20015KT 10SM CLR 24/16 A2987 RMK AO2 RAE2159 SLP107 P0000 T02390156 $",
+            "station_identifier": "KAPC",
+            "observation_time": {
+                "day_of_month": 18,
+                "hour_of_day": 22,
+                "minute_of_hour": 54
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 200,
+                "wind_speed": 15
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 10
+            },
+            "sky_condition": [
+                {
+                    "sky_cover": "clear_below_12000"
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 24,
+                "dewpoint": 16
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.87
+            },
+            "remarks": true
+        },
+        {
+            "string": "KCCR 182053Z 29008KT 270V340 10SM FU CLR 29/12 A2988 RMK AO2 SLP103 T02940117 58014",
+            "station_identifier": "KCCR",
+            "observation_time": {
+                "day_of_month": 18,
+                "hour_of_day": 20,
+                "minute_of_hour": 53
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 290,
+                "wind_speed": 8,
+                "variation_lower": 270,
+                "variation_upper": 340
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 10
+            },
+            "weather": [
+                {
+                    "phenomena": [
+                        "smoke"
+                    ]
+                }
+            ],
+            "sky_condition": [
+                {
+                    "sky_cover": "clear_below_12000"
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 29,
+                "dewpoint": 12
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.88
+            },
+            "remarks": true
+        },
+        {
+            "string": "KSFO 180056Z 30017KT 8SM FEW007 SCT200 20/14 A2982 RMK AO2 PK WND 29027/0030 SLP096 T02000139",
+            "station_identifier": "KSFO",
+            "observation_time": {
+                "day_of_month": 18,
+                "hour_of_day": 0,
+                "minute_of_hour": 56
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 300,
+                "wind_speed": 17
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 8
+            },
+            "sky_condition": [
+                {
+                    "sky_cover": "few",
+                    "layer_height": 700
+                },
+                {
+                    "sky_cover": "scattered",
+                    "layer_height": 20000
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 20,
+                "dewpoint": 14
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.82
+            },
+            "remarks": true
+        },
+        {
+            "string": "KRFD 190114Z 34011KT 1 1/4SM R01/4500VP6000FT TSRA BR FEW004 OVC019CB 20/19 A2969 RMK AO2 TWR VIS 1 1/2 OCNL LTGIC VC N TS VC N MOV N P0060 T02000189 $",
+            "station_identifier": "KRFD",
+            "observation_time": {
+                "day_of_month": 19,
+                "hour_of_day": 1,
+                "minute_of_hour": 14
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 340,
+                "wind_speed": 11
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 1.25
+            },
+            "runway_visual_range": [
+                {
+                    "unit": "ft",
+                    "runway_number": 1,
+                    "visibility_min": 4500,
+                    "visibility_max": 6000
+                }
+            ],
+            "weather": [
+                {
+                    "descriptor": "thunderstorm",
+                    "phenomena": [
+                        "rain"
+                    ]
+                },
+                {
+                    "phenomena": [
+                        "mist"
+                    ]
+                }
+            ],
+            "sky_condition": [
+                {
+                    "sky_cover": "few",
+                    "layer_height": 400
+                },
+                {
+                    "sky_cover": "overcast",
+                    "layer_height": 1900,
+                    "cloud_type": "cumulonimbus"
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 20,
+                "dewpoint": 19
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.69
+            },
+            "remarks": true
+        }
+    ]
+}

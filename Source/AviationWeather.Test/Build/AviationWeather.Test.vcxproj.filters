@@ -15,6 +15,9 @@
     <ClCompile Include="..\Source\MetarTests.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\MetarValidation.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\AviationWeather.TestPch.h">
