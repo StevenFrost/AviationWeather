@@ -246,6 +246,11 @@ void MetarValidationTests::METAR_Validation()
     auto tests = m_expectationFile["tests"];
     for (auto test : tests)
     {
+        if (test.find("broken") != test.end())
+        {
+            continue;
+        }
+
         aw::metar::metar_info metar(test["string"].get<std::string>());
 
         ValidateReportType(metar, test);
@@ -333,8 +338,8 @@ void MetarValidationTests::ValidateWind(aw::metar::metar_info const& metar, basi
 
         if (wind.find("variation_lower") != wind.end() && wind.find("variation_upper") != wind.end())
         {
-            Assert::AreEqual(wind["variation_lower]"].get<uint16_t>(), metar.wind_group.variation_lower);
-            Assert::AreEqual(wind["variation_upper]"].get<uint16_t>(), metar.wind_group.variation_upper);
+            Assert::AreEqual(wind["variation_lower"].get<uint16_t>(), metar.wind_group.variation_lower);
+            Assert::AreEqual(wind["variation_upper"].get<uint16_t>(), metar.wind_group.variation_upper);
         }
         else
         {

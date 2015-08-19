@@ -236,7 +236,8 @@
             },
             "sky_condition": [
                 {
-                    "sky_cover": "clear_below_12000"
+                    "sky_cover": "clear_below_12000",
+                    "cloud_type": "none"
                 }
             ],
             "temperature_dewpoint": {
@@ -277,7 +278,8 @@
             ],
             "sky_condition": [
                 {
-                    "sky_cover": "clear_below_12000"
+                    "sky_cover": "clear_below_12000",
+                    "cloud_type": "none"
                 }
             ],
             "temperature_dewpoint": {
@@ -328,7 +330,8 @@
             "remarks": true
         },
         {
-            "string": "KRFD 190114Z 34011KT 1 1/4SM R01/4500VP6000FT TSRA BR FEW004 OVC019CB 20/19 A2969 RMK AO2 TWR VIS 1 1/2 OCNL LTGIC VC N TS VC N MOV N P0060 T02000189 $",
+            "broken": true,
+            "string": "KRFD 190114Z 34011KT 1 1/4SM R01/4500V6000FT TSRA BR FEW004 OVC019CB 20/19 A2969 RMK AO2 TWR VIS 1 1/2 OCNL LTGIC VC N TS VC N MOV N P0060 T02000189 $",
             "station_identifier": "KRFD",
             "observation_time": {
                 "day_of_month": 19,
@@ -346,7 +349,7 @@
             },
             "runway_visual_range": [
                 {
-                    "unit": "ft",
+                    "unit": "feet",
                     "runway_number": 1,
                     "visibility_min": 4500,
                     "visibility_max": 6000
