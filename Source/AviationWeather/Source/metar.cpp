@@ -644,6 +644,7 @@ void parse_weather(metar_info& info, std::string& metar)
         static const unsigned short EXPR_PHENOMENA_TS = 10;
         static const unsigned short EXPR_DESCRIPTOR_FZ = 9;
         static const unsigned short EXPR_PHENOMENA_FZ = 12;
+        static const unsigned short EXPR_PHENOMENA_NO_SPACE = 4;
 
         auto intensity = weather_intensity::moderate;
         auto descriptor = weather_descriptor::none;
@@ -677,6 +678,10 @@ void parse_weather(metar_info& info, std::string& metar)
         if (regex[EXPR_PHENOMENA_ALL].matched)
         {
             matchedPhenomena = EXPR_PHENOMENA_ALL;
+        }
+        else if (regex[EXPR_PHENOMENA_NO_SPACE].matched)
+        {
+            matchedPhenomena = EXPR_PHENOMENA_NO_SPACE;
         }
         else if (regex[EXPR_PHENOMENA_SH].matched)
         {
