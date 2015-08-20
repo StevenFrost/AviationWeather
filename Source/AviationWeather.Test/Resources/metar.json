@@ -388,6 +388,141 @@
                 "pressure": 29.69
             },
             "remarks": true
+        },
+        {
+            "string": "KRHV 201647Z VRB05KT 8SM OVC025 20/14 A2992",
+            "station_identifier": "KRHV",
+            "observation_time": {
+                "day_of_month": 20,
+                "hour_of_day": 16,
+                "minute_of_hour": 47
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 65535,
+                "wind_speed": 5
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 8
+            },
+            "sky_condition": [
+                {
+                    "sky_cover": "overcast",
+                    "layer_height": 2500
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 20,
+                "dewpoint": 14
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.92
+            },
+            "remarks": false
+        },
+        {
+            "string": "KSTS 201453Z COR 21004KT 6SM OVC006 14/13 A2991 RMK AO2 SLP122 T01440133 53008",
+            "station_identifier": "KSTS",
+            "observation_time": {
+                "day_of_month": 20,
+                "hour_of_day": 14,
+                "minute_of_hour": 53
+            },
+            "report_modifier": "corrected",
+            "wind": {
+                "unit": "kt",
+                "direction": 210,
+                "wind_speed": 4
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 6
+            },
+            "sky_condition": [
+                {
+                    "sky_cover": "overcast",
+                    "layer_height": 600
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 14,
+                "dewpoint": 13
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.91
+            },
+            "remarks": true
+        },
+        {
+            "string": "KSTS 201453Z COR 21004KT 6SM OVC006 14/13 A2991 RMK AO2 SLP122 T01440133 53008",
+            "station_identifier": "KSTS",
+            "observation_time": {
+                "day_of_month": 20,
+                "hour_of_day": 14,
+                "minute_of_hour": 53
+            },
+            "report_modifier": "corrected",
+            "wind": {
+                "unit": "kt",
+                "direction": 210,
+                "wind_speed": 4
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 6
+            },
+            "sky_condition": [
+                {
+                    "sky_cover": "overcast",
+                    "layer_height": 600
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 14,
+                "dewpoint": 13
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.91
+            },
+            "remarks": true
+        },
+        {
+            "string": "KLVK 200153Z 29018G23KT 10SM CLR 23/13 A2986 RMK AO2 SLP108 FU E-SE T02330133",
+            "station_identifier": "KLVK",
+            "observation_time": {
+                "day_of_month": 20,
+                "hour_of_day": 1,
+                "minute_of_hour": 53
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 290,
+                "wind_speed": 18,
+                "gust_speed": 23
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 10
+            },
+            "sky_condition": [
+                {
+                    "sky_cover": "clear_below_12000",
+                    "layer_height": 4294967295
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 23,
+                "dewpoint": 13
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.86
+            },
+            "remarks": true
         }
     ]
 }

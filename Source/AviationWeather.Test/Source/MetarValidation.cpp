@@ -229,12 +229,26 @@ private:
 void MetarValidationTests::MetarValidationTests_Init()
 {
     std::wstring resourcesPath(RESOURCES_DIR);
+    std::wstring expectationFile = L"metar.json";
 
-    std::ifstream stream(resourcesPath + L"metar.json");
+    std::ifstream stream(resourcesPath + expectationFile);
     std::stringstream buffer;
     buffer << stream.rdbuf();
 
-    m_expectationFile = json::parse(buffer.str());
+    try
+    {
+        m_expectationFile = json::parse(buffer.str());
+    }
+    catch (std::exception const&)
+    {
+        wchar_t buf[256];
+        swprintf_s(
+            buf, sizeof(buffer),
+            L"Failed to parse JSON expectation file '%ws'. Try to validate the file using JSONLint.",
+            expectationFile.data()
+        );
+        Assert::Fail(buf);
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -507,6 +521,7 @@ void MetarValidationTests::ValidateSkyCondition(aw::metar::metar_info const& met
         {
             auto expectedSkyCondition = skyConditionGroup.at(i);
             auto actualSkyCondition = metar.sky_condition_group.at(i);
+            bool isClearBelow12000 = false;
 
             if (expectedSkyCondition.find("unit") != expectedSkyCondition.end())
             {
@@ -520,6 +535,9 @@ void MetarValidationTests::ValidateSkyCondition(aw::metar::metar_info const& met
             if (expectedSkyCondition.find("sky_cover") != expectedSkyCondition.end())
             {
                 Assert::AreEqual(expectedSkyCondition["sky_cover"].get<std::string>(), sky_cover_type_strings[etoi(actualSkyCondition.sky_cover)]);
+
+                // If CLR is specified, we have a sky_cover_cloud_type of 'none' so we need to track this here.
+                isClearBelow12000 = actualSkyCondition.sky_cover == aw::sky_cover_type::clear_below_12000;
             }
             else
             {
@@ -541,7 +559,8 @@ void MetarValidationTests::ValidateSkyCondition(aw::metar::metar_info const& met
             }
             else
             {
-                Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, actualSkyCondition.cloud_type);
+                auto expectedCover = isClearBelow12000 ? aw::sky_cover_cloud_type::none : aw::sky_cover_cloud_type::unspecified;
+                Assert::AreEqual(expectedCover, actualSkyCondition.cloud_type);
             }
         }
     }
@@ -573,7 +592,7 @@ void MetarValidationTests::ValidateRemarks(aw::metar::metar_info const& metar, b
 {
     if (test.find("remarks") != test.end())
     {
-        Assert::IsTrue(!metar.remarks.empty() && test["remarks"].get<bool>());
+        Assert::IsTrue(!metar.remarks.empty() == test["remarks"].get<bool>());
     }
     else
     {
