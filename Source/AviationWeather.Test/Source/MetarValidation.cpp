@@ -26,8 +26,7 @@
 #include "framework.h"
 
 #pragma warning(push)
-#pragma warning(disable: 4616)
-#pragma warning(disable: 4706)
+#pragma warning(disable: 4706) // warning C4706: assignment within conditional expression
 #include <JSON/json.hpp>
 #pragma warning(pop)
 
@@ -537,7 +536,10 @@ void MetarValidationTests::ValidateSkyCondition(aw::metar::metar_info const& met
                 Assert::AreEqual(expectedSkyCondition["sky_cover"].get<std::string>(), sky_cover_type_strings[etoi(actualSkyCondition.sky_cover)]);
 
                 // If CLR is specified, we have a sky_cover_cloud_type of 'none' so we need to track this here.
-                isClearBelow12000 = actualSkyCondition.sky_cover == aw::sky_cover_type::clear_below_12000;
+                isClearBelow12000 = (
+                    actualSkyCondition.sky_cover == aw::sky_cover_type::clear_below_12000 ||
+                    actualSkyCondition.sky_cover == aw::sky_cover_type::sky_clear
+                );
             }
             else
             {

@@ -21,8 +21,7 @@
             },
             "sky_condition": [
                 {
-                    "sky_cover": "clear_below_12000",
-                    "cloud_type": "none"
+                    "sky_cover": "clear_below_12000"
                 }
             ],
             "temperature_dewpoint": {
@@ -53,8 +52,7 @@
             },
             "sky_condition": [
                 {
-                    "sky_cover": "sky_clear",
-                    "cloud_type": "none"
+                    "sky_cover": "sky_clear"
                 }
             ],
             "temperature_dewpoint": {
@@ -81,8 +79,7 @@
             },
             "sky_condition": [
                 {
-                    "sky_cover": "clear_below_12000",
-                    "cloud_type": "none"
+                    "sky_cover": "clear_below_12000"
                 }
             ],
             "temperature_dewpoint": {
@@ -120,7 +117,7 @@
             },
             "altimeter": {
                 "unit": "inHg",
-                "pressure": 29.90
+                "pressure": 29.9
             },
             "remarks": true
         },
@@ -172,7 +169,7 @@
             },
             "altimeter": {
                 "unit": "inHg",
-                "pressure": 29.90
+                "pressure": 29.9
             },
             "remarks": true
         },
@@ -236,8 +233,7 @@
             },
             "sky_condition": [
                 {
-                    "sky_cover": "clear_below_12000",
-                    "cloud_type": "none"
+                    "sky_cover": "clear_below_12000"
                 }
             ],
             "temperature_dewpoint": {
@@ -278,8 +274,7 @@
             ],
             "sky_condition": [
                 {
-                    "sky_cover": "clear_below_12000",
-                    "cloud_type": "none"
+                    "sky_cover": "clear_below_12000"
                 }
             ],
             "temperature_dewpoint": {
