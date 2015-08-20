@@ -3,6 +3,9 @@
 *.user
 *.sln.docstates
 
+# VS directories
+.vs/
+
 # Build results
 [Bb]uilt/
 

@@ -23,667 +23,266 @@
 
 #include "framework.h"
 
+ //-----------------------------------------------------------------------------
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
+//-----------------------------------------------------------------------------
 
 namespace aw
 {
 namespace test
 {
 
+//-----------------------------------------------------------------------------
+
 TEST_CLASS(MetarTests)
 {
 public:
-    TEST_METHOD(METAR_KSFO)
-    {
-        aw::metar::metar_info metar("METAR KSFO 172256Z 00000KT 9SM CLR 19/04 A3012");
-
-        Assert::AreEqual(aw::metar::report_type::metar, metar.type);
-
-        Assert::AreEqual(std::string("KSFO"), metar.station_identifier);
-
-        Assert::AreEqual(static_cast<uint8_t>(17), metar.report_time.day_of_month);
-        Assert::AreEqual(static_cast<uint8_t>(22), metar.report_time.hour_of_day);
-        Assert::AreEqual(static_cast<uint8_t>(56), metar.report_time.minute_of_hour);
-
-        Assert::AreEqual(aw::metar::modifier_type::automatic, metar.modifier);
-
-        Assert::AreEqual(static_cast<uint8_t>(0), metar.wind_group.wind_speed);
-        Assert::AreEqual(static_cast<uint16_t>(0), metar.wind_group.direction);
-        Assert::AreEqual(static_cast<uint8_t>(0), metar.wind_group.gust_speed);
-        Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_lower);
-        Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_upper);
-
-        Assert::AreEqual(aw::distance_unit::statute_miles, metar.visibility_group.unit);
-        Assert::AreEqual(9.0, metar.visibility_group.distance);
-
-        Assert::AreEqual(0U, static_cast<uint32_t>(metar.weather_group.size()));
-
-        Assert::AreEqual(1U, static_cast<uint32_t>(metar.sky_condition_group.size()));
-
-        auto it = metar.sky_condition_group.begin();
-        Assert::AreEqual(aw::sky_cover_type::clear_below_12000, it->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::none, it->cloud_type);
-        Assert::IsTrue(it->is_unlimited());
-
-        Assert::AreEqual(static_cast<uint8_t>(19), metar.temperature);
-        Assert::AreEqual(static_cast<uint8_t>(4), metar.dewpoint);
-
-        Assert::AreEqual(aw::pressure_unit::inHg, metar.altimeter_group.unit);
-        Assert::AreEqual(30.12, metar.altimeter_group.pressure, 0.01);
-
-        Assert::AreEqual(std::string(""), metar.remarks);
-
-        auto ceiling = metar.ceiling();
-        Assert::AreEqual(aw::sky_cover_type::clear_below_12000, ceiling.sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::none, ceiling.cloud_type);
-        Assert::IsTrue(ceiling.is_unlimited());
-
-        Assert::AreEqual(aw::flight_category::vfr, metar.flight_category());
-    }
-
-    TEST_METHOD(METAR_KRHV)
-    {
-        aw::metar::metar_info metar("KRHV 122047Z 32009KT 10SM SKC 28/11 A3002");
-
-        Assert::AreEqual(aw::metar::report_type::metar, metar.type);
-
-        Assert::AreEqual(std::string("KRHV"), metar.station_identifier);
-
-        Assert::AreEqual(static_cast<uint8_t>(12), metar.report_time.day_of_month);
-        Assert::AreEqual(static_cast<uint8_t>(20), metar.report_time.hour_of_day);
-        Assert::AreEqual(static_cast<uint8_t>(47), metar.report_time.minute_of_hour);
-
-        Assert::AreEqual(aw::metar::modifier_type::automatic, metar.modifier);
-
-        Assert::AreEqual(static_cast<uint16_t>(320), metar.wind_group.direction);
-        Assert::AreEqual(static_cast<uint8_t>(9), metar.wind_group.wind_speed);
-        Assert::AreEqual(static_cast<uint8_t>(0), metar.wind_group.gust_speed);
-        Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_lower);
-        Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_upper);
-
-        Assert::AreEqual(aw::distance_unit::statute_miles, metar.visibility_group.unit);
-        Assert::AreEqual(10.0, metar.visibility_group.distance);
-
-        Assert::AreEqual(0U, static_cast<uint32_t>(metar.weather_group.size()));
-
-        Assert::AreEqual(1U, static_cast<uint32_t>(metar.sky_condition_group.size()));
-
-        auto it = metar.sky_condition_group.begin();
-        Assert::AreEqual(aw::sky_cover_type::sky_clear, it->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::none, it->cloud_type);
-        Assert::IsTrue(it->is_unlimited());
-
-        Assert::AreEqual(static_cast<uint8_t>(28), metar.temperature);
-        Assert::AreEqual(static_cast<uint8_t>(11), metar.dewpoint);
-
-        Assert::AreEqual(aw::pressure_unit::inHg, metar.altimeter_group.unit);
-        Assert::AreEqual(30.02, metar.altimeter_group.pressure, 0.01);
-
-        Assert::AreEqual(std::string(""), metar.remarks);
-
-        auto ceiling = metar.ceiling();
-        Assert::AreEqual(aw::sky_cover_type::sky_clear, ceiling.sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::none, ceiling.cloud_type);
-        Assert::IsTrue(ceiling.is_unlimited());
-
-        Assert::AreEqual(aw::flight_category::vfr, metar.flight_category());
-    }
-
-    TEST_METHOD(METAR_CYUL)
-    {
-        aw::metar::metar_info metar("CYUL 042100Z 20006KT 15SM FEW120 SCT170 BKN240 24/10 A2989 RMK AC1AC2CI4 SLP123 DENSITY ALT 1200FT");
-
-        Assert::AreEqual(aw::metar::report_type::metar, metar.type);
-
-        Assert::AreEqual(std::string("CYUL"), metar.station_identifier);
-
-        Assert::AreEqual(static_cast<uint8_t>(4), metar.report_time.day_of_month);
-        Assert::AreEqual(static_cast<uint8_t>(21), metar.report_time.hour_of_day);
-        Assert::AreEqual(static_cast<uint8_t>(0), metar.report_time.minute_of_hour);
-
-        Assert::AreEqual(aw::metar::modifier_type::automatic, metar.modifier);
-
-        Assert::AreEqual(static_cast<uint8_t>(6), metar.wind_group.wind_speed);
-        Assert::AreEqual(static_cast<uint16_t>(200), metar.wind_group.direction);
-        Assert::AreEqual(static_cast<uint8_t>(0), metar.wind_group.gust_speed);
-        Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_lower);
-        Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_upper);
-
-        Assert::AreEqual(aw::distance_unit::statute_miles, metar.visibility_group.unit);
-        Assert::AreEqual(15.0, metar.visibility_group.distance);
-
-        Assert::AreEqual(0U, static_cast<uint32_t>(metar.weather_group.size()));
-
-        Assert::AreEqual(3U, static_cast<uint32_t>(metar.sky_condition_group.size()));
-
-        auto it = metar.sky_condition_group.begin();
-        Assert::AreEqual(aw::sky_cover_type::few, it->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, it->cloud_type);
-        Assert::AreEqual(12000U, it->layer_height);
-
-        ++it;
-        Assert::AreEqual(aw::sky_cover_type::scattered, it->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, it->cloud_type);
-        Assert::AreEqual(17000U, it->layer_height);
-
-        ++it;
-        Assert::AreEqual(aw::sky_cover_type::broken, it->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, it->cloud_type);
-        Assert::AreEqual(24000U, it->layer_height);
-
-        Assert::AreEqual(static_cast<uint8_t>(24), metar.temperature);
-        Assert::AreEqual(static_cast<uint8_t>(10), metar.dewpoint);
-
-        Assert::AreEqual(aw::pressure_unit::inHg, metar.altimeter_group.unit);
-        Assert::AreEqual(29.89, metar.altimeter_group.pressure, 0.01);
-
-        Assert::AreEqual(std::string("AC1AC2CI4 SLP123 DENSITY ALT 1200FT"), metar.remarks);
-
-        auto ceiling = metar.ceiling();
-        Assert::AreEqual(aw::sky_cover_type::broken, ceiling.sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, ceiling.cloud_type);
-        Assert::AreEqual(24000U, ceiling.layer_height);
-        Assert::IsFalse(ceiling.is_unlimited());
-
-        Assert::AreEqual(aw::flight_category::vfr, metar.flight_category());
-    }
-
-    TEST_METHOD(METAR_KVNY)
-    {
-        aw::metar::metar_info metar("KVNY 302351Z COR 14014KT 10SM BKN150 28/14 A2996 RMK AO2 PK WND 16029/2305 SLP135 T02830139 10372 20283 53030");
-
-        Assert::AreEqual(aw::metar::report_type::metar, metar.type);
-
-        Assert::AreEqual(std::string("KVNY"), metar.station_identifier);
-
-        Assert::AreEqual(static_cast<uint8_t>(30), metar.report_time.day_of_month);
-        Assert::AreEqual(static_cast<uint8_t>(23), metar.report_time.hour_of_day);
-        Assert::AreEqual(static_cast<uint8_t>(51), metar.report_time.minute_of_hour);
-
-        Assert::AreEqual(aw::metar::modifier_type::corrected, metar.modifier);
-
-        Assert::AreEqual(static_cast<uint8_t>(14), metar.wind_group.wind_speed);
-        Assert::AreEqual(static_cast<uint16_t>(140), metar.wind_group.direction);
-        Assert::AreEqual(static_cast<uint8_t>(0), metar.wind_group.gust_speed);
-        Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_lower);
-        Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_upper);
-
-        Assert::AreEqual(aw::distance_unit::statute_miles, metar.visibility_group.unit);
-        Assert::AreEqual(10.0, metar.visibility_group.distance);
-
-        Assert::AreEqual(0U, static_cast<uint32_t>(metar.weather_group.size()));
-
-        Assert::AreEqual(1U, static_cast<uint32_t>(metar.sky_condition_group.size()));
-
-        auto it = metar.sky_condition_group.begin();
-        Assert::AreEqual(aw::sky_cover_type::broken, it->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, it->cloud_type);
-        Assert::AreEqual(15000U, it->layer_height);
-
-        Assert::AreEqual(static_cast<uint8_t>(28), metar.temperature);
-        Assert::AreEqual(static_cast<uint8_t>(14), metar.dewpoint);
-
-        Assert::AreEqual(aw::pressure_unit::inHg, metar.altimeter_group.unit);
-        Assert::AreEqual(29.96, metar.altimeter_group.pressure, 0.01);
-
-        Assert::AreEqual(std::string("AO2 PK WND 16029/2305 SLP135 T02830139 10372 20283 53030"), metar.remarks);
-
-        auto ceiling = metar.ceiling();
-        Assert::AreEqual(aw::sky_cover_type::broken, ceiling.sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, ceiling.cloud_type);
-        Assert::AreEqual(15000U, ceiling.layer_height);
-        Assert::IsFalse(ceiling.is_unlimited());
-
-        Assert::AreEqual(aw::flight_category::vfr, metar.flight_category());
-    }
-
-    TEST_METHOD(METAR_KLAX)
-    {
-        aw::metar::metar_info metar("KLAX 011153Z COR 00000KT 10SM FEW007 SCT050 SCT160 BKN250 20/18 A2990 RMK AO2 SLP122 FRQ LTGICCGCA DSNT N CB DSNT N-NE T02000178 10200 20189 50014 $");
-
-        Assert::AreEqual(aw::metar::report_type::metar, metar.type);
-
-        Assert::AreEqual(std::string("KLAX"), metar.station_identifier);
-
-        Assert::AreEqual(static_cast<uint8_t>(1), metar.report_time.day_of_month);
-        Assert::AreEqual(static_cast<uint8_t>(11), metar.report_time.hour_of_day);
-        Assert::AreEqual(static_cast<uint8_t>(53), metar.report_time.minute_of_hour);
-
-        Assert::AreEqual(aw::metar::modifier_type::corrected, metar.modifier);
-
-        Assert::AreEqual(static_cast<uint8_t>(0), metar.wind_group.wind_speed);
-        Assert::AreEqual(static_cast<uint16_t>(0), metar.wind_group.direction);
-        Assert::AreEqual(static_cast<uint8_t>(0), metar.wind_group.gust_speed);
-        Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_lower);
-        Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_upper);
-
-        Assert::AreEqual(aw::distance_unit::statute_miles, metar.visibility_group.unit);
-        Assert::AreEqual(10.0, metar.visibility_group.distance);
-
-        Assert::AreEqual(0U, static_cast<uint32_t>(metar.weather_group.size()));
-
-        Assert::AreEqual(4U, static_cast<uint32_t>(metar.sky_condition_group.size()));
-
-        auto it = metar.sky_condition_group.begin();
-        Assert::AreEqual(aw::sky_cover_type::few, it->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, it->cloud_type);
-        Assert::AreEqual(700U, it->layer_height);
-
-        ++it;
-        Assert::AreEqual(aw::sky_cover_type::scattered, it->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, it->cloud_type);
-        Assert::AreEqual(5000U, it->layer_height);
-
-        ++it;
-        Assert::AreEqual(aw::sky_cover_type::scattered, it->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, it->cloud_type);
-        Assert::AreEqual(16000U, it->layer_height);
-
-        ++it;
-        Assert::AreEqual(aw::sky_cover_type::broken, it->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, it->cloud_type);
-        Assert::AreEqual(25000U, it->layer_height);
-
-        Assert::AreEqual(static_cast<uint8_t>(20), metar.temperature);
-        Assert::AreEqual(static_cast<uint8_t>(18), metar.dewpoint);
-
-        Assert::AreEqual(aw::pressure_unit::inHg, metar.altimeter_group.unit);
-        Assert::AreEqual(29.90, metar.altimeter_group.pressure, 0.01);
-
-        Assert::AreEqual(std::string("AO2 SLP122 FRQ LTGICCGCA DSNT N CB DSNT N-NE T02000178 10200 20189 50014 $"), metar.remarks);
-
-        auto ceiling = metar.ceiling();
-        Assert::AreEqual(aw::sky_cover_type::broken, ceiling.sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, ceiling.cloud_type);
-        Assert::AreEqual(25000U, ceiling.layer_height);
-        Assert::IsFalse(ceiling.is_unlimited());
-
-        Assert::AreEqual(aw::flight_category::vfr, metar.flight_category());
-    }
-
-    TEST_METHOD(METAR_KRNO_1)
-    {
-        aw::metar::metar_info metar("KRNO 030155Z 26015G23KT 10SM TS SCT110CB BKN180 28/13 A3006 RMK AO2 PK WND 31027/0109 RAB03E20 PRESRR SLP119 OCNL LTGIC NW TS NW MOV W CB DSNT N S SH VC SW NW P0000 T02830128");
-
-        Assert::AreEqual(aw::metar::report_type::metar, metar.type);
-
-        Assert::AreEqual(std::string("KRNO"), metar.station_identifier);
-
-        Assert::AreEqual(static_cast<uint8_t>(3), metar.report_time.day_of_month);
-        Assert::AreEqual(static_cast<uint8_t>(1), metar.report_time.hour_of_day);
-        Assert::AreEqual(static_cast<uint8_t>(55), metar.report_time.minute_of_hour);
-
-        Assert::AreEqual(aw::metar::modifier_type::automatic, metar.modifier);
-
-        Assert::AreEqual(static_cast<uint8_t>(15), metar.wind_group.wind_speed);
-        Assert::AreEqual(static_cast<uint16_t>(260), metar.wind_group.direction);
-        Assert::AreEqual(static_cast<uint8_t>(23), metar.wind_group.gust_speed);
-        Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_lower);
-        Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_upper);
-
-        Assert::AreEqual(aw::distance_unit::statute_miles, metar.visibility_group.unit);
-        Assert::AreEqual(10.0, metar.visibility_group.distance);
-
-        Assert::AreEqual(1U, static_cast<uint32_t>(metar.weather_group.size()));
-
-        auto itWeather = metar.weather_group.begin();
-        Assert::AreEqual(aw::weather_intensity::moderate, itWeather->intensity);
-        Assert::AreEqual(aw::weather_descriptor::thunderstorm, itWeather->descriptor);
-        Assert::AreEqual(0U, static_cast<uint32_t>(itWeather->phenomena.size()));
-
-        Assert::AreEqual(2U, static_cast<uint32_t>(metar.sky_condition_group.size()));
-
-        auto itSky = metar.sky_condition_group.begin();
-        Assert::AreEqual(aw::sky_cover_type::scattered, itSky->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::cumulonimbus, itSky->cloud_type);
-        Assert::AreEqual(11000U, itSky->layer_height);
-
-        ++itSky;
-        Assert::AreEqual(aw::sky_cover_type::broken, itSky->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, itSky->cloud_type);
-        Assert::AreEqual(18000U, itSky->layer_height);
-
-        Assert::AreEqual(static_cast<uint8_t>(28), metar.temperature);
-        Assert::AreEqual(static_cast<uint8_t>(13), metar.dewpoint);
-
-        Assert::AreEqual(aw::pressure_unit::inHg, metar.altimeter_group.unit);
-        Assert::AreEqual(30.06, metar.altimeter_group.pressure, 0.01);
-
-        Assert::AreEqual(std::string("AO2 PK WND 31027/0109 RAB03E20 PRESRR SLP119 OCNL LTGIC NW TS NW MOV W CB DSNT N S SH VC SW NW P0000 T02830128"), metar.remarks);
-
-        auto ceiling = metar.ceiling();
-        Assert::AreEqual(aw::sky_cover_type::broken, ceiling.sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, ceiling.cloud_type);
-        Assert::AreEqual(18000U, ceiling.layer_height);
-        Assert::IsFalse(ceiling.is_unlimited());
-
-        Assert::AreEqual(aw::flight_category::vfr, metar.flight_category());
-    }
-
-    TEST_METHOD(METAR_KRNO_2)
-    {
-        aw::metar::metar_info metar("KRNO 010155Z 09027G32KT 10SM +TSRA BKN090CB BKN160 BKN250 29/13 A3007 RMK AO2 PK WND 09032/0155 WSHFT 0130 RAB32 TSB02 PRESRR SLP120 FRQ LTGCGIC OHD NE-E TS OHD NE-E MOV N P0000 T02890128");
-
-        Assert::AreEqual(aw::metar::report_type::metar, metar.type);
-
-        Assert::AreEqual(std::string("KRNO"), metar.station_identifier);
-
-        Assert::AreEqual(static_cast<uint8_t>(1), metar.report_time.day_of_month);
-        Assert::AreEqual(static_cast<uint8_t>(1), metar.report_time.hour_of_day);
-        Assert::AreEqual(static_cast<uint8_t>(55), metar.report_time.minute_of_hour);
-
-        Assert::AreEqual(aw::metar::modifier_type::automatic, metar.modifier);
-
-        Assert::AreEqual(static_cast<uint8_t>(27), metar.wind_group.wind_speed);
-        Assert::AreEqual(static_cast<uint16_t>(90), metar.wind_group.direction);
-        Assert::AreEqual(static_cast<uint8_t>(32), metar.wind_group.gust_speed);
-        Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_lower);
-        Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_upper);
-
-        Assert::AreEqual(aw::distance_unit::statute_miles, metar.visibility_group.unit);
-        Assert::AreEqual(10.0, metar.visibility_group.distance);
-
-        Assert::AreEqual(1U, static_cast<uint32_t>(metar.weather_group.size()));
-
-        auto itWeather = metar.weather_group.begin();
-        Assert::AreEqual(aw::weather_intensity::heavy, itWeather->intensity);
-        Assert::AreEqual(aw::weather_descriptor::thunderstorm, itWeather->descriptor);
-
-        Assert::AreEqual(1U, static_cast<uint32_t>(itWeather->phenomena.size()));
-        Assert::AreEqual(aw::weather_phenomena::rain, itWeather->phenomena.front());
-
-        Assert::AreEqual(3U, static_cast<uint32_t>(metar.sky_condition_group.size()));
-
-        auto itSky = metar.sky_condition_group.begin();
-        Assert::AreEqual(aw::sky_cover_type::broken, itSky->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::cumulonimbus, itSky->cloud_type);
-        Assert::AreEqual(9000U, itSky->layer_height);
-
-        ++itSky;
-        Assert::AreEqual(aw::sky_cover_type::broken, itSky->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, itSky->cloud_type);
-        Assert::AreEqual(16000U, itSky->layer_height);
-
-        ++itSky;
-        Assert::AreEqual(aw::sky_cover_type::broken, itSky->sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, itSky->cloud_type);
-        Assert::AreEqual(25000U, itSky->layer_height);
-
-        Assert::AreEqual(static_cast<uint8_t>(29), metar.temperature);
-        Assert::AreEqual(static_cast<uint8_t>(13), metar.dewpoint);
-
-        Assert::AreEqual(aw::pressure_unit::inHg, metar.altimeter_group.unit);
-        Assert::AreEqual(30.07, metar.altimeter_group.pressure, 0.01);
-
-        Assert::AreEqual(std::string("AO2 PK WND 09032/0155 WSHFT 0130 RAB32 TSB02 PRESRR SLP120 FRQ LTGCGIC OHD NE-E TS OHD NE-E MOV N P0000 T02890128"), metar.remarks);
-
-        auto ceiling = metar.ceiling();
-        Assert::AreEqual(aw::sky_cover_type::broken, ceiling.sky_cover);
-        Assert::AreEqual(aw::sky_cover_cloud_type::cumulonimbus, ceiling.cloud_type);
-        Assert::AreEqual(9000U, ceiling.layer_height);
-        Assert::IsFalse(ceiling.is_unlimited());
-        
-        Assert::AreEqual(aw::flight_category::vfr, metar.flight_category());
-    }
-
-    TEST_METHOD(METAR_FlightCategory)
-    {
-        aw::metar::metar_info krhv_metar("KRHV 102347Z 32017KT 10SM SCT180 26/15 A2991");
-        aw::metar::metar_info ksts_metar("KSTS 102353Z 23009KT 10SM SCT150 30/13 A2983 RMK AO2 SLP094 T03000128 10311 20211 56014");
-        Assert::AreEqual(aw::flight_category::vfr, krhv_metar.flight_category());
-        Assert::AreEqual(aw::flight_category::vfr, ksts_metar.flight_category());
-
-        aw::metar::metar_info koak_mvfr_metar("KOAK 102353Z 26016KT 10SM BKN012 BKN200 21/15 A2993 RMK AO2 SLP135 T02060150 10228 20200 58011");
-        aw::metar::metar_info ksfo_mvfr_metar("KSFO 102356Z 27019G24KT 10SM FEW008 SCT012 BKN015 21/14 A2994 RMK AO2 PK WND 27028/2303 SLP137 T02060144 10228 20200 58012");
-        aw::metar::metar_info ksts_mvfr_metar("KSTS 152153Z 24008KT 3SM HZ FU CLR 35/09 A2989 RMK AO2 SLP116 T03500089");
-        aw::metar::metar_info kpao_mvfr_metar("KPAO 152147Z 34010KT 4SM HZ SCT150 34/12 2992");
-        aw::metar::metar_info kapc_mvfr_metar("KAPC 151954Z 21007KT 170V230 5SM HZ FU CLR 31/12 A2996 RMK AO2 SLP135 SMOKE ALQDS UP TO 7500 MSL FLIGHT VIS 4-5 MI T03110117");
-        Assert::AreEqual(aw::flight_category::mvfr, koak_mvfr_metar.flight_category());
-        Assert::AreEqual(aw::flight_category::mvfr, ksfo_mvfr_metar.flight_category());
-        Assert::AreEqual(aw::flight_category::mvfr, ksts_mvfr_metar.flight_category());
-        Assert::AreEqual(aw::flight_category::mvfr, kpao_mvfr_metar.flight_category());
-        Assert::AreEqual(aw::flight_category::mvfr, kapc_mvfr_metar.flight_category());
-
-        aw::metar::metar_info kcec_metar("KCEC 102356Z AUTO 26009KT 10SM OVC009 18/14 A2997 RMK AO2 SLP149 T01780144 10206 20161 50001");
-        aw::metar::metar_info kacv_metar("KACV 102353Z AUTO 28007KT 10SM OVC009 18/16 A2997 RMK AO2 SLP152 T01830156 10217 20178 51001");
-        Assert::AreEqual(aw::flight_category::ifr, kcec_metar.flight_category());
-        Assert::AreEqual(aw::flight_category::ifr, kacv_metar.flight_category());
-
-        aw::metar::metar_info konp_metar("KONP 102355Z AUTO 27003KT 1 1/2SM BR OVC003 16/14 A3000 RMK AO2");
-        aw::metar::metar_info kcho_metar("KCHO 102353Z 16007KT 2SM BR OVC003 22/21 A2991 RMK AO2 RAE48 SLP122 P0002 60003 T02220211 10233 20222 56011");
-        Assert::AreEqual(aw::flight_category::lifr, konp_metar.flight_category());
-        Assert::AreEqual(aw::flight_category::lifr, kcho_metar.flight_category());
-    }
-
-    TEST_METHOD(METAR_VariableWinds)
-    {
-        aw::metar::metar_info m1("KSFO 112056Z VRB03KT 10SM FEW010 SCT180 22/12 A2994 RMK AO2 SLP137 T02220122 58006");
-
-        Assert::IsTrue(m1.wind_group.is_variable());
-        Assert::AreEqual(UINT16_MAX, m1.wind_group.direction);
-        Assert::AreEqual(static_cast<uint8_t>(3), m1.wind_group.wind_speed);
-        Assert::AreEqual(static_cast<uint8_t>(0), m1.wind_group.gust_speed);
-        Assert::AreEqual(static_cast<uint8_t>(0), m1.wind_group.gust_factor());
-        Assert::AreEqual(UINT16_MAX, m1.wind_group.variation_lower);
-        Assert::AreEqual(UINT16_MAX, m1.wind_group.variation_upper);
-
-        aw::metar::metar_info m2("KRHV 101451Z 29014G18KT 10SM SKC 27/13 A2990");
-
-        Assert::IsFalse(m2.wind_group.is_variable());
-        Assert::AreEqual(static_cast<uint16_t>(290), m2.wind_group.direction);
-        Assert::AreEqual(static_cast<uint8_t>(14), m2.wind_group.wind_speed);
-        Assert::AreEqual(static_cast<uint8_t>(18), m2.wind_group.gust_speed);
-        Assert::AreEqual(static_cast<uint8_t>(4), m2.wind_group.gust_factor());
-        Assert::AreEqual(UINT16_MAX, m2.wind_group.variation_lower);
-        Assert::AreEqual(UINT16_MAX, m2.wind_group.variation_upper);
-
-        aw::metar::metar_info m3("KRHV 101850Z VRB02G06KT 10SM SKC 27/13 A2990");
-
-        Assert::IsTrue(m3.wind_group.is_variable());
-        Assert::AreEqual(UINT16_MAX, m3.wind_group.direction);
-        Assert::AreEqual(static_cast<uint8_t>(2), m3.wind_group.wind_speed);
-        Assert::AreEqual(static_cast<uint8_t>(6), m3.wind_group.gust_speed);
-        Assert::AreEqual(static_cast<uint8_t>(4), m3.wind_group.gust_factor());
-        Assert::AreEqual(UINT16_MAX, m3.wind_group.variation_lower);
-        Assert::AreEqual(UINT16_MAX, m3.wind_group.variation_upper);
-
-        aw::metar::metar_info m5("KRHV 112150Z 22512G15KT 200V250 10SM SKC 27/13 A2990");
-
-        Assert::IsTrue(m5.wind_group.is_variable());
-        Assert::AreEqual(static_cast<uint16_t>(225), m5.wind_group.direction);
-        Assert::AreEqual(static_cast<uint8_t>(12), m5.wind_group.wind_speed);
-        Assert::AreEqual(static_cast<uint8_t>(15), m5.wind_group.gust_speed);
-        Assert::AreEqual(static_cast<uint8_t>(3), m5.wind_group.gust_factor());
-        Assert::AreEqual(static_cast<uint16_t>(200), m5.wind_group.variation_lower);
-        Assert::AreEqual(static_cast<uint16_t>(250), m5.wind_group.variation_upper);
-    }
-
-    TEST_METHOD(METAR_FractionalVisibility)
-    {
-        aw::metar::metar_info m1("KSFO 121156Z 28005KT M1/4SM FEW006 15/12 A3000");
-
-        Assert::AreEqual(aw::distance_unit::statute_miles, m1.visibility_group.unit);
-        Assert::AreEqual(aw::metar::visibility_modifier_type::less_than, m1.visibility_group.modifier);
-        Assert::AreEqual(1.0 / 4.0, m1.visibility_group.distance, 0.01);
-
-        aw::metar::metar_info m2("KSFO 121156Z 28005KT 1/2SM FEW006 15/12 A3000");
-
-        Assert::AreEqual(aw::distance_unit::statute_miles, m2.visibility_group.unit);
-        Assert::AreEqual(aw::metar::visibility_modifier_type::none, m2.visibility_group.modifier);
-        Assert::AreEqual(1.0 / 2.0, m2.visibility_group.distance, 0.01);
-
-        aw::metar::metar_info m3("KSFO 121156Z 28005KT 1 1/2SM FEW006 15/12 A3000");
-
-        Assert::AreEqual(aw::distance_unit::statute_miles, m3.visibility_group.unit);
-        Assert::AreEqual(aw::metar::visibility_modifier_type::none, m3.visibility_group.modifier);
-        Assert::AreEqual(1.0 + (1.0 / 2.0), m3.visibility_group.distance, 0.01);
-
-        aw::metar::metar_info m4("KSFO 121156Z 28005KT 15SM FEW006 15/12 A3000");
-
-        Assert::AreEqual(aw::distance_unit::statute_miles, m4.visibility_group.unit);
-        Assert::AreEqual(aw::metar::visibility_modifier_type::none, m4.visibility_group.modifier);
-        Assert::AreEqual(15.0, m4.visibility_group.distance, 0.01);
-    }
-
-    TEST_METHOD(METAR_Visibility_Comparison)
-    {
-        const double distance = 10.0;
-
-        aw::metar::visibility v1(distance, aw::distance_unit::statute_miles, aw::metar::visibility_modifier_type::none);
-        aw::metar::visibility v2(distance, aw::distance_unit::statute_miles, aw::metar::visibility_modifier_type::less_than);
-        aw::metar::visibility v3(distance - 1.0, aw::distance_unit::statute_miles, aw::metar::visibility_modifier_type::none);
-        aw::metar::visibility v4(distance - 1.0, aw::distance_unit::statute_miles, aw::metar::visibility_modifier_type::less_than);
-
-        // v1, v2
-        Assert::IsFalse(v1 == v2); Assert::IsTrue(v1 != v2);
-        Assert::IsFalse(v1 <= v2); Assert::IsTrue(v1 >= v2);
-        Assert::IsFalse(v1 < v2);  Assert::IsTrue(v1 > v2);
-
-        // v1, v3
-        Assert::IsFalse(v1 == v3); Assert::IsTrue(v1 != v3);
-        Assert::IsFalse(v1 <= v3); Assert::IsTrue(v1 >= v3);
-        Assert::IsFalse(v1 < v3);  Assert::IsTrue(v1 > v3);
-
-        // v1, v4
-        Assert::IsFalse(v1 == v4); Assert::IsTrue(v1 != v4);
-        Assert::IsFalse(v1 <= v4); Assert::IsTrue(v1 >= v4);
-        Assert::IsFalse(v1 < v4);  Assert::IsTrue(v1 > v4);
-
-
-        // v2, v1
-        Assert::IsFalse(v2 == v1); Assert::IsTrue(v2 != v1);
-        Assert::IsTrue(v2 <= v1);  Assert::IsFalse(v2 >= v1);
-        Assert::IsTrue(v2 < v1);   Assert::IsFalse(v2 > v1);
-
-        // v2, v3
-        Assert::IsFalse(v2 == v3); Assert::IsTrue(v2 != v3);
-        Assert::IsFalse(v2 <= v3); Assert::IsTrue(v2 >= v3);
-        Assert::IsFalse(v2 < v3);  Assert::IsTrue(v2 > v3);
-
-        // v2, v4
-        Assert::IsFalse(v2 == v4); Assert::IsTrue(v2 != v4);
-        Assert::IsFalse(v2 <= v4); Assert::IsTrue(v2 >= v4);
-        Assert::IsFalse(v2 < v4);  Assert::IsTrue(v2 > v4);
-
-
-        // v3, v1
-        Assert::IsFalse(v3 == v1); Assert::IsTrue(v3 != v1);
-        Assert::IsTrue(v3 <= v1);  Assert::IsFalse(v3 >= v1);
-        Assert::IsTrue(v3 < v1);   Assert::IsFalse(v3 > v1);
-
-        // v3, v2
-        Assert::IsFalse(v3 == v2); Assert::IsTrue(v3 != v2);
-        Assert::IsTrue(v3 <= v2);  Assert::IsFalse(v3 >= v2);
-        Assert::IsTrue(v3 < v2);   Assert::IsFalse(v3 > v2);
-
-        // v3, v4
-        Assert::IsFalse(v3 == v4); Assert::IsTrue(v3 != v4);
-        Assert::IsFalse(v3 <= v4); Assert::IsTrue(v3 >= v4);
-        Assert::IsFalse(v3 < v4);  Assert::IsTrue(v3 > v4);
-
-
-        // v4, v1
-        Assert::IsFalse(v4 == v1); Assert::IsTrue(v4 != v1);
-        Assert::IsTrue(v4 <= v1);  Assert::IsFalse(v4 >= v1);
-        Assert::IsTrue(v4 < v1);   Assert::IsFalse(v4 > v1);
-
-        // v4, v2
-        Assert::IsFalse(v4 == v2); Assert::IsTrue(v4 != v2);
-        Assert::IsTrue(v4 <= v2);  Assert::IsFalse(v4 >= v2);
-        Assert::IsTrue(v4 < v2);   Assert::IsFalse(v4 > v2);
-
-        // v4, v3
-        Assert::IsFalse(v4 == v3); Assert::IsTrue(v4 != v3);
-        Assert::IsTrue(v4 <= v3);  Assert::IsFalse(v4 >= v3);
-        Assert::IsTrue(v4 < v3);   Assert::IsFalse(v4 > v3);
-    }
-
-    TEST_METHOD(METAR_Phenomena)
-    {
-        aw::metar::metar_info m1("KCCR 181953Z 28011KT 10SM FU CLR 27/12 A2990 RMK AO2 SLP110 T02720122");
-
-        Assert::AreEqual(1U, static_cast<uint32_t>(m1.weather_group.size()));
-        auto it = m1.weather_group.begin();
-        Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
-        Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
-        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
-        Assert::AreEqual(aw::weather_phenomena::smoke, it->phenomena.front());
-        
-        aw::metar::metar_info m2("KRHV 181947Z 33008/KT 6SM HZ SKC 29/12 A2992");
-
-        Assert::AreEqual(1U, static_cast<uint32_t>(m2.weather_group.size()));
-        it = m2.weather_group.begin();
-        Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
-        Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
-        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
-        Assert::AreEqual(aw::weather_phenomena::haze, it->phenomena.front());
-
-        aw::metar::metar_info m3("KSTS 181253Z AUTO 00000KT 10SM -RA HZ FU OVC007 14/12 A2990 RMK AO2 RAB30 SLP116 P0000 T01390122");
-
-        Assert::AreEqual(3U, static_cast<uint32_t>(m3.weather_group.size()));
-        it = m3.weather_group.begin();
-        Assert::AreEqual(aw::weather_intensity::light, it->intensity);
-        Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
-        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
-        Assert::AreEqual(aw::weather_phenomena::rain, it->phenomena.front());
-        it++;
-        Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
-        Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
-        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
-        Assert::AreEqual(aw::weather_phenomena::haze, it->phenomena.front());
-        it++;
-        Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
-        Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
-        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
-        Assert::AreEqual(aw::weather_phenomena::smoke, it->phenomena.front());
-
-        aw::metar::metar_info m4("KSTS 182253Z 19008KT 9SM FU HZ CLR 25/13 A2988 RMK AO2 SLP112 T02500133");
-
-        Assert::AreEqual(2U, static_cast<uint32_t>(m4.weather_group.size()));
-        it = m4.weather_group.begin();
-        Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
-        Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
-        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
-        Assert::AreEqual(aw::weather_phenomena::smoke, it->phenomena.front());
-        it++;
-        Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
-        Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
-        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
-        Assert::AreEqual(aw::weather_phenomena::haze, it->phenomena.front());
-
-        aw::metar::metar_info m5("KWVI 171553Z AUTO 00000KT 1 1/4SM BR OVC002 17/15 A2989 RMK AO2 SLP122 T01670150");
-
-        Assert::AreEqual(1U, static_cast<uint32_t>(m5.weather_group.size()));
-        it = m5.weather_group.begin();
-        Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
-        Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
-        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
-        Assert::AreEqual(aw::weather_phenomena::mist, it->phenomena.front());
-
-        aw::metar::metar_info m6("KWVI 171453Z AUTO 00000KT 1/4SM FG VV002 16/15 A2989 RMK AO2 SLP119 T01610150 53007");
-
-        Assert::AreEqual(1U, static_cast<uint32_t>(m6.weather_group.size()));
-        it = m6.weather_group.begin();
-        Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
-        Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
-        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
-        Assert::AreEqual(aw::weather_phenomena::fog, it->phenomena.front());
-
-        aw::metar::metar_info m7("KORD 190151Z 19010KT 5SM TSRA BR FEW027 BKN048CB OVC090 21/19 A2971 RMK AO2 PK WND 18028/0112 SLP057 FRQ LTGICCG OHD TS OHD MOV NE P0023 T02060194");
-
-        Assert::AreEqual(2U, static_cast<uint32_t>(m7.weather_group.size()));
-        it = m7.weather_group.begin();
-        Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
-        Assert::AreEqual(aw::weather_descriptor::thunderstorm, it->descriptor);
-        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
-        Assert::AreEqual(aw::weather_phenomena::rain, it->phenomena.front());
-        it++;
-        Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
-        Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
-        Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
-        Assert::AreEqual(aw::weather_phenomena::mist, it->phenomena.front());
-    }
+    TEST_METHOD(METAR_VariableWinds);
+    TEST_METHOD(METAR_FractionalVisibility);
+    TEST_METHOD(METAR_Visibility_Comparison);
+    TEST_METHOD(METAR_Phenomena);
 };
+
+//-----------------------------------------------------------------------------
+
+void MetarTests::METAR_VariableWinds()
+{
+    aw::metar::metar_info m1("KSFO 112056Z VRB03KT 10SM FEW010 SCT180 22/12 A2994 RMK AO2 SLP137 T02220122 58006");
+
+    Assert::IsTrue(m1.wind_group.is_variable());
+    Assert::AreEqual(UINT16_MAX, m1.wind_group.direction);
+    Assert::AreEqual(static_cast<uint8_t>(3), m1.wind_group.wind_speed);
+    Assert::AreEqual(static_cast<uint8_t>(0), m1.wind_group.gust_speed);
+    Assert::AreEqual(static_cast<uint8_t>(0), m1.wind_group.gust_factor());
+    Assert::AreEqual(UINT16_MAX, m1.wind_group.variation_lower);
+    Assert::AreEqual(UINT16_MAX, m1.wind_group.variation_upper);
+
+    aw::metar::metar_info m2("KRHV 101451Z 29014G18KT 10SM SKC 27/13 A2990");
+
+    Assert::IsFalse(m2.wind_group.is_variable());
+    Assert::AreEqual(static_cast<uint16_t>(290), m2.wind_group.direction);
+    Assert::AreEqual(static_cast<uint8_t>(14), m2.wind_group.wind_speed);
+    Assert::AreEqual(static_cast<uint8_t>(18), m2.wind_group.gust_speed);
+    Assert::AreEqual(static_cast<uint8_t>(4), m2.wind_group.gust_factor());
+    Assert::AreEqual(UINT16_MAX, m2.wind_group.variation_lower);
+    Assert::AreEqual(UINT16_MAX, m2.wind_group.variation_upper);
+
+    aw::metar::metar_info m3("KRHV 101850Z VRB02G06KT 10SM SKC 27/13 A2990");
+
+    Assert::IsTrue(m3.wind_group.is_variable());
+    Assert::AreEqual(UINT16_MAX, m3.wind_group.direction);
+    Assert::AreEqual(static_cast<uint8_t>(2), m3.wind_group.wind_speed);
+    Assert::AreEqual(static_cast<uint8_t>(6), m3.wind_group.gust_speed);
+    Assert::AreEqual(static_cast<uint8_t>(4), m3.wind_group.gust_factor());
+    Assert::AreEqual(UINT16_MAX, m3.wind_group.variation_lower);
+    Assert::AreEqual(UINT16_MAX, m3.wind_group.variation_upper);
+
+    aw::metar::metar_info m5("KRHV 112150Z 22512G15KT 200V250 10SM SKC 27/13 A2990");
+
+    Assert::IsTrue(m5.wind_group.is_variable());
+    Assert::AreEqual(static_cast<uint16_t>(225), m5.wind_group.direction);
+    Assert::AreEqual(static_cast<uint8_t>(12), m5.wind_group.wind_speed);
+    Assert::AreEqual(static_cast<uint8_t>(15), m5.wind_group.gust_speed);
+    Assert::AreEqual(static_cast<uint8_t>(3), m5.wind_group.gust_factor());
+    Assert::AreEqual(static_cast<uint16_t>(200), m5.wind_group.variation_lower);
+    Assert::AreEqual(static_cast<uint16_t>(250), m5.wind_group.variation_upper);
+}
+
+//-----------------------------------------------------------------------------
+
+void MetarTests::METAR_FractionalVisibility()
+{
+    aw::metar::metar_info m1("KSFO 121156Z 28005KT M1/4SM FEW006 15/12 A3000");
+
+    Assert::AreEqual(aw::distance_unit::statute_miles, m1.visibility_group.unit);
+    Assert::AreEqual(aw::metar::visibility_modifier_type::less_than, m1.visibility_group.modifier);
+    Assert::AreEqual(1.0 / 4.0, m1.visibility_group.distance, 0.01);
+
+    aw::metar::metar_info m2("KSFO 121156Z 28005KT 1/2SM FEW006 15/12 A3000");
+
+    Assert::AreEqual(aw::distance_unit::statute_miles, m2.visibility_group.unit);
+    Assert::AreEqual(aw::metar::visibility_modifier_type::none, m2.visibility_group.modifier);
+    Assert::AreEqual(1.0 / 2.0, m2.visibility_group.distance, 0.01);
+
+    aw::metar::metar_info m3("KSFO 121156Z 28005KT 1 1/2SM FEW006 15/12 A3000");
+
+    Assert::AreEqual(aw::distance_unit::statute_miles, m3.visibility_group.unit);
+    Assert::AreEqual(aw::metar::visibility_modifier_type::none, m3.visibility_group.modifier);
+    Assert::AreEqual(1.0 + (1.0 / 2.0), m3.visibility_group.distance, 0.01);
+
+    aw::metar::metar_info m4("KSFO 121156Z 28005KT 15SM FEW006 15/12 A3000");
+
+    Assert::AreEqual(aw::distance_unit::statute_miles, m4.visibility_group.unit);
+    Assert::AreEqual(aw::metar::visibility_modifier_type::none, m4.visibility_group.modifier);
+    Assert::AreEqual(15.0, m4.visibility_group.distance, 0.01);
+}
+
+//-----------------------------------------------------------------------------
+
+void MetarTests::METAR_Visibility_Comparison()
+{
+    const double distance = 10.0;
+
+    aw::metar::visibility v1(distance, aw::distance_unit::statute_miles, aw::metar::visibility_modifier_type::none);
+    aw::metar::visibility v2(distance, aw::distance_unit::statute_miles, aw::metar::visibility_modifier_type::less_than);
+    aw::metar::visibility v3(distance - 1.0, aw::distance_unit::statute_miles, aw::metar::visibility_modifier_type::none);
+    aw::metar::visibility v4(distance - 1.0, aw::distance_unit::statute_miles, aw::metar::visibility_modifier_type::less_than);
+
+    // v1, v2
+    Assert::IsFalse(v1 == v2); Assert::IsTrue(v1 != v2);
+    Assert::IsFalse(v1 <= v2); Assert::IsTrue(v1 >= v2);
+    Assert::IsFalse(v1 < v2);  Assert::IsTrue(v1 > v2);
+
+    // v1, v3
+    Assert::IsFalse(v1 == v3); Assert::IsTrue(v1 != v3);
+    Assert::IsFalse(v1 <= v3); Assert::IsTrue(v1 >= v3);
+    Assert::IsFalse(v1 < v3);  Assert::IsTrue(v1 > v3);
+
+    // v1, v4
+    Assert::IsFalse(v1 == v4); Assert::IsTrue(v1 != v4);
+    Assert::IsFalse(v1 <= v4); Assert::IsTrue(v1 >= v4);
+    Assert::IsFalse(v1 < v4);  Assert::IsTrue(v1 > v4);
+
+
+    // v2, v1
+    Assert::IsFalse(v2 == v1); Assert::IsTrue(v2 != v1);
+    Assert::IsTrue(v2 <= v1);  Assert::IsFalse(v2 >= v1);
+    Assert::IsTrue(v2 < v1);   Assert::IsFalse(v2 > v1);
+
+    // v2, v3
+    Assert::IsFalse(v2 == v3); Assert::IsTrue(v2 != v3);
+    Assert::IsFalse(v2 <= v3); Assert::IsTrue(v2 >= v3);
+    Assert::IsFalse(v2 < v3);  Assert::IsTrue(v2 > v3);
+
+    // v2, v4
+    Assert::IsFalse(v2 == v4); Assert::IsTrue(v2 != v4);
+    Assert::IsFalse(v2 <= v4); Assert::IsTrue(v2 >= v4);
+    Assert::IsFalse(v2 < v4);  Assert::IsTrue(v2 > v4);
+
+
+    // v3, v1
+    Assert::IsFalse(v3 == v1); Assert::IsTrue(v3 != v1);
+    Assert::IsTrue(v3 <= v1);  Assert::IsFalse(v3 >= v1);
+    Assert::IsTrue(v3 < v1);   Assert::IsFalse(v3 > v1);
+
+    // v3, v2
+    Assert::IsFalse(v3 == v2); Assert::IsTrue(v3 != v2);
+    Assert::IsTrue(v3 <= v2);  Assert::IsFalse(v3 >= v2);
+    Assert::IsTrue(v3 < v2);   Assert::IsFalse(v3 > v2);
+
+    // v3, v4
+    Assert::IsFalse(v3 == v4); Assert::IsTrue(v3 != v4);
+    Assert::IsFalse(v3 <= v4); Assert::IsTrue(v3 >= v4);
+    Assert::IsFalse(v3 < v4);  Assert::IsTrue(v3 > v4);
+
+
+    // v4, v1
+    Assert::IsFalse(v4 == v1); Assert::IsTrue(v4 != v1);
+    Assert::IsTrue(v4 <= v1);  Assert::IsFalse(v4 >= v1);
+    Assert::IsTrue(v4 < v1);   Assert::IsFalse(v4 > v1);
+
+    // v4, v2
+    Assert::IsFalse(v4 == v2); Assert::IsTrue(v4 != v2);
+    Assert::IsTrue(v4 <= v2);  Assert::IsFalse(v4 >= v2);
+    Assert::IsTrue(v4 < v2);   Assert::IsFalse(v4 > v2);
+
+    // v4, v3
+    Assert::IsFalse(v4 == v3); Assert::IsTrue(v4 != v3);
+    Assert::IsTrue(v4 <= v3);  Assert::IsFalse(v4 >= v3);
+    Assert::IsTrue(v4 < v3);   Assert::IsFalse(v4 > v3);
+}
+
+//-----------------------------------------------------------------------------
+
+void MetarTests::METAR_Phenomena()
+{
+    aw::metar::metar_info m1("KCCR 181953Z 28011KT 10SM FU CLR 27/12 A2990 RMK AO2 SLP110 T02720122");
+
+    Assert::AreEqual(1U, static_cast<uint32_t>(m1.weather_group.size()));
+    auto it = m1.weather_group.begin();
+    Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
+    Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
+    Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+    Assert::AreEqual(aw::weather_phenomena::smoke, it->phenomena.front());
+        
+    aw::metar::metar_info m2("KRHV 181947Z 33008/KT 6SM HZ SKC 29/12 A2992");
+
+    Assert::AreEqual(1U, static_cast<uint32_t>(m2.weather_group.size()));
+    it = m2.weather_group.begin();
+    Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
+    Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
+    Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+    Assert::AreEqual(aw::weather_phenomena::haze, it->phenomena.front());
+
+    aw::metar::metar_info m3("KSTS 181253Z AUTO 00000KT 10SM -RA HZ FU OVC007 14/12 A2990 RMK AO2 RAB30 SLP116 P0000 T01390122");
+
+    Assert::AreEqual(3U, static_cast<uint32_t>(m3.weather_group.size()));
+    it = m3.weather_group.begin();
+    Assert::AreEqual(aw::weather_intensity::light, it->intensity);
+    Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
+    Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+    Assert::AreEqual(aw::weather_phenomena::rain, it->phenomena.front());
+    it++;
+    Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
+    Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
+    Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+    Assert::AreEqual(aw::weather_phenomena::haze, it->phenomena.front());
+    it++;
+    Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
+    Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
+    Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+    Assert::AreEqual(aw::weather_phenomena::smoke, it->phenomena.front());
+
+    aw::metar::metar_info m4("KSTS 182253Z 19008KT 9SM FU HZ CLR 25/13 A2988 RMK AO2 SLP112 T02500133");
+
+    Assert::AreEqual(2U, static_cast<uint32_t>(m4.weather_group.size()));
+    it = m4.weather_group.begin();
+    Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
+    Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
+    Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+    Assert::AreEqual(aw::weather_phenomena::smoke, it->phenomena.front());
+    it++;
+    Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
+    Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
+    Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+    Assert::AreEqual(aw::weather_phenomena::haze, it->phenomena.front());
+
+    aw::metar::metar_info m5("KWVI 171553Z AUTO 00000KT 1 1/4SM BR OVC002 17/15 A2989 RMK AO2 SLP122 T01670150");
+
+    Assert::AreEqual(1U, static_cast<uint32_t>(m5.weather_group.size()));
+    it = m5.weather_group.begin();
+    Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
+    Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
+    Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+    Assert::AreEqual(aw::weather_phenomena::mist, it->phenomena.front());
+
+    aw::metar::metar_info m6("KWVI 171453Z AUTO 00000KT 1/4SM FG VV002 16/15 A2989 RMK AO2 SLP119 T01610150 53007");
+
+    Assert::AreEqual(1U, static_cast<uint32_t>(m6.weather_group.size()));
+    it = m6.weather_group.begin();
+    Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
+    Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
+    Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+    Assert::AreEqual(aw::weather_phenomena::fog, it->phenomena.front());
+
+    aw::metar::metar_info m7("KORD 190151Z 19010KT 5SM TSRA BR FEW027 BKN048CB OVC090 21/19 A2971 RMK AO2 PK WND 18028/0112 SLP057 FRQ LTGICCG OHD TS OHD MOV NE P0023 T02060194");
+
+    Assert::AreEqual(2U, static_cast<uint32_t>(m7.weather_group.size()));
+    it = m7.weather_group.begin();
+    Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
+    Assert::AreEqual(aw::weather_descriptor::thunderstorm, it->descriptor);
+    Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+    Assert::AreEqual(aw::weather_phenomena::rain, it->phenomena.front());
+    it++;
+    Assert::AreEqual(aw::weather_intensity::moderate, it->intensity);
+    Assert::AreEqual(aw::weather_descriptor::none, it->descriptor);
+    Assert::AreEqual(1U, static_cast<uint32_t>(it->phenomena.size()));
+    Assert::AreEqual(aw::weather_phenomena::mist, it->phenomena.front());
+}
+
+//-----------------------------------------------------------------------------
 
 } // namespace test
 } // namespace aw
