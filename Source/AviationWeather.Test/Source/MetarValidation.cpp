@@ -520,7 +520,7 @@ void MetarValidationTests::ValidateSkyCondition(aw::metar::metar_info const& met
         {
             auto expectedSkyCondition = skyConditionGroup.at(i);
             auto actualSkyCondition = metar.sky_condition_group.at(i);
-            bool isClearBelow12000 = false;
+            bool noClouds = false;
 
             if (expectedSkyCondition.find("unit") != expectedSkyCondition.end())
             {
@@ -536,7 +536,7 @@ void MetarValidationTests::ValidateSkyCondition(aw::metar::metar_info const& met
                 Assert::AreEqual(expectedSkyCondition["sky_cover"].get<std::string>(), sky_cover_type_strings[etoi(actualSkyCondition.sky_cover)]);
 
                 // If CLR is specified, we have a sky_cover_cloud_type of 'none' so we need to track this here.
-                isClearBelow12000 = (
+                noClouds = (
                     actualSkyCondition.sky_cover == aw::sky_cover_type::clear_below_12000 ||
                     actualSkyCondition.sky_cover == aw::sky_cover_type::sky_clear
                 );
@@ -561,7 +561,7 @@ void MetarValidationTests::ValidateSkyCondition(aw::metar::metar_info const& met
             }
             else
             {
-                auto expectedCover = isClearBelow12000 ? aw::sky_cover_cloud_type::none : aw::sky_cover_cloud_type::unspecified;
+                auto expectedCover = noClouds ? aw::sky_cover_cloud_type::none : aw::sky_cover_cloud_type::unspecified;
                 Assert::AreEqual(expectedCover, actualSkyCondition.cloud_type);
             }
         }
