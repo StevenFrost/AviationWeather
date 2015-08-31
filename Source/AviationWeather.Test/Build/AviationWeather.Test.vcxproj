@@ -12,7 +12,7 @@
     <Import Project="$(SolutionDir)..\Root.props" />
     <Import Project="$(ConfigDirectory)Configurations.props" />
     <Import Project="$(ConfigDirectory)Cpp.props" />
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Condition="'$(JSONImported)' != 'true'" Project="$(ExternalDirectory)JSON\Build\JSON.props" />
   </ImportGroup>
   <ItemGroup>
     <ProjectReference Include="$(SourceDirectory)\AviationWeather\Build\AviationWeather.vcxproj">
@@ -31,6 +31,7 @@
       </AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>AviationWeather.TestPch.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>RESOURCES_DIR=LR"*($(SourceDirectory)AviationWeather.Test\Resources\)*";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>
@@ -52,6 +53,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\Source\MetarTests.cpp" />
+    <ClCompile Include="..\Source\MetarValidation.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

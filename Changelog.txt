@@ -1,11 +1,30 @@
-Meteorology Changelog
-=====================
+AviationWeather Changelog
+=========================
 
 Known Issues
 ------------
   - Some international METARs may not be parsed correctly
-  - Altimeter conversion has some outstanding bugs
   - Remarks are not parsed at all and are instead represented by a string
+  - Runway Visual Range groups are not parsed correctly if they contain visibility modifiers
+
+
+v0.2.0.0 - 2015/08/20
+---------------------
+General
+ - Support for obtaining headwind/crosswind components
+ - Functionality to determine ceiling
+ - Functionality to determine flight category
+ - Improved validation testing for METARs
+ 
+Build
+ - Renamed project to AviationWeather
+
+Bugs
+ - #10: Variable winds are not parsed correctly
+ - #14: Support for CLR and SKC
+ - #16: METAR with fractional visibility is not parsed correctly
+ - #17: METAR with BR (mist) is parsed incorrectly
+ - #24: Flight category returns VFR when it should return MVFR
 
 
 v0.1.0.0 - 2015/08/03
