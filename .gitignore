@@ -2,6 +2,7 @@
 *.suo
 *.user
 *.sln.docstates
+.vs/
 
 # VS directories
 .vs/

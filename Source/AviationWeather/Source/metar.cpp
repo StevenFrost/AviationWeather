@@ -239,7 +239,7 @@ observation_time::observation_time(time_t time) :
 
     if (result != EINVAL)
     {
-        day_of_month = static_cast<uint8_t>(t.tm_mon);
+        day_of_month = static_cast<uint8_t>(t.tm_mday);
         hour_of_day = static_cast<uint8_t>(t.tm_hour);
         minute_of_hour = static_cast<uint8_t>(t.tm_min);
     }
@@ -391,12 +391,12 @@ runway_visual_range& runway_visual_range::operator=(runway_visual_range && rhs)
         visibility_min = rhs.visibility_min;
         visibility_max = rhs.visibility_max;
 
-        unit = distance_unit::feet;
-        runway_number = 0U;
-        runway_designator = runway_designator_type::none;
-        visibility_modifier = visibility_modifier_type::none;
-        visibility_min = UINT16_MAX;
-        visibility_max = UINT16_MAX;
+        rhs.unit = distance_unit::feet;
+        rhs.runway_number = 0U;
+        rhs.runway_designator = runway_designator_type::none;
+        rhs.visibility_modifier = visibility_modifier_type::none;
+        rhs.visibility_min = UINT16_MAX;
+        rhs.visibility_max = UINT16_MAX;
     }
     return *this;
 }
@@ -521,8 +521,8 @@ metar_info::metar_info(std::string const& metar) :
     type(report_type::metar),
     station_identifier(""),
     modifier(modifier_type::automatic),
-    temperature(0),
-    dewpoint(0),
+    temperature(INT8_MAX),
+    dewpoint(INT8_MAX),
     remarks("")
 {
     parse();
@@ -533,8 +533,8 @@ metar_info::metar_info(metar_info && other) :
     type(report_type::metar),
     station_identifier(""),
     modifier(modifier_type::automatic),
-    temperature(0),
-    dewpoint(0),
+    temperature(INT8_MAX),
+    dewpoint(INT8_MAX),
     remarks("")
 {
     *this = std::move(other);

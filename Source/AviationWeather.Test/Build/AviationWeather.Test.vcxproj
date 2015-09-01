@@ -52,8 +52,12 @@
     <ClCompile Include="..\Source\AviationWeather.TestPch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\Source\MetarTests.cpp" />
-    <ClCompile Include="..\Source\MetarValidation.cpp" />
+    <ClCompile Include="..\Source\metar_tests.cpp" />
+    <ClCompile Include="..\Source\metar_validation_tests.cpp" />
+    <ClCompile Include="..\Source\metar_parser_tests.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resources\metar.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

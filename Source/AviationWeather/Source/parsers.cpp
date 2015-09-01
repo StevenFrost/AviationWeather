@@ -38,7 +38,7 @@ namespace parsers
 #define REGEX_OBSERVATION_TIME "([0-9]{2})([0-9]{2})([0-9]{2})Z "
 #define REGEX_REPORT_MODIFIER  "(AUTO|COR) "
 #define REGEX_WIND             "([0-9]{3}|VRB)([0-9]{2,3})(G([0-9]{2,3}))?(KT|MPS)( ([0-9]{3})V([0-9]{3}))? "
-#define REGEX_VISIBILITY       "(CAVOK|(((M)?([12]?)[ ]?([0-9])/([0-9]))|([0-9]{1,5}))(SM)?) "
+#define REGEX_VISIBILITY       "(CAVOK|(((M)?([12]?)[ ]?([0-9])/([0-9]{1,2}))|([0-9]{1,5}))(SM)?) "
 #define REGEX_RVR              "R([0-9]{2})([LRC])?/([MP]?)([0-9]{4})(V([0-9]{4}))?FT "
 #define REGEX_WEATHER          "([+-]|VC)?((MI|PR|BC|DR|BL)?((DZ|RA|SN|SG|IC|PL|GR|GS|UP){1,3}|(BR|FG|FU|VA|DU|SA|HZ|PY|PO|SQ|FC|SS|DS)) |(SH)(RA|SN|PL|GS|GR){0,3} |(TS)(RA|SN|PL|GS|GR){0,3} |(FZ)(FG|DZ|RA){1,3} )"
 #define REGEX_SKY_CONDITION    "((SKC|CLR) )|((VV|FEW|SCT|BKN|OVC)([0-9]{3}|///))(CB|TCU)? "
@@ -586,7 +586,7 @@ void parse_altimeter(metar_info& info, std::string& metar)
         try
         {
             altimeter altimeterGroup;
-            altimeterGroup.pressure = atof(regex.str(EXPR_ALT).c_str()) / 100.0;
+            altimeterGroup.pressure = atof(regex.str(EXPR_ALT).c_str());
 
             if (regex.str(EXPR_SETTING) == "Q")
             {
@@ -594,6 +594,7 @@ void parse_altimeter(metar_info& info, std::string& metar)
             }
             else
             {
+                altimeterGroup.pressure /= 100.0;
                 altimeterGroup.unit = pressure_unit::inHg;
             }
 
