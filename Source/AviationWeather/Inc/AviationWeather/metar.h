@@ -303,6 +303,7 @@ public:
     cloud_layer ceiling() const;
 
     flight_category flight_category() const;
+    int8_t temperature_dewpoint_spread() const;
 
 private:
     void parse();
