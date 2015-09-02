@@ -149,19 +149,29 @@ void MetarParserTests::METAR_Parser_Wind()
     Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_upper);
     Assert::AreEqual(speed_unit::kt, metar.wind_group.unit);
 
-    // 120 @ 2kts, variable between 100 and 140
-    std::string m2("12002KT 100V140 ");
+    // Variable @ 2kts
+    std::string m2("VRB02KT ");
     metar::parsers::parse_wind(metar, m2);
-    Assert::AreEqual(uint16_t(120), metar.wind_group.direction);
+    Assert::AreEqual(UINT16_MAX, metar.wind_group.direction);
     Assert::AreEqual(uint8_t(2), metar.wind_group.wind_speed);
+    Assert::AreEqual(uint8_t(0), metar.wind_group.gust_speed);
+    Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_lower);
+    Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_upper);
+    Assert::AreEqual(speed_unit::kt, metar.wind_group.unit);
+
+    // 120 @ 10kts, variable between 100 and 140
+    std::string m3("12010KT 100V140 ");
+    metar::parsers::parse_wind(metar, m3);
+    Assert::AreEqual(uint16_t(120), metar.wind_group.direction);
+    Assert::AreEqual(uint8_t(10), metar.wind_group.wind_speed);
     Assert::AreEqual(uint8_t(0), metar.wind_group.gust_speed);
     Assert::AreEqual(uint16_t(100), metar.wind_group.variation_lower);
     Assert::AreEqual(uint16_t(140), metar.wind_group.variation_upper);
     Assert::AreEqual(speed_unit::kt, metar.wind_group.unit);
 
     // 120 @ 8kts, gusting 12kts
-    std::string m3("12008G12KT ");
-    metar::parsers::parse_wind(metar, m3);
+    std::string m4("12008G12KT ");
+    metar::parsers::parse_wind(metar, m4);
     Assert::AreEqual(uint16_t(120), metar.wind_group.direction);
     Assert::AreEqual(uint8_t(8), metar.wind_group.wind_speed);
     Assert::AreEqual(uint8_t(12), metar.wind_group.gust_speed);
@@ -292,40 +302,158 @@ void MetarParserTests::METAR_Parser_Weather()
     metar::metar_info metar("");
     Assert::AreEqual(size_t(0), metar.weather_group.size());
 
-    // RA
-    std::string m1("RA ");
+    std::vector<metar::weather>::iterator it;
+
+    // -DZ
+    std::string m1("-DZ ");
     metar::parsers::parse_weather(metar, m1);
-    Assert::AreEqual(weather_intensity::moderate, metar.weather_group.at(0).intensity);
-    Assert::AreEqual(weather_descriptor::none, metar.weather_group.at(0).descriptor);
-    Assert::AreEqual(size_t(1), metar.weather_group.at(0).phenomena.size());
-    Assert::AreEqual(weather_phenomena::rain, metar.weather_group.at(0).phenomena.at(0));
+    Assert::AreEqual(size_t(1), metar.weather_group.size());
+
+    it = metar.weather_group.begin();
+    Assert::AreEqual(weather_intensity::light, it->intensity);
+    Assert::AreEqual(weather_descriptor::none, it->descriptor);
+    Assert::AreEqual(size_t(1), it->phenomena.size());
+    Assert::AreEqual(weather_phenomena::drizzle, it->phenomena.at(0));
     metar.weather_group.clear();
 
-    // -TSRA
-    std::string m2("-TSRA ");
+    // -RASN
+    std::string m2("-RASN ");
     metar::parsers::parse_weather(metar, m2);
-    Assert::AreEqual(weather_intensity::light, metar.weather_group.at(0).intensity);
-    Assert::AreEqual(weather_descriptor::thunderstorm, metar.weather_group.at(0).descriptor);
-    Assert::AreEqual(size_t(1), metar.weather_group.at(0).phenomena.size());
-    Assert::AreEqual(weather_phenomena::rain, metar.weather_group.at(0).phenomena.at(0));
+    Assert::AreEqual(size_t(1), metar.weather_group.size());
+
+    it = metar.weather_group.begin();
+    Assert::AreEqual(weather_intensity::light, it->intensity);
+    Assert::AreEqual(weather_descriptor::none, it->descriptor);
+    Assert::AreEqual(size_t(2), it->phenomena.size());
+    Assert::AreEqual(weather_phenomena::rain, it->phenomena.at(0));
+    Assert::AreEqual(weather_phenomena::snow, it->phenomena.at(1));
     metar.weather_group.clear();
 
-    // +SN
-    std::string m3("+SN ");
+    // SN BR
+    std::string m3("SN BR ");
     metar::parsers::parse_weather(metar, m3);
-    Assert::AreEqual(weather_intensity::heavy, metar.weather_group.at(0).intensity);
-    Assert::AreEqual(weather_descriptor::none, metar.weather_group.at(0).descriptor);
-    Assert::AreEqual(size_t(1), metar.weather_group.at(0).phenomena.size());
-    Assert::AreEqual(weather_phenomena::snow, metar.weather_group.at(0).phenomena.at(0));
+    Assert::AreEqual(size_t(2), metar.weather_group.size());
+
+    it = metar.weather_group.begin();
+    Assert::AreEqual(weather_intensity::moderate, it->intensity);
+    Assert::AreEqual(weather_descriptor::none, it->descriptor);
+    Assert::AreEqual(size_t(1), it->phenomena.size());
+    Assert::AreEqual(weather_phenomena::snow, it->phenomena.at(0));
+    ++it;
+    Assert::AreEqual(weather_intensity::moderate, it->intensity);
+    Assert::AreEqual(weather_descriptor::none, it->descriptor);
+    Assert::AreEqual(size_t(1), it->phenomena.size());
+    Assert::AreEqual(weather_phenomena::mist, it->phenomena.at(0));
     metar.weather_group.clear();
 
-    // VCFG
-    std::string m4("VCFG ");
+    // -FZRA FG
+    std::string m4("-FZRA FG ");
     metar::parsers::parse_weather(metar, m4);
-    Assert::AreEqual(weather_intensity::in_the_vicinity, metar.weather_group.at(0).intensity);
-    Assert::AreEqual(weather_descriptor::none, metar.weather_group.at(0).descriptor);
-    Assert::AreEqual(size_t(1), metar.weather_group.at(0).phenomena.size());
-    Assert::AreEqual(weather_phenomena::fog, metar.weather_group.at(0).phenomena.at(0));
+    Assert::AreEqual(size_t(2), metar.weather_group.size());
+
+    it = metar.weather_group.begin();
+    Assert::AreEqual(weather_intensity::light, it->intensity);
+    Assert::AreEqual(weather_descriptor::freezing, it->descriptor);
+    Assert::AreEqual(size_t(1), it->phenomena.size());
+    Assert::AreEqual(weather_phenomena::rain, it->phenomena.at(0));
+    ++it;
+    Assert::AreEqual(weather_intensity::moderate, it->intensity);
+    Assert::AreEqual(weather_descriptor::none, it->descriptor);
+    Assert::AreEqual(size_t(1), it->phenomena.size());
+    Assert::AreEqual(weather_phenomena::fog, it->phenomena.at(0));
+    metar.weather_group.clear();
+
+    // SHRA
+    std::string m5("SHRA ");
+    metar::parsers::parse_weather(metar, m5);
+    Assert::AreEqual(size_t(1), metar.weather_group.size());
+
+    it = metar.weather_group.begin();
+    Assert::AreEqual(weather_intensity::moderate, it->intensity);
+    Assert::AreEqual(weather_descriptor::showers, it->descriptor);
+    Assert::AreEqual(size_t(1), it->phenomena.size());
+    Assert::AreEqual(weather_phenomena::rain, it->phenomena.at(0));
+    metar.weather_group.clear();
+
+    // VCBLSA
+    std::string m6("VCBLSA ");
+    metar::parsers::parse_weather(metar, m6);
+    Assert::AreEqual(size_t(1), metar.weather_group.size());
+
+    it = metar.weather_group.begin();
+    Assert::AreEqual(weather_intensity::in_the_vicinity, it->intensity);
+    Assert::AreEqual(weather_descriptor::blowing, it->descriptor);
+    Assert::AreEqual(size_t(1), it->phenomena.size());
+    Assert::AreEqual(weather_phenomena::sand, it->phenomena.at(0));
+    metar.weather_group.clear();
+
+    // -RASN FG HZ
+    std::string m7("-RASN FG HZ ");
+    metar::parsers::parse_weather(metar, m7);
+    Assert::AreEqual(size_t(3), metar.weather_group.size());
+
+    it = metar.weather_group.begin();
+    Assert::AreEqual(weather_intensity::light, it->intensity);
+    Assert::AreEqual(weather_descriptor::none, it->descriptor);
+    Assert::AreEqual(size_t(2), it->phenomena.size());
+    Assert::AreEqual(weather_phenomena::rain, it->phenomena.at(0));
+    Assert::AreEqual(weather_phenomena::snow, it->phenomena.at(1));
+    ++it;
+    Assert::AreEqual(weather_intensity::moderate, it->intensity);
+    Assert::AreEqual(weather_descriptor::none, it->descriptor);
+    Assert::AreEqual(size_t(1), it->phenomena.size());
+    Assert::AreEqual(weather_phenomena::fog, it->phenomena.at(0));
+    ++it;
+    Assert::AreEqual(weather_intensity::moderate, it->intensity);
+    Assert::AreEqual(weather_descriptor::none, it->descriptor);
+    Assert::AreEqual(size_t(1), it->phenomena.size());
+    Assert::AreEqual(weather_phenomena::haze, it->phenomena.at(0));
+    metar.weather_group.clear();
+
+    // TS
+    std::string m8("TS ");
+    metar::parsers::parse_weather(metar, m8);
+    Assert::AreEqual(size_t(1), metar.weather_group.size());
+
+    it = metar.weather_group.begin();
+    Assert::AreEqual(weather_intensity::moderate, it->intensity);
+    Assert::AreEqual(weather_descriptor::thunderstorm, it->descriptor);
+    Assert::AreEqual(size_t(0), it->phenomena.size());
+    metar.weather_group.clear();
+
+    // +TSRA
+    std::string m9("+TSRA ");
+    metar::parsers::parse_weather(metar, m9);
+    Assert::AreEqual(size_t(1), metar.weather_group.size());
+
+    it = metar.weather_group.begin();
+    Assert::AreEqual(weather_intensity::heavy, it->intensity);
+    Assert::AreEqual(weather_descriptor::thunderstorm, it->descriptor);
+    Assert::AreEqual(size_t(1), it->phenomena.size());
+    Assert::AreEqual(weather_phenomena::rain, it->phenomena.at(0));
+    metar.weather_group.clear();
+
+    // +FC TSRAGR BR
+    std::string m10("+FC TSRAGR BR ");
+    metar::parsers::parse_weather(metar, m10);
+    Assert::AreEqual(size_t(3), metar.weather_group.size());
+
+    it = metar.weather_group.begin();
+    Assert::AreEqual(weather_intensity::heavy, it->intensity);
+    Assert::AreEqual(weather_descriptor::none, it->descriptor);
+    Assert::AreEqual(size_t(1), it->phenomena.size());
+    Assert::AreEqual(weather_phenomena::funnel_cloud_tornado_waterspout, it->phenomena.at(0));
+    ++it;
+    Assert::AreEqual(weather_intensity::moderate, it->intensity);
+    Assert::AreEqual(weather_descriptor::thunderstorm, it->descriptor);
+    Assert::AreEqual(size_t(2), it->phenomena.size());
+    Assert::AreEqual(weather_phenomena::rain, it->phenomena.at(0));
+    Assert::AreEqual(weather_phenomena::hail, it->phenomena.at(1));
+    ++it;
+    Assert::AreEqual(weather_intensity::moderate, it->intensity);
+    Assert::AreEqual(weather_descriptor::none, it->descriptor);
+    Assert::AreEqual(size_t(1), it->phenomena.size());
+    Assert::AreEqual(weather_phenomena::mist, it->phenomena.at(0));
     metar.weather_group.clear();
 }
 
@@ -354,12 +482,12 @@ void MetarParserTests::METAR_Parser_SkyCondition()
     Assert::AreEqual(distance_unit::feet, metar.sky_condition_group.at(0).unit);
     metar.sky_condition_group.clear();
 
-    // VV030
-    std::string m3("VV030 ");
+    // VV003
+    std::string m3("VV003 ");
     metar::parsers::parse_sky_condition(metar, m3);
     Assert::AreEqual(sky_cover_type::vertical_visibility, metar.sky_condition_group.at(0).sky_cover);
     Assert::AreEqual(sky_cover_cloud_type::unspecified, metar.sky_condition_group.at(0).cloud_type);
-    Assert::AreEqual(uint32_t(3000), metar.sky_condition_group.at(0).layer_height);
+    Assert::AreEqual(uint32_t(300), metar.sky_condition_group.at(0).layer_height);
     Assert::AreEqual(distance_unit::feet, metar.sky_condition_group.at(0).unit);
     metar.sky_condition_group.clear();
 

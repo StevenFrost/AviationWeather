@@ -40,7 +40,7 @@ namespace parsers
 #define REGEX_WIND             "([0-9]{3}|VRB)([0-9]{2,3})(G([0-9]{2,3}))?(KT|MPS)( ([0-9]{3})V([0-9]{3}))? "
 #define REGEX_VISIBILITY       "(CAVOK|(((M)?([12]?)[ ]?([0-9])/([0-9]{1,2}))|([0-9]{1,5}))(SM)?) "
 #define REGEX_RVR              "R([0-9]{2})([LRC])?/([MP]?)([0-9]{4})(V([0-9]{4}))?FT "
-#define REGEX_WEATHER          "([+-]|VC)?((MI|PR|BC|DR|BL)?((DZ|RA|SN|SG|IC|PL|GR|GS|UP){1,3}|(BR|FG|FU|VA|DU|SA|HZ|PY|PO|SQ|FC|SS|DS)) |(SH)(RA|SN|PL|GS|GR){0,3} |(TS)(RA|SN|PL|GS|GR){0,3} |(FZ)(FG|DZ|RA){1,3} )"
+#define REGEX_WEATHER          "([+-]|VC)?((MI|PR|BC|DR|BL)?((DZ|RA|SN|SG|IC|PL|GR|GS|UP){1,3}|(BR|FG|FU|VA|DU|SA|HZ|PY|PO|SQ|FC|SS|DS)) |(SH)((RA|SN|PL|GS|GR){0,3}) |(TS)((RA|SN|PL|GS|GR){0,3}) |(FZ)((FG|DZ|RA){1,3}) )"
 #define REGEX_SKY_CONDITION    "((SKC|CLR) )|((VV|FEW|SCT|BKN|OVC)([0-9]{3}|///))(CB|TCU)? "
 #define REGEX_TEMP_DEW         "(M)?([0-9]{2})/((M)?([0-9]{2}))? "
 #define REGEX_ALTIMETER        "(Q|A)([0-9]{4})( |$)"
@@ -400,13 +400,13 @@ void parse_weather(metar_info& info, std::string& metar)
     {
         static const unsigned short EXPR_INTENSITY = 1;
         static const unsigned short EXPR_DESCRIPTOR_ALL = 3;
-        static const unsigned short EXPR_PHENOMENA_ALL = 5;
+        static const unsigned short EXPR_PHENOMENA_ALL = 4;
         static const unsigned short EXPR_DESCRIPTOR_SH = 7;
         static const unsigned short EXPR_PHENOMENA_SH = 8;
-        static const unsigned short EXPR_DESCRIPTOR_TS = 9;
-        static const unsigned short EXPR_PHENOMENA_TS = 10;
-        static const unsigned short EXPR_DESCRIPTOR_FZ = 9;
-        static const unsigned short EXPR_PHENOMENA_FZ = 12;
+        static const unsigned short EXPR_DESCRIPTOR_TS = 10;
+        static const unsigned short EXPR_PHENOMENA_TS = 11;
+        static const unsigned short EXPR_DESCRIPTOR_FZ = 13;
+        static const unsigned short EXPR_PHENOMENA_FZ = 14;
         static const unsigned short EXPR_PHENOMENA_NO_SPACE = 4;
 
         auto intensity = weather_intensity::moderate;

@@ -642,7 +642,7 @@ flight_category metar_info::flight_category() const
     return (aw::convert(visibility_group.distance, visibility_group.unit, distance_unit::statute_miles) >= 1.0 && ceiling.layer_height >= 500L) ? flight_category::ifr : flight_category::lifr;
 }
 
-int8_t metar_info::temperature_dewpoint_spread() const
+int16_t metar_info::temperature_dewpoint_spread() const
 {
     return temperature - dewpoint;
 }

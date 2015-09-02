@@ -290,17 +290,17 @@ void MetarTests::METAR_TemperatureDewpointSpread()
     aw::metar::metar_info m1("KSFO 010956Z 00000KT 10SM FEW011 16/13 A2987 RMK AO2 SLP114 T01610133");
     Assert::AreEqual(int8_t(16), m1.temperature);
     Assert::AreEqual(int8_t(13), m1.dewpoint);
-    Assert::AreEqual(int8_t(3), m1.temperature_dewpoint_spread());
+    Assert::AreEqual(int16_t(3), m1.temperature_dewpoint_spread());
 
     aw::metar::metar_info m2("ENSB 010950Z 03003KT 340V060 9999 FEW030 03/M04 Q1018 NOSIG RMK WIND 1400FT 02004KT");
     Assert::AreEqual(int8_t(3), m2.temperature);
     Assert::AreEqual(int8_t(-4), m2.dewpoint);
-    Assert::AreEqual(int8_t(7), m2.temperature_dewpoint_spread());
+    Assert::AreEqual(int16_t(7), m2.temperature_dewpoint_spread());
 
     aw::metar::metar_info m3("EGBE 311150Z 35008KT 6000 -RA SCT008 BKN011 OVC014 14/14 Q1014");
     Assert::AreEqual(int8_t(14), m3.temperature);
     Assert::AreEqual(int8_t(14), m3.dewpoint);
-    Assert::AreEqual(int8_t(0), m3.temperature_dewpoint_spread());
+    Assert::AreEqual(int16_t(0), m3.temperature_dewpoint_spread());
 }
 
 //-----------------------------------------------------------------------------
