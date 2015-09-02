@@ -553,19 +553,29 @@ void parse_temperature_dewpoint(metar_info& info, std::string& metar)
         static const unsigned short EXPR_DEW_IS_MINUS = 4;
         static const unsigned short EXPR_DEWPOINT = 5;
 
-        auto temperatureStr = regex.str(EXPR_TEMPERATURE);
-        auto dewpointStr = regex.str(EXPR_DEWPOINT);
+        int8_t temperature = INT8_MAX;
+        int8_t dewpoint = INT8_MAX;
 
-        auto temperature = static_cast<uint8_t>(atoi(temperatureStr.c_str()));
-        auto dewpoint = static_cast<uint8_t>(atoi(dewpointStr.c_str()));
-
-        if (regex[EXPR_TEMP_IS_MINUS].matched)
+        if (regex[EXPR_TEMPERATURE].matched)
         {
-            temperature = -temperature;
+            auto temperatureStr = regex.str(EXPR_TEMPERATURE);
+            temperature = static_cast<int8_t>(atoi(temperatureStr.c_str()));
+
+            if (regex[EXPR_TEMP_IS_MINUS].matched)
+            {
+                temperature = -temperature;
+            }
         }
-        if (regex[EXPR_DEW_IS_MINUS].matched)
+
+        if (regex[EXPR_DEWPOINT].matched)
         {
-            dewpoint = -dewpoint;
+            auto dewpointStr = regex.str(EXPR_DEWPOINT);
+            dewpoint = static_cast<int8_t>(atoi(dewpointStr.c_str()));
+
+            if (regex[EXPR_DEW_IS_MINUS].matched)
+            {
+                dewpoint = -dewpoint;
+            }
         }
 
         info.temperature = temperature;
