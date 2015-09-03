@@ -51,13 +51,13 @@ std::string element_type_strings[] =
 
 std::string report_type_strings[] =
 {
-    STRINGIFY(none),
     STRINGIFY(metar),
     STRINGIFY(special)
 };
 
 std::string modifier_type_strings[] =
 {
+    STRINGIFY(none),
     STRINGIFY(automatic),
     STRINGIFY(corrected)
 };
@@ -285,7 +285,7 @@ void MetarValidationTests::ValidateReportType(aw::metar::metar_info const& metar
     }
     else
     {
-        Assert::AreEqual(std::string("none"), report_type_strings[etoi(metar.type)]);
+        Assert::AreEqual(std::string("metar"), report_type_strings[etoi(metar.type)]);
     }
 }
 
@@ -319,7 +319,7 @@ void MetarValidationTests::ValidateReportModifier(aw::metar::metar_info const& m
     }
     else
     {
-        Assert::AreEqual(std::string("automatic"), modifier_type_strings[etoi(metar.modifier)]);
+        Assert::AreEqual(std::string("none"), modifier_type_strings[etoi(metar.modifier)]);
     }
 }
 

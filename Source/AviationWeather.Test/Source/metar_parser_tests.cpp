@@ -54,7 +54,7 @@ public:
 void MetarParserTests::METAR_Parser_ReportType()
 {
     metar::metar_info metar("");
-    Assert::AreEqual(metar::report_type::none, metar.type);
+    Assert::AreEqual(metar::report_type::metar, metar.type);
 
     // METAR
     std::string m1("METAR ");
@@ -114,7 +114,7 @@ void MetarParserTests::METAR_Parser_ObservationTime()
 void MetarParserTests::METAR_Parser_Modifier()
 {
     metar::metar_info metar("");
-    Assert::AreEqual(metar::modifier_type::automatic, metar.modifier);
+    Assert::AreEqual(metar::modifier_type::none, metar.modifier);
 
     // AUTO
     std::string m1("AUTO ");
@@ -321,6 +321,7 @@ void MetarParserTests::METAR_Parser_RunwayVisualRange()
     Assert::AreEqual(uint16_t(3500), it->visibility_min);
     Assert::AreEqual(uint16_t(4500), it->visibility_max);
     Assert::AreEqual(metar::visibility_modifier_type::none, it->visibility_min_modifier);
+    Assert::AreEqual(metar::visibility_modifier_type::none, it->visibility_max_modifier);
     ++it;
     Assert::AreEqual(metar::runway_designator_type::right, it->runway_designator);
     Assert::AreEqual(uint8_t(9), it->runway_number);

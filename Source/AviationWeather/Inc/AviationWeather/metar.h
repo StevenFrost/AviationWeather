@@ -48,13 +48,13 @@ enum class element_type
 
 enum class report_type
 {
-    none,
     metar,
     special
 };
 
 enum class modifier_type
 {
+    none,
     automatic,
     corrected
 };

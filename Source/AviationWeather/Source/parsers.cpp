@@ -133,10 +133,6 @@ void parse_report_type(metar_info& info, std::string& metar)
         {
             info.type = report_type::special;
         }
-        else
-        {
-            info.type = report_type::none;
-        }
     });
     metar = result;
 }
@@ -196,6 +192,10 @@ void parse_modifier(metar_info& info, std::string& metar)
         else if (modifier == "COR")
         {
             info.modifier = modifier_type::corrected;
+        }
+        else
+        {
+            info.modifier = modifier_type::none;
         }
     });
     metar = result;

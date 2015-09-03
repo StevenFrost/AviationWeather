@@ -523,9 +523,9 @@ bool cloud_layer::is_unlimited() const
 
 metar_info::metar_info(std::string const& metar) :
     metar(metar),
-    type(report_type::none),
+    type(report_type::metar),
     station_identifier(""),
-    modifier(modifier_type::automatic),
+    modifier(modifier_type::none),
     temperature(INT8_MAX),
     dewpoint(INT8_MAX),
     remarks("")
@@ -535,9 +535,9 @@ metar_info::metar_info(std::string const& metar) :
 
 metar_info::metar_info(metar_info && other) :
     metar(""),
-    type(report_type::none),
+    type(report_type::metar),
     station_identifier(""),
-    modifier(modifier_type::automatic),
+    modifier(modifier_type::none),
     temperature(INT8_MAX),
     dewpoint(INT8_MAX),
     remarks("")
@@ -565,10 +565,10 @@ metar_info& metar_info::operator=(metar_info && rhs)
         remarks = std::move(rhs.remarks);
 
         rhs.metar = "";
-        rhs.type = report_type::none;
+        rhs.type = report_type::metar;
         rhs.station_identifier = "";
         rhs.report_time = observation_time();
-        rhs.modifier = modifier_type::automatic;
+        rhs.modifier = modifier_type::none;
         rhs.wind_group = wind();
         rhs.visibility_group = visibility();
         rhs.runway_visual_range_group.clear();
