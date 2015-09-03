@@ -221,12 +221,13 @@ public:
     bool is_variable() const;
 
 public:
-    distance_unit            unit;                  // Unit of distance for visibility_min and visibility_max
-    uint8_t                  runway_number;         // Runway number
-    runway_designator_type   runway_designator;     // Runway designator (L, R, C)
-    visibility_modifier_type visibility_modifier;   // Modifier (less than, greater than, etc.)
-    uint16_t                 visibility_min;        // Minimum visibility
-    uint16_t                 visibility_max;        // Maximum visibility
+    distance_unit            unit;                      // Unit of distance for visibility_min and visibility_max
+    uint8_t                  runway_number;             // Runway number
+    runway_designator_type   runway_designator;         // Runway designator (L, R, C)
+    visibility_modifier_type visibility_min_modifier;   // Modifier for minimum visibility
+    visibility_modifier_type visibility_max_modifier;   // Modifier for maximum visibility
+    uint16_t                 visibility_min;            // Minimum visibility
+    uint16_t                 visibility_max;            // Maximum visibility
 };
 
 //-----------------------------------------------------------------------------
