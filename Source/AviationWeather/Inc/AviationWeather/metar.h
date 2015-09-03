@@ -48,6 +48,7 @@ enum class element_type
 
 enum class report_type
 {
+    none,
     metar,
     special
 };

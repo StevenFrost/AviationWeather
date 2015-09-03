@@ -133,6 +133,10 @@ void parse_report_type(metar_info& info, std::string& metar)
         {
             info.type = report_type::special;
         }
+        else
+        {
+            info.type = report_type::none;
+        }
     });
     metar = result;
 }

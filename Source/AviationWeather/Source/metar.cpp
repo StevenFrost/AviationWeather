@@ -518,7 +518,7 @@ bool cloud_layer::is_unlimited() const
 
 metar_info::metar_info(std::string const& metar) :
     metar(metar),
-    type(report_type::metar),
+    type(report_type::none),
     station_identifier(""),
     modifier(modifier_type::automatic),
     temperature(INT8_MAX),
@@ -530,7 +530,7 @@ metar_info::metar_info(std::string const& metar) :
 
 metar_info::metar_info(metar_info && other) :
     metar(""),
-    type(report_type::metar),
+    type(report_type::none),
     station_identifier(""),
     modifier(modifier_type::automatic),
     temperature(INT8_MAX),
@@ -560,7 +560,7 @@ metar_info& metar_info::operator=(metar_info && rhs)
         remarks = std::move(rhs.remarks);
 
         rhs.metar = "";
-        rhs.type = report_type::metar;
+        rhs.type = report_type::none;
         rhs.station_identifier = "";
         rhs.report_time = observation_time();
         rhs.modifier = modifier_type::automatic;

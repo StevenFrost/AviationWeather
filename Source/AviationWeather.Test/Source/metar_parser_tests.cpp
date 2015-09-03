@@ -54,7 +54,7 @@ public:
 void MetarParserTests::METAR_Parser_ReportType()
 {
     metar::metar_info metar("");
-    Assert::AreEqual(metar::report_type::metar, metar.type);
+    Assert::AreEqual(metar::report_type::none, metar.type);
 
     // METAR
     std::string m1("METAR ");
