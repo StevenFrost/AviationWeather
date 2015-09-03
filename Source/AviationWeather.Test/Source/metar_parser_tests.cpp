@@ -359,8 +359,8 @@ void MetarParserTests::METAR_Parser_RunwayVisualRange()
     Assert::AreEqual(metar::visibility_modifier_type::none, it->visibility_max_modifier);
     metar.runway_visual_range_group.clear();
 
-    // R01L/L0600VM1000FT
-    std::string m7("R01L/M0600VP1000FT ");
+    // R01L/M0600VP6000FT
+    std::string m7("R01L/M0600VP6000FT ");
     metar::parsers::parse_runway_visual_range(metar, m7);
     Assert::AreEqual(size_t(1), metar.runway_visual_range_group.size());
 
@@ -368,7 +368,7 @@ void MetarParserTests::METAR_Parser_RunwayVisualRange()
     Assert::AreEqual(metar::runway_designator_type::left, it->runway_designator);
     Assert::AreEqual(uint8_t(1), it->runway_number);
     Assert::AreEqual(uint16_t(600), it->visibility_min);
-    Assert::AreEqual(uint16_t(1000), it->visibility_max);
+    Assert::AreEqual(uint16_t(6000), it->visibility_max);
     Assert::AreEqual(metar::visibility_modifier_type::less_than, it->visibility_min_modifier);
     Assert::AreEqual(metar::visibility_modifier_type::greater_than, it->visibility_max_modifier);
     metar.runway_visual_range_group.clear();
