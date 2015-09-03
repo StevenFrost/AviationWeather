@@ -303,6 +303,7 @@ public:
     cloud_layer ceiling() const;
 
     flight_category flight_category() const;
+    int16_t temperature_dewpoint_spread() const;
 
 private:
     void parse();
@@ -318,8 +319,8 @@ public:
     std::vector<runway_visual_range> runway_visual_range_group;
     std::vector<weather>             weather_group;
     std::vector<cloud_layer>         sky_condition_group;
-    uint8_t                          temperature;
-    uint8_t                          dewpoint;
+    int8_t                           temperature;
+    int8_t                           dewpoint;
     altimeter                        altimeter_group;
     std::string                      remarks;
 };

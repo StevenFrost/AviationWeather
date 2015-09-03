@@ -7,15 +7,21 @@
     <Filter Include="Private Headers">
       <UniqueIdentifier>{f57e6a76-d667-437f-af51-3898ee4e4738}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{2fad3411-776f-4dff-b11d-4fd3323bed23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\AviationWeather.TestPch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\MetarTests.cpp">
+    <ClCompile Include="..\Source\metar_parser_tests.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\MetarValidation.cpp">
+    <ClCompile Include="..\Source\metar_validation_tests.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\metar_tests.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -26,5 +32,10 @@
     <ClInclude Include="..\Source\framework.h">
       <Filter>Private Headers</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resources\metar.json">
+      <Filter>Resources</Filter>
+    </None>
   </ItemGroup>
 </Project>
