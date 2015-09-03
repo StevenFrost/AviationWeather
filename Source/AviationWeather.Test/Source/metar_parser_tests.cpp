@@ -634,7 +634,7 @@ void MetarParserTests::METAR_Parser_Altimeter()
     Assert::AreEqual(1013.0, metar.altimeter_group.pressure);
     Assert::AreEqual(pressure_unit::hPa, metar.altimeter_group.unit);
 
-    // Altimeter 30.29
+    // Altimeter 29.92
     std::string m2("A2992");
     metar::parsers::parse_altimeter(metar, m2);
     Assert::AreEqual(29.92, metar.altimeter_group.pressure);
