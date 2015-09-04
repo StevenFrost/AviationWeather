@@ -44,6 +44,7 @@ public:
     TEST_METHOD(METAR_VisibilityComparison);
     TEST_METHOD(METAR_Phenomena);
     TEST_METHOD(METAR_TemperatureDewpointSpread);
+	TEST_METHOD(METAR_CeilingAndFlightCategory);
 };
 
 //-----------------------------------------------------------------------------
@@ -301,6 +302,140 @@ void MetarTests::METAR_TemperatureDewpointSpread()
     Assert::AreEqual(int8_t(14), m3.temperature);
     Assert::AreEqual(int8_t(14), m3.dewpoint);
     Assert::AreEqual(int16_t(0), m3.temperature_dewpoint_spread());
+}
+
+//-----------------------------------------------------------------------------
+
+void MetarTests::METAR_CeilingAndFlightCategory()
+{
+	aw::metar::metar_info m1("KRHV 042147Z 32010KT 10SM SKC 25/10 A2986");
+	auto ceiling = m1.ceiling();
+	Assert::IsTrue(ceiling.is_unlimited());
+	Assert::AreEqual(UINT32_MAX, ceiling.layer_height);
+	Assert::AreEqual(aw::distance_unit::feet, ceiling.unit);
+	Assert::AreEqual(aw::sky_cover_type::sky_clear, ceiling.sky_cover);
+	Assert::AreEqual(aw::sky_cover_cloud_type::none, ceiling.cloud_type);
+	Assert::AreEqual(aw::flight_category::vfr, m1.flight_category());
+
+	aw::metar::metar_info m2("KHWD 042054Z 26014G18KT 10SM CLR 20/09 A2989 RMK AO2 SLP130 T02000094 58004");
+	ceiling = m2.ceiling();
+	Assert::IsTrue(ceiling.is_unlimited());
+	Assert::AreEqual(UINT32_MAX, ceiling.layer_height);
+	Assert::AreEqual(aw::distance_unit::feet, ceiling.unit);
+	Assert::AreEqual(aw::sky_cover_type::clear_below_12000, ceiling.sky_cover);
+	Assert::AreEqual(aw::sky_cover_cloud_type::none, ceiling.cloud_type);
+	Assert::AreEqual(aw::flight_category::vfr, m2.flight_category());
+
+	aw::metar::metar_info m3("KOAK 042053Z 24012KT 10SM FEW010 22/09 A2987 RMK AO2 SLP116 T02170094 58007");
+	ceiling = m3.ceiling();
+	Assert::IsTrue(ceiling.is_unlimited());
+	Assert::AreEqual(UINT32_MAX, ceiling.layer_height);
+	Assert::AreEqual(aw::distance_unit::feet, ceiling.unit);
+	Assert::AreEqual(aw::sky_cover_type::sky_clear, ceiling.sky_cover);
+	Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, ceiling.cloud_type);
+	Assert::AreEqual(aw::flight_category::vfr, m3.flight_category());
+
+	aw::metar::metar_info m4("KHWD 291917Z 29010KT 10SM BKN010 BKN018 OVC023 21/18 A3001 RMK AO2");
+	ceiling = m4.ceiling();
+	Assert::IsFalse(ceiling.is_unlimited());
+	Assert::AreEqual(uint32_t(1000), ceiling.layer_height);
+	Assert::AreEqual(aw::distance_unit::feet, ceiling.unit);
+	Assert::AreEqual(aw::sky_cover_type::broken, ceiling.sky_cover);
+	Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, ceiling.cloud_type);
+	Assert::AreEqual(aw::flight_category::mvfr, m4.flight_category());
+
+	aw::metar::metar_info m5("KSEA 041604Z 36007KT 10SM OVC010 12/08 A3002 RMK AO2");
+	ceiling = m5.ceiling();
+	Assert::IsFalse(ceiling.is_unlimited());
+	Assert::AreEqual(uint32_t(1000), ceiling.layer_height);
+	Assert::AreEqual(aw::distance_unit::feet, ceiling.unit);
+	Assert::AreEqual(aw::sky_cover_type::overcast, ceiling.sky_cover);
+	Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, ceiling.cloud_type);
+	Assert::AreEqual(aw::flight_category::mvfr, m5.flight_category());
+
+	aw::metar::metar_info m6("KLAX 040953Z VRB04KT 10SM OVC030 20/14 A2986 RMK AO2 SLP108 T02000144 $");
+	ceiling = m6.ceiling();
+	Assert::IsFalse(ceiling.is_unlimited());
+	Assert::AreEqual(uint32_t(3000), ceiling.layer_height);
+	Assert::AreEqual(aw::distance_unit::feet, ceiling.unit);
+	Assert::AreEqual(aw::sky_cover_type::overcast, ceiling.sky_cover);
+	Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, ceiling.cloud_type);
+	Assert::AreEqual(aw::flight_category::mvfr, m6.flight_category());
+
+	aw::metar::metar_info m7("KSFO 102356Z 27019G24KT 10SM FEW008 SCT012 BKN015 21/14 A2994 RMK AO2 PK WND 27028/2303 SLP137 T02060144 10228 20200 58012");
+	ceiling = m7.ceiling();
+	Assert::IsFalse(ceiling.is_unlimited());
+	Assert::AreEqual(uint32_t(1500), ceiling.layer_height);
+	Assert::AreEqual(aw::distance_unit::feet, ceiling.unit);
+	Assert::AreEqual(aw::sky_cover_type::broken, ceiling.sky_cover);
+	Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, ceiling.cloud_type);
+	Assert::AreEqual(aw::flight_category::mvfr, m7.flight_category());
+
+	aw::metar::metar_info m8("KSTS 152153Z 24008KT 3SM HZ FU CLR 35/09 A2989 RMK AO2 SLP116 T03500089");
+	ceiling = m8.ceiling();
+	Assert::IsTrue(ceiling.is_unlimited());
+	Assert::AreEqual(UINT32_MAX, ceiling.layer_height);
+	Assert::AreEqual(aw::distance_unit::feet, ceiling.unit);
+	Assert::AreEqual(aw::sky_cover_type::clear_below_12000, ceiling.sky_cover);
+	Assert::AreEqual(aw::sky_cover_cloud_type::none, ceiling.cloud_type);
+	Assert::AreEqual(aw::flight_category::mvfr, m8.flight_category());
+
+	aw::metar::metar_info m9("KPAO 152147Z 34010KT 4SM HZ SCT150 34/12 2992");
+	ceiling = m9.ceiling();
+	Assert::IsTrue(ceiling.is_unlimited());
+	Assert::AreEqual(UINT32_MAX, ceiling.layer_height);
+	Assert::AreEqual(aw::distance_unit::feet, ceiling.unit);
+	Assert::AreEqual(aw::sky_cover_type::sky_clear, ceiling.sky_cover);
+	Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, ceiling.cloud_type);
+	Assert::AreEqual(aw::flight_category::mvfr, m9.flight_category());
+
+	aw::metar::metar_info m10("KAPC 151954Z 21007KT 170V230 5SM HZ FU CLR 31/12 A2996 RMK AO2 SLP135 SMOKE ALQDS UP TO 7500 MSL FLIGHT VIS 4-5 MI T03110117");
+	ceiling = m10.ceiling();
+	Assert::IsTrue(ceiling.is_unlimited());
+	Assert::AreEqual(UINT32_MAX, ceiling.layer_height);
+	Assert::AreEqual(aw::distance_unit::feet, ceiling.unit);
+	Assert::AreEqual(aw::sky_cover_type::clear_below_12000, ceiling.sky_cover);
+	Assert::AreEqual(aw::sky_cover_cloud_type::none, ceiling.cloud_type);
+	Assert::AreEqual(aw::flight_category::mvfr, m10.flight_category());
+
+	aw::metar::metar_info m11("KSEA 041453Z 36007KT 10SM OVC007 11/09 A3002 RMK AO2 SLP171 T01110089 53006");
+	ceiling = m11.ceiling();
+	Assert::IsFalse(ceiling.is_unlimited());
+	Assert::AreEqual(uint32_t(700), ceiling.layer_height);
+	Assert::AreEqual(aw::distance_unit::feet, ceiling.unit);
+	Assert::AreEqual(aw::sky_cover_type::overcast, ceiling.sky_cover);
+	Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, ceiling.cloud_type);
+	Assert::AreEqual(aw::flight_category::ifr, m11.flight_category());
+
+	aw::metar::metar_info m12("KPDX 041653Z 28005KT 7SM SCT003 BKN007 OVC016 12/09 A3000 RMK AO2 SLP159 T01170094");
+	ceiling = m12.ceiling();
+	Assert::IsFalse(ceiling.is_unlimited());
+	Assert::AreEqual(uint32_t(700), ceiling.layer_height);
+	Assert::AreEqual(aw::distance_unit::feet, ceiling.unit);
+	Assert::AreEqual(aw::sky_cover_type::broken, ceiling.sky_cover);
+	Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, ceiling.cloud_type);
+	Assert::AreEqual(aw::flight_category::ifr, m12.flight_category());
+
+	aw::metar::metar_info m13("KPDX 041453Z 32007KT 1SM R10R/3000VP6000FT BR BKN003 OVC010 10/09 A3000 RMK AO2 SFC VIS 4 SLP157 VIS SW-NW 1 1/2 T01000094 53005");
+	ceiling = m13.ceiling();
+	Assert::IsFalse(ceiling.is_unlimited());
+	Assert::AreEqual(uint32_t(300), ceiling.layer_height);
+	Assert::AreEqual(aw::distance_unit::feet, ceiling.unit);
+	Assert::AreEqual(aw::sky_cover_type::broken, ceiling.sky_cover);
+	Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, ceiling.cloud_type);
+	Assert::AreEqual(aw::flight_category::lifr, m13.flight_category());
+
+	aw::metar::metar_info m14("KPDX 041053Z 35003KT 10SM OVC004 11/10 A2998 RMK AO2 SLP150 T01110100");
+	ceiling = m14.ceiling();
+	Assert::IsFalse(ceiling.is_unlimited());
+	Assert::AreEqual(uint32_t(400), ceiling.layer_height);
+	Assert::AreEqual(aw::distance_unit::feet, ceiling.unit);
+	Assert::AreEqual(aw::sky_cover_type::overcast, ceiling.sky_cover);
+	Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, ceiling.cloud_type);
+	Assert::AreEqual(aw::flight_category::lifr, m14.flight_category());
+
+	// Enable when unknown flight category and missing components are implemented (issue #34)
+	// KHAF 291935Z AUTO 24004KT 10SM 18/18 A3004 RMK AO2
 }
 
 //-----------------------------------------------------------------------------

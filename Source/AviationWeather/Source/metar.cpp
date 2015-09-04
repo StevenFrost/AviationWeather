@@ -220,7 +220,7 @@ bool altimeter::operator>(altimeter const& rhs) const
 //-----------------------------------------------------------------------------
 
 observation_time::observation_time() :
-    observation_time(0)
+    observation_time(time(NULL))
 {}
 
 observation_time::observation_time(uint8_t day, uint8_t hour, uint8_t minute) :
