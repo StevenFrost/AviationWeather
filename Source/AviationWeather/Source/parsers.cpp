@@ -39,7 +39,7 @@ namespace parsers
 #define REGEX_REPORT_MODIFIER  "(AUTO|COR) "
 #define REGEX_WIND             "([0-9]{3}|VRB)([0-9]{2,3})(G([0-9]{2,3}))?(KT|MPS)( ([0-9]{3})V([0-9]{3}))? "
 #define REGEX_VISIBILITY       "(CAVOK|(((M)?([12]?)[ ]?([0-9])/([0-9]{1,2}))|([0-9]{1,5}))(SM)?) "
-#define REGEX_RVR              "R([0-9]{2})([LRC])?/([MP]?)([0-9]{4})(V([0-9]{4}))?FT "
+#define REGEX_RVR              "R([0-9]{2})([LRC])?/([MP]?)([0-9]{4})(V([MP]?)([0-9]{4}))?FT "
 #define REGEX_WEATHER          "([+-]|VC)?((MI|PR|BC|DR|BL)?((DZ|RA|SN|SG|IC|PL|GR|GS|UP){1,3}|(BR|FG|FU|VA|DU|SA|HZ|PY|PO|SQ|FC|SS|DS)) |(SH)((RA|SN|PL|GS|GR){0,3}) |(TS)((RA|SN|PL|GS|GR){0,3}) |(FZ)((FG|DZ|RA){1,3}) )"
 #define REGEX_SKY_CONDITION    "((SKC|CLR) )|((VV|FEW|SCT|BKN|OVC)([0-9]{3}|///))(CB|TCU)? "
 #define REGEX_TEMP_DEW         "(M)?([0-9]{2})/((M)?([0-9]{2}))? "
@@ -193,6 +193,10 @@ void parse_modifier(metar_info& info, std::string& metar)
         {
             info.modifier = modifier_type::corrected;
         }
+        else
+        {
+            info.modifier = modifier_type::none;
+        }
     });
     metar = result;
 }
@@ -326,16 +330,18 @@ void parse_runway_visual_range(metar_info& info, std::string& metar)
     {
         static const unsigned short EXPR_RUNWAY_NUM = 1;
         static const unsigned short EXPR_RUNWAY_DESIGNATOR = 2;
-        static const unsigned short EXPR_VISIBILITY_MOD = 3;
+        static const unsigned short EXPR_VISIBILITY_MIN_MOD = 3;
         static const unsigned short EXPR_VISIBILITY_MIN = 4;
         static const unsigned short EXPR_VARIABLE = 5;
-        static const unsigned short EXPR_VISIBILITY_MAX = 6;
+        static const unsigned short EXPR_VISIBILITY_MAX_MOD = 6;
+        static const unsigned short EXPR_VISIBILITY_MAX = 7;
 
         try
         {
             auto runwayNumber = static_cast<uint8_t>(atoi(regex.str(EXPR_RUNWAY_NUM).c_str()));
             auto runwayDesignator = runway_designator_type::none;
-            auto visibilityModifier = visibility_modifier_type::none;
+            auto visibilityMinModifier = visibility_modifier_type::none;
+            auto visibilityMaxModifier = visibility_modifier_type::none;
             auto visibilityMin = static_cast<uint16_t>(atoi(regex.str(EXPR_VISIBILITY_MIN).c_str()));
             auto visibilityMax = visibilityMin;
 
@@ -354,17 +360,31 @@ void parse_runway_visual_range(metar_info& info, std::string& metar)
                 runwayDesignator = runway_designator_type::center;
             }
 
-            // Visibility modifier
-            if (regex[EXPR_VISIBILITY_MOD].matched)
+            // Minimum visibility modifier
+            if (regex[EXPR_VISIBILITY_MIN_MOD].matched)
             {
-                auto modifier = regex.str(EXPR_VISIBILITY_MOD);
+                auto modifier = regex.str(EXPR_VISIBILITY_MIN_MOD);
                 if (modifier == "M")
                 {
-                    visibilityModifier = visibility_modifier_type::less_than;
+                    visibilityMinModifier = visibility_modifier_type::less_than;
                 }
                 else if (modifier == "P")
                 {
-                    visibilityModifier = visibility_modifier_type::greater_than;
+                    visibilityMinModifier = visibility_modifier_type::greater_than;
+                }
+            }
+
+            // Maximum visibility modifier
+            if (regex[EXPR_VISIBILITY_MAX_MOD].matched)
+            {
+                auto modifier = regex.str(EXPR_VISIBILITY_MAX_MOD);
+                if (modifier == "M")
+                {
+                    visibilityMaxModifier = visibility_modifier_type::less_than;
+                }
+                else if (modifier == "P")
+                {
+                    visibilityMaxModifier = visibility_modifier_type::greater_than;
                 }
             }
 
@@ -378,7 +398,8 @@ void parse_runway_visual_range(metar_info& info, std::string& metar)
             rvr.unit = distance_unit::feet;
             rvr.runway_number = runwayNumber;
             rvr.runway_designator = runwayDesignator;
-            rvr.visibility_modifier = visibilityModifier;
+            rvr.visibility_min_modifier = visibilityMinModifier;
+            rvr.visibility_max_modifier = visibilityMaxModifier;
             rvr.visibility_min = visibilityMin;
             rvr.visibility_max = visibilityMax;
 

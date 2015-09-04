@@ -325,8 +325,7 @@
             "remarks": true
         },
         {
-            "broken": true,
-            "string": "KRFD 190114Z 34011KT 1 1/4SM R01/4500V6000FT TSRA BR FEW004 OVC019CB 20/19 A2969 RMK AO2 TWR VIS 1 1/2 OCNL LTGIC VC N TS VC N MOV N P0060 T02000189 $",
+            "string": "KRFD 190114Z 34011KT 1 1/4SM R01/4500VP6000FT TSRA BR FEW004 OVC019CB 20/19 A2969 RMK AO2 TWR VIS 1 1/2 OCNL LTGIC VC N TS VC N MOV N P0060 T02000189 $",
             "station_identifier": "KRFD",
             "observation_time": {
                 "day_of_month": 19,
@@ -347,7 +346,8 @@
                     "unit": "feet",
                     "runway_number": 1,
                     "visibility_min": 4500,
-                    "visibility_max": 6000
+                    "visibility_max": 6000,
+                    "visibility_max_modifier": "greater_than"
                 }
             ],
             "weather": [
@@ -516,6 +516,205 @@
             "altimeter": {
                 "unit": "inHg",
                 "pressure": 29.86
+            },
+            "remarks": true
+        },
+        {
+            "string": "KMVY 031046Z 23004KT 1/2SM R24/1600V2600FT FG VV002 21/21 A2986 RMK AO2 T02110206",
+            "station_identifier": "KMVY",
+            "observation_time": {
+                "day_of_month": 3,
+                "hour_of_day": 10,
+                "minute_of_hour": 46
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 230,
+                "wind_speed": 4
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 0.5
+            },
+            "runway_visual_range": [
+                {
+                    "unit": "feet",
+                    "runway_number": 24,
+                    "visibility_min": 1600,
+                    "visibility_max": 2600
+                }
+            ],
+            "weather": [
+                {
+                    "phenomena": [
+                        "fog"
+                    ]
+                }
+            ],
+            "sky_condition": [
+                {
+                    "sky_cover": "vertical_visibility",
+                    "layer_height": 200
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 21,
+                "dewpoint": 21
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.86
+            },
+            "remarks": true
+        },
+        {
+            "string": "KPTK 030953Z 00000KT 4SM R09R/4500VP6000FT BR FEW100 SCT250 19/18 A2997 RMK AO2 SLP141 FIRST AUGMENTED OBS OF THE DAY T01940183",
+            "station_identifier": "KPTK",
+            "observation_time": {
+                "day_of_month": 3,
+                "hour_of_day": 9,
+                "minute_of_hour": 53
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 0,
+                "wind_speed": 0
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 4
+            },
+            "runway_visual_range": [
+                {
+                    "unit": "feet",
+                    "runway_number": 9,
+                    "runway_designator": "right",
+                    "visibility_min": 4500,
+                    "visibility_max": 6000,
+                    "visibility_max_modifier": "greater_than"
+                }
+            ],
+            "weather": [
+                {
+                    "phenomena": [
+                        "mist"
+                    ]
+                }
+            ],
+            "sky_condition": [
+                {
+                    "sky_cover": "few",
+                    "layer_height": 10000
+                },
+                {
+                    "sky_cover": "scattered",
+                    "layer_height": 25000
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 19,
+                "dewpoint": 18
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.97
+            },
+            "remarks": true
+        },
+        {
+            "string": "KISP 031041Z 00000KT 1/4SM R06/1400V1800FT FG VV001 23/22 A2985 RMK AO2 T02280217",
+            "station_identifier": "KISP",
+            "observation_time": {
+                "day_of_month": 3,
+                "hour_of_day": 10,
+                "minute_of_hour": 41
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 0,
+                "wind_speed": 0
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 0.25
+            },
+            "runway_visual_range": [
+                {
+                    "unit": "feet",
+                    "runway_number": 6,
+                    "visibility_min": 1400,
+                    "visibility_max": 1800
+                }
+            ],
+            "weather": [
+                {
+                    "phenomena": [
+                        "fog"
+                    ]
+                }
+            ],
+            "sky_condition": [
+                {
+                    "sky_cover": "vertical_visibility",
+                    "layer_height": 100
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 23,
+                "dewpoint": 22
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.85
+            },
+            "remarks": true
+        },
+        {
+            "string": "KRDU 031051Z 00000KT 1/8SM R23R/1200V1800FT FG OVC001 21/20 A2996 RMK AO2 TWR VIS 1/4 SLP141 T02060200 $",
+            "station_identifier": "KRDU",
+            "observation_time": {
+                "day_of_month": 3,
+                "hour_of_day": 10,
+                "minute_of_hour": 51
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 0,
+                "wind_speed": 0
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 0.125
+            },
+            "runway_visual_range": [
+                {
+                    "unit": "feet",
+                    "runway_number": 23,
+                    "runway_designator": "right",
+                    "visibility_min": 1200,
+                    "visibility_max": 1800
+                }
+            ],
+            "weather": [
+                {
+                    "phenomena": [
+                        "fog"
+                    ]
+                }
+            ],
+            "sky_condition": [
+                {
+                    "sky_cover": "overcast",
+                    "layer_height": 100
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 21,
+                "dewpoint": 20
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.96
             },
             "remarks": true
         }

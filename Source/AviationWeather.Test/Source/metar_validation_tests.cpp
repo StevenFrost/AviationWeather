@@ -57,6 +57,7 @@ std::string report_type_strings[] =
 
 std::string modifier_type_strings[] =
 {
+    STRINGIFY(none),
     STRINGIFY(automatic),
     STRINGIFY(corrected)
 };
@@ -318,7 +319,7 @@ void MetarValidationTests::ValidateReportModifier(aw::metar::metar_info const& m
     }
     else
     {
-        Assert::AreEqual(std::string("automatic"), modifier_type_strings[etoi(metar.modifier)]);
+        Assert::AreEqual(std::string("none"), modifier_type_strings[etoi(metar.modifier)]);
     }
 }
 
@@ -427,13 +428,22 @@ void MetarValidationTests::ValidateRunwayVisualRange(aw::metar::metar_info const
                 Assert::AreEqual(UINT16_MAX, actual.visibility_max);
             }
 
-            if (expected.find("visibility_modifier") != expected.end())
+            if (expected.find("visibility_min_modifier") != expected.end())
             {
-                Assert::AreEqual(expected["visibility_modifier"].get<std::string>(), modifier_type_strings[etoi(actual.visibility_modifier)]);
+                Assert::AreEqual(expected["visibility_min_modifier"].get<std::string>(), visibility_modifier_type_strings[etoi(actual.visibility_min_modifier)]);
             }
             else
             {
-                Assert::AreEqual(aw::metar::visibility_modifier_type::none, actual.visibility_modifier);
+                Assert::AreEqual(aw::metar::visibility_modifier_type::none, actual.visibility_min_modifier);
+            }
+
+            if (expected.find("visibility_max_modifier") != expected.end())
+            {
+                Assert::AreEqual(expected["visibility_max_modifier"].get<std::string>(), visibility_modifier_type_strings[etoi(actual.visibility_max_modifier)]);
+            }
+            else
+            {
+                Assert::AreEqual(aw::metar::visibility_modifier_type::none, actual.visibility_max_modifier);
             }
         }
     }

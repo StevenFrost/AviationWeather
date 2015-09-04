@@ -364,7 +364,8 @@ runway_visual_range::runway_visual_range() :
     unit(distance_unit::feet),
     runway_number(0U),
     runway_designator(runway_designator_type::none),
-    visibility_modifier(visibility_modifier_type::none),
+    visibility_min_modifier(visibility_modifier_type::none),
+    visibility_max_modifier(visibility_modifier_type::none),
     visibility_min(UINT16_MAX),
     visibility_max(UINT16_MAX)
 {}
@@ -373,7 +374,8 @@ runway_visual_range::runway_visual_range(runway_visual_range && other) :
     unit(distance_unit::feet),
     runway_number(0U),
     runway_designator(runway_designator_type::none),
-    visibility_modifier(visibility_modifier_type::none),
+    visibility_min_modifier(visibility_modifier_type::none),
+    visibility_max_modifier(visibility_modifier_type::none),
     visibility_min(UINT16_MAX),
     visibility_max(UINT16_MAX)
 {
@@ -387,14 +389,16 @@ runway_visual_range& runway_visual_range::operator=(runway_visual_range && rhs)
         unit = rhs.unit;
         runway_number = rhs.runway_number;
         runway_designator = rhs.runway_designator;
-        visibility_modifier = rhs.visibility_modifier;
+        visibility_min_modifier = rhs.visibility_min_modifier;
+        visibility_max_modifier = rhs.visibility_max_modifier;
         visibility_min = rhs.visibility_min;
         visibility_max = rhs.visibility_max;
 
         rhs.unit = distance_unit::feet;
         rhs.runway_number = 0U;
         rhs.runway_designator = runway_designator_type::none;
-        rhs.visibility_modifier = visibility_modifier_type::none;
+        rhs.visibility_min_modifier = visibility_modifier_type::none;
+        rhs.visibility_max_modifier = visibility_modifier_type::none;
         rhs.visibility_min = UINT16_MAX;
         rhs.visibility_max = UINT16_MAX;
     }
@@ -406,7 +410,8 @@ bool runway_visual_range::operator== (runway_visual_range const& rhs) const
     return (unit == rhs.unit) &&
         (runway_number == rhs.runway_number) &&
         (runway_designator == rhs.runway_designator) &&
-        (visibility_modifier == rhs.visibility_modifier) &&
+        (visibility_min_modifier == rhs.visibility_min_modifier) &&
+        (visibility_max_modifier == rhs.visibility_max_modifier) &&
         (visibility_min == rhs.visibility_min) &&
         (visibility_max == rhs.visibility_max);
 }
@@ -520,7 +525,7 @@ metar_info::metar_info(std::string const& metar) :
     metar(metar),
     type(report_type::metar),
     station_identifier(""),
-    modifier(modifier_type::automatic),
+    modifier(modifier_type::none),
     temperature(INT8_MAX),
     dewpoint(INT8_MAX),
     remarks("")
@@ -532,7 +537,7 @@ metar_info::metar_info(metar_info && other) :
     metar(""),
     type(report_type::metar),
     station_identifier(""),
-    modifier(modifier_type::automatic),
+    modifier(modifier_type::none),
     temperature(INT8_MAX),
     dewpoint(INT8_MAX),
     remarks("")
@@ -563,7 +568,7 @@ metar_info& metar_info::operator=(metar_info && rhs)
         rhs.type = report_type::metar;
         rhs.station_identifier = "";
         rhs.report_time = observation_time();
-        rhs.modifier = modifier_type::automatic;
+        rhs.modifier = modifier_type::none;
         rhs.wind_group = wind();
         rhs.visibility_group = visibility();
         rhs.runway_visual_range_group.clear();
