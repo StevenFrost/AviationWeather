@@ -26,6 +26,7 @@
     <ClInclude Include="..\Inc\AviationWeather\converters.h" />
     <ClInclude Include="..\Inc\AviationWeather\metar.h" />
     <ClInclude Include="..\Inc\AviationWeather\types.h" />
+    <ClInclude Include="..\Inc\AviationWeather\winds_aloft.h" />
     <ClInclude Include="..\Source\AviationWeatherPch.h" />
     <ClInclude Include="..\Source\decoders.h" />
     <ClInclude Include="..\Source\parsers.h" />
@@ -37,6 +38,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\Source\parsers.cpp" />
+    <ClCompile Include="..\Source\winds_aloft.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

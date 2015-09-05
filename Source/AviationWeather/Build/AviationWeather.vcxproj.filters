@@ -24,6 +24,9 @@
     <ClCompile Include="..\Source\parsers.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\winds_aloft.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Inc\AviationWeather\metar.h">
@@ -43,6 +46,9 @@
     </ClInclude>
     <ClInclude Include="..\Source\decoders.h">
       <Filter>Private Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Inc\AviationWeather\winds_aloft.h">
+      <Filter>Public Headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
