@@ -90,9 +90,6 @@ void MetarParserTests::METAR_Parser_StationIdentifier()
 void MetarParserTests::METAR_Parser_ObservationTime()
 {
     metar::metar_info metar("");
-    Assert::AreEqual(uint8_t(1), metar.report_time.day_of_month);
-    Assert::AreEqual(uint8_t(0), metar.report_time.hour_of_day);
-    Assert::AreEqual(uint8_t(0), metar.report_time.minute_of_hour);
 
     // 8th, 17:53
     std::string m1("081753Z ");
