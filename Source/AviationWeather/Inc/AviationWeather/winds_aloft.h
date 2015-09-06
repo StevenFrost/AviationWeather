@@ -15,6 +15,10 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+#include <vector>
+
 #include <AviationWeather/types.h>
 
 //-----------------------------------------------------------------------------
@@ -23,6 +27,47 @@ namespace aw
 {
 namespace winds_aloft
 {
+
+class winds_aloft_report;
+
+template <class T>
+class optional
+{
+public:
+};
+
+struct report
+{
+    double wind_direction;
+    double wind_speed;
+    double temperature;
+};
+
+class station_report
+{
+public:
+    optional<report> at(double altitude)
+    {
+        return optional<report>();
+    }
+
+private:
+    std::vector<optional<report>> reports;
+    std::weak_ptr<winds_aloft_report> parent;
+};
+
+class winds_aloft_report
+{
+public:
+    station_report get(std::string const& identifier)
+    {
+        return station_report();
+    }
+
+private:
+    std::vector<uint16_t> altitudes;
+    std::vector<station_report> reports;
+};
 
 } // namespace winds_aloft
 } // namespace aw
