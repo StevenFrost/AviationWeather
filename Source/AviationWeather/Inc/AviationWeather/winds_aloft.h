@@ -36,22 +36,72 @@ class optional
 public:
 };
 
-struct report
-{
-    double wind_direction;
-    double wind_speed;
-    double temperature;
-};
-
-class station_report
+class time
 {
 public:
-    optional<report> at(double altitude)
-    {
-        return optional<report>();
-    }
+    time(uint8_t hour, uint8_t minute);
+    time(uint8_t day, uint8_t hour, uint8_t minute);
+
+    time(time const& other) = default;
+    time(time && other);
+
+    time& operator= (time const& rhs) = default;
+    time& operator= (time && rhs);
+
+    bool operator== (time const& rhs) const;
+    bool operator!= (time const& rhs) const;
+
+public:
+    optional<uint8_t> day_of_month;
+    uint8_t hour_of_day;
+    uint8_t minute_of_hour;
+};
+
+
+class report
+{
+public:
+    report(double direction, double speed);
+    report(double direction, double speed, double temperature, double isa_deviation);
+
+    report(report const& other) = default;
+    report(report && other);
+
+    report& operator= (report const& rhs) = default;
+    report& operator= (report && rhs);
+
+    bool operator== (report const& rhs) const;
+    bool operator!= (report const& rhs) const;
+
+    bool is_light_and_variable() const;
+
+public:
+    double wind_direction;
+    double wind_speed;
+    optional<double> temperature;
+    optional<double> isa_deviation;
+};
+
+class location
+{
+public:
+    location(std::string const& text);
+
+    location(location const& other) = default;
+    location(location && other);
+
+    location& operator= (location const& rhs) = default;
+    location& operator= (location && rhs);
+
+    bool operator== (location const& rhs) const;
+    bool operator!= (location const& rhs) const;
+
+    std::string iata_identifier() const;
+
+    optional<report> at(double altitude) const;
 
 private:
+    std::string iata_identifier;
     std::vector<optional<report>> reports;
     std::weak_ptr<winds_aloft_report> parent;
 };
@@ -59,14 +109,23 @@ private:
 class winds_aloft_report
 {
 public:
-    station_report get(std::string const& identifier)
-    {
-        return station_report();
-    }
+    winds_aloft_report(std::string const& text);
+
+    winds_aloft_report(winds_aloft_report const& other) = default;
+    winds_aloft_report(winds_aloft_report && other);
+
+    winds_aloft_report& operator= (winds_aloft_report const& rhs) = default;
+    winds_aloft_report& operator= (winds_aloft_report && rhs);
+
+    bool operator== (winds_aloft_report const& rhs) const;
+    bool operator!= (winds_aloft_report const& rhs) const;
+
+    location get(std::string const& location_identifier);
 
 private:
+    friend class location;
     std::vector<uint16_t> altitudes;
-    std::vector<station_report> reports;
+    std::vector<location> reports;
 };
 
 } // namespace winds_aloft
