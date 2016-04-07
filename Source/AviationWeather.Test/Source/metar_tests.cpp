@@ -53,43 +53,43 @@ void MetarTests::METAR_VariableWinds()
 {
     aw::metar::metar_info m1("KSFO 112056Z VRB03KT 10SM FEW010 SCT180 22/12 A2994 RMK AO2 SLP137 T02220122 58006");
 
-    Assert::IsTrue(m1.wind_group.is_variable());
-    Assert::AreEqual(UINT16_MAX, m1.wind_group.direction);
-    Assert::AreEqual(static_cast<uint8_t>(3), m1.wind_group.wind_speed);
-    Assert::AreEqual(static_cast<uint8_t>(0), m1.wind_group.gust_speed);
-    Assert::AreEqual(static_cast<uint8_t>(0), m1.wind_group.gust_factor());
-    Assert::AreEqual(UINT16_MAX, m1.wind_group.variation_lower);
-    Assert::AreEqual(UINT16_MAX, m1.wind_group.variation_upper);
+    Assert::IsTrue(m1.wind_group->is_variable());
+    Assert::AreEqual(UINT16_MAX, m1.wind_group->direction);
+    Assert::AreEqual(static_cast<uint8_t>(3), m1.wind_group->wind_speed);
+    Assert::AreEqual(static_cast<uint8_t>(0), m1.wind_group->gust_speed);
+    Assert::AreEqual(static_cast<uint8_t>(0), m1.wind_group->gust_factor());
+    Assert::IsFalse(static_cast<bool>(m1.wind_group->variation_lower));
+    Assert::IsFalse(static_cast<bool>(m1.wind_group->variation_upper));
 
     aw::metar::metar_info m2("KRHV 101451Z 29014G18KT 10SM SKC 27/13 A2990");
 
-    Assert::IsFalse(m2.wind_group.is_variable());
-    Assert::AreEqual(static_cast<uint16_t>(290), m2.wind_group.direction);
-    Assert::AreEqual(static_cast<uint8_t>(14), m2.wind_group.wind_speed);
-    Assert::AreEqual(static_cast<uint8_t>(18), m2.wind_group.gust_speed);
-    Assert::AreEqual(static_cast<uint8_t>(4), m2.wind_group.gust_factor());
-    Assert::AreEqual(UINT16_MAX, m2.wind_group.variation_lower);
-    Assert::AreEqual(UINT16_MAX, m2.wind_group.variation_upper);
+    Assert::IsFalse(m2.wind_group->is_variable());
+    Assert::AreEqual(static_cast<uint16_t>(290), m2.wind_group->direction);
+    Assert::AreEqual(static_cast<uint8_t>(14), m2.wind_group->wind_speed);
+    Assert::AreEqual(static_cast<uint8_t>(18), m2.wind_group->gust_speed);
+    Assert::AreEqual(static_cast<uint8_t>(4), m2.wind_group->gust_factor());
+    Assert::IsFalse(static_cast<bool>(m1.wind_group->variation_lower));
+    Assert::IsFalse(static_cast<bool>(m1.wind_group->variation_upper));
 
     aw::metar::metar_info m3("KRHV 101850Z VRB02G06KT 10SM SKC 27/13 A2990");
 
-    Assert::IsTrue(m3.wind_group.is_variable());
-    Assert::AreEqual(UINT16_MAX, m3.wind_group.direction);
-    Assert::AreEqual(static_cast<uint8_t>(2), m3.wind_group.wind_speed);
-    Assert::AreEqual(static_cast<uint8_t>(6), m3.wind_group.gust_speed);
-    Assert::AreEqual(static_cast<uint8_t>(4), m3.wind_group.gust_factor());
-    Assert::AreEqual(UINT16_MAX, m3.wind_group.variation_lower);
-    Assert::AreEqual(UINT16_MAX, m3.wind_group.variation_upper);
+    Assert::IsTrue(m3.wind_group->is_variable());
+    Assert::AreEqual(UINT16_MAX, m3.wind_group->direction);
+    Assert::AreEqual(static_cast<uint8_t>(2), m3.wind_group->wind_speed);
+    Assert::AreEqual(static_cast<uint8_t>(6), m3.wind_group->gust_speed);
+    Assert::AreEqual(static_cast<uint8_t>(4), m3.wind_group->gust_factor());
+    Assert::IsFalse(static_cast<bool>(m1.wind_group->variation_lower));
+    Assert::IsFalse(static_cast<bool>(m1.wind_group->variation_upper));
 
     aw::metar::metar_info m5("KRHV 112150Z 22512G15KT 200V250 10SM SKC 27/13 A2990");
 
-    Assert::IsTrue(m5.wind_group.is_variable());
-    Assert::AreEqual(static_cast<uint16_t>(225), m5.wind_group.direction);
-    Assert::AreEqual(static_cast<uint8_t>(12), m5.wind_group.wind_speed);
-    Assert::AreEqual(static_cast<uint8_t>(15), m5.wind_group.gust_speed);
-    Assert::AreEqual(static_cast<uint8_t>(3), m5.wind_group.gust_factor());
-    Assert::AreEqual(static_cast<uint16_t>(200), m5.wind_group.variation_lower);
-    Assert::AreEqual(static_cast<uint16_t>(250), m5.wind_group.variation_upper);
+    Assert::IsTrue(m5.wind_group->is_variable());
+    Assert::AreEqual(static_cast<uint16_t>(225), m5.wind_group->direction);
+    Assert::AreEqual(static_cast<uint8_t>(12), m5.wind_group->wind_speed);
+    Assert::AreEqual(static_cast<uint8_t>(15), m5.wind_group->gust_speed);
+    Assert::AreEqual(static_cast<uint8_t>(3), m5.wind_group->gust_factor());
+    Assert::AreEqual(static_cast<uint16_t>(200), *(m5.wind_group->variation_lower));
+    Assert::AreEqual(static_cast<uint16_t>(250), *(m5.wind_group->variation_upper));
 }
 
 //-----------------------------------------------------------------------------
@@ -98,27 +98,27 @@ void MetarTests::METAR_FractionalVisibility()
 {
     aw::metar::metar_info m1("KSFO 121156Z 28005KT M1/4SM FEW006 15/12 A3000");
 
-    Assert::AreEqual(aw::distance_unit::statute_miles, m1.visibility_group.unit);
-    Assert::AreEqual(aw::metar::visibility_modifier_type::less_than, m1.visibility_group.modifier);
-    Assert::AreEqual(1.0 / 4.0, m1.visibility_group.distance, 0.01);
+    Assert::AreEqual(aw::distance_unit::statute_miles, m1.visibility_group->unit);
+    Assert::AreEqual(aw::metar::visibility_modifier_type::less_than, m1.visibility_group->modifier);
+    Assert::AreEqual(1.0 / 4.0, m1.visibility_group->distance, 0.01);
 
     aw::metar::metar_info m2("KSFO 121156Z 28005KT 1/2SM FEW006 15/12 A3000");
 
-    Assert::AreEqual(aw::distance_unit::statute_miles, m2.visibility_group.unit);
-    Assert::AreEqual(aw::metar::visibility_modifier_type::none, m2.visibility_group.modifier);
-    Assert::AreEqual(1.0 / 2.0, m2.visibility_group.distance, 0.01);
+    Assert::AreEqual(aw::distance_unit::statute_miles, m2.visibility_group->unit);
+    Assert::AreEqual(aw::metar::visibility_modifier_type::none, m2.visibility_group->modifier);
+    Assert::AreEqual(1.0 / 2.0, m2.visibility_group->distance, 0.01);
 
     aw::metar::metar_info m3("KSFO 121156Z 28005KT 1 1/2SM FEW006 15/12 A3000");
 
-    Assert::AreEqual(aw::distance_unit::statute_miles, m3.visibility_group.unit);
-    Assert::AreEqual(aw::metar::visibility_modifier_type::none, m3.visibility_group.modifier);
-    Assert::AreEqual(1.0 + (1.0 / 2.0), m3.visibility_group.distance, 0.01);
+    Assert::AreEqual(aw::distance_unit::statute_miles, m3.visibility_group->unit);
+    Assert::AreEqual(aw::metar::visibility_modifier_type::none, m3.visibility_group->modifier);
+    Assert::AreEqual(1.0 + (1.0 / 2.0), m3.visibility_group->distance, 0.01);
 
     aw::metar::metar_info m4("KSFO 121156Z 28005KT 15SM FEW006 15/12 A3000");
 
-    Assert::AreEqual(aw::distance_unit::statute_miles, m4.visibility_group.unit);
-    Assert::AreEqual(aw::metar::visibility_modifier_type::none, m4.visibility_group.modifier);
-    Assert::AreEqual(15.0, m4.visibility_group.distance, 0.01);
+    Assert::AreEqual(aw::distance_unit::statute_miles, m4.visibility_group->unit);
+    Assert::AreEqual(aw::metar::visibility_modifier_type::none, m4.visibility_group->modifier);
+    Assert::AreEqual(15.0, m4.visibility_group->distance, 0.01);
 }
 
 //-----------------------------------------------------------------------------
@@ -289,18 +289,18 @@ void MetarTests::METAR_Phenomena()
 void MetarTests::METAR_TemperatureDewpointSpread()
 {
     aw::metar::metar_info m1("KSFO 010956Z 00000KT 10SM FEW011 16/13 A2987 RMK AO2 SLP114 T01610133");
-    Assert::AreEqual(int8_t(16), m1.temperature);
-    Assert::AreEqual(int8_t(13), m1.dewpoint);
+    Assert::AreEqual(int8_t(16), *(m1.temperature));
+    Assert::AreEqual(int8_t(13), *(m1.dewpoint));
     Assert::AreEqual(int16_t(3), m1.temperature_dewpoint_spread());
 
     aw::metar::metar_info m2("ENSB 010950Z 03003KT 340V060 9999 FEW030 03/M04 Q1018 NOSIG RMK WIND 1400FT 02004KT");
-    Assert::AreEqual(int8_t(3), m2.temperature);
-    Assert::AreEqual(int8_t(-4), m2.dewpoint);
+    Assert::AreEqual(int8_t(3), *(m2.temperature));
+    Assert::AreEqual(int8_t(-4), *(m2.dewpoint));
     Assert::AreEqual(int16_t(7), m2.temperature_dewpoint_spread());
 
     aw::metar::metar_info m3("EGBE 311150Z 35008KT 6000 -RA SCT008 BKN011 OVC014 14/14 Q1014");
-    Assert::AreEqual(int8_t(14), m3.temperature);
-    Assert::AreEqual(int8_t(14), m3.dewpoint);
+    Assert::AreEqual(int8_t(14), *(m3.temperature));
+    Assert::AreEqual(int8_t(14), *(m3.dewpoint));
     Assert::AreEqual(int16_t(0), m3.temperature_dewpoint_spread());
 }
 

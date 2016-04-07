@@ -44,5 +44,8 @@
     <ClInclude Include="..\Source\decoders.h">
       <Filter>Private Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\Inc\AviationWeather\optional.h">
+      <Filter>Public Headers</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

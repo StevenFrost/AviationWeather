@@ -12,7 +12,6 @@
     <Import Project="$(SolutionDir)..\Root.props" />
     <Import Project="$(ConfigDirectory)Configurations.props" />
     <Import Project="$(ConfigDirectory)Cpp.props" />
-    <Import Condition="'$(JSONImported)' != 'true'" Project="$(ExternalDirectory)JSON\Build\JSON.props" />
   </ImportGroup>
   <ItemGroup>
     <ProjectReference Include="$(SourceDirectory)\AviationWeather\Build\AviationWeather.vcxproj">
@@ -21,6 +20,7 @@
   </ItemGroup>
   <PropertyGroup>
     <LinkIncremental>true</LinkIncremental>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
@@ -58,8 +58,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\metar.json" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(BuildDirectory)packages\cppjson.1.1.0\build\native\cppjson.targets" Condition="Exists('$(BuildDirectory)packages\cppjson.1.1.0\build\native\cppjson.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(BuildDirectory)packages\cppjson.1.1.0\build\native\cppjson.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(BuildDirectory)packages\cppjson.1.1.0\build\native\cppjson.targets'))" />
+  </Target>
 </Project>

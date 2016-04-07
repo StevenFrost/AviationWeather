@@ -23,7 +23,7 @@
 
 #pragma warning(push)
 #pragma warning(disable: 4706) // warning C4706: assignment within conditional expression
-#include <JSON/json.hpp>
+#include <JSON/json.h>
 #pragma warning(pop)
 
 #include "framework.h"

@@ -46,6 +46,11 @@ template<> inline std::wstring ToString<uint16_t>(const uint16_t& t) { RETURN_WI
 template<> inline std::wstring ToString<uint16_t>(const uint16_t* t) { RETURN_WIDE_STRING(t); }
 template<> inline std::wstring ToString<uint16_t>(uint16_t* t)       { RETURN_WIDE_STRING(t); }
 
+// aw::metar::visibility
+template<> inline std::wstring ToString<aw::metar::visibility>(const aw::metar::visibility& t) { /* ugh.... */ RETURN_WIDE_STRING(1); }
+template<> inline std::wstring ToString<aw::metar::visibility>(const aw::metar::visibility* t) { RETURN_WIDE_STRING(t); }
+template<> inline std::wstring ToString<aw::metar::visibility>(aw::metar::visibility* t) { RETURN_WIDE_STRING(t); }
+
 DEFINE_ENUM_TOSTRING_GROUP(aw::weather_intensity)
 DEFINE_ENUM_TOSTRING_GROUP(aw::weather_descriptor)
 DEFINE_ENUM_TOSTRING_GROUP(aw::weather_phenomena)

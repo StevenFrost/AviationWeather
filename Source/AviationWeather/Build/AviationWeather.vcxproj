@@ -12,6 +12,9 @@
     <Import Project="$(ConfigDirectory)Configurations.props" />
     <Import Project="$(ConfigDirectory)Cpp.props" />
   </ImportGroup>
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>
@@ -25,6 +28,7 @@
   <ItemGroup>
     <ClInclude Include="..\Inc\AviationWeather\converters.h" />
     <ClInclude Include="..\Inc\AviationWeather\metar.h" />
+    <ClInclude Include="..\Inc\AviationWeather\optional.h" />
     <ClInclude Include="..\Inc\AviationWeather\types.h" />
     <ClInclude Include="..\Source\AviationWeatherPch.h" />
     <ClInclude Include="..\Source\decoders.h" />
@@ -39,6 +43,5 @@
     <ClCompile Include="..\Source\parsers.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

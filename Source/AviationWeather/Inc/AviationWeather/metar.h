@@ -19,6 +19,7 @@
 #include <string>
 #include <vector>
 
+#include <AviationWeather/optional.h>
 #include <AviationWeather/types.h>
 
 //-----------------------------------------------------------------------------
@@ -54,9 +55,9 @@ enum class report_type
 
 enum class modifier_type
 {
-    none,
-    automatic,
-    corrected
+    none,       // Automatic, someone reviewed the report
+    automatic,  // Automatic, nobody reviewed the report
+    corrected   // Corrected by someone
 };
 
 enum class runway_designator_type
@@ -191,12 +192,12 @@ public:
     double crosswind_component(double heading, bool useGusts = false) const;
 
 public:
-    speed_unit unit;            // Unit of speed for wind_speed and gust_speed
-    uint16_t   direction;       // Primary wind direction
-    uint8_t    wind_speed;      // Primary wind speed in speed_units
-    uint8_t    gust_speed;      // Gust speed in speed_units
-    uint16_t   variation_lower; // Lower wind direction
-    uint16_t   variation_upper; // Upper wind direction
+    speed_unit               unit;            // Unit of speed for wind_speed and gust_speed
+    uint16_t                 direction;       // Primary wind direction. Variable wind is encoded as UINT16_MAX
+    uint8_t                  wind_speed;      // Primary wind speed in speed_units
+    uint8_t                  gust_speed;      // Gust speed in speed_units
+    util::optional<uint16_t> variation_lower; // Lower wind direction
+    util::optional<uint16_t> variation_upper; // Upper wind direction
 };
 
 //-----------------------------------------------------------------------------
@@ -221,13 +222,10 @@ public:
     bool is_variable() const;
 
 public:
-    distance_unit            unit;                      // Unit of distance for visibility_min and visibility_max
-    uint8_t                  runway_number;             // Runway number
-    runway_designator_type   runway_designator;         // Runway designator (L, R, C)
-    visibility_modifier_type visibility_min_modifier;   // Modifier for minimum visibility
-    visibility_modifier_type visibility_max_modifier;   // Modifier for maximum visibility
-    uint16_t                 visibility_min;            // Minimum visibility
-    uint16_t                 visibility_max;            // Maximum visibility
+    uint8_t                runway_number;       // Runway number
+    runway_designator_type runway_designator;   // Runway designator (L, R, C)
+    visibility             visibility_min;      // Minimum visibility
+    visibility             visibility_max;      // Maximum visibility
 };
 
 //-----------------------------------------------------------------------------
@@ -316,14 +314,14 @@ public:
     std::string                      station_identifier;
     observation_time                 report_time;
     modifier_type                    modifier;
-    wind                             wind_group;
-    visibility                       visibility_group;
+    util::optional<wind>             wind_group;
+    util::optional<visibility>       visibility_group;
     std::vector<runway_visual_range> runway_visual_range_group;
     std::vector<weather>             weather_group;
     std::vector<cloud_layer>         sky_condition_group;
-    int8_t                           temperature;
-    int8_t                           dewpoint;
-    altimeter                        altimeter_group;
+    util::optional<int8_t>           temperature;
+    util::optional<int8_t>           dewpoint;
+    util::optional<altimeter>        altimeter_group;
     std::string                      remarks;
 };
 
