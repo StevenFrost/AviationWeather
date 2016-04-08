@@ -12,9 +12,6 @@
     <Import Project="$(ConfigDirectory)Configurations.props" />
     <Import Project="$(ConfigDirectory)Cpp.props" />
   </ImportGroup>
-  <PropertyGroup>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>
