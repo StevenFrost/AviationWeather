@@ -7,6 +7,9 @@
 # VS directories
 .vs/
 
+# NuGet
+[Pp]ackages/
+
 # Build results
 [Bb]uilt/
 
@@ -43,6 +46,8 @@ ipch/
 *.aps
 *.ncb
 *.opensdf
+*.opendb
+*.db
 *.sdf
 *.cachefile
 

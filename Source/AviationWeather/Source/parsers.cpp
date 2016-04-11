@@ -218,36 +218,30 @@ void parse_wind(metar_info& info, std::string& metar)
 
         try
         {
-            auto unit = decoders::decode_speed_unit(regex[EXPR_UNIT]);
-            auto speed = static_cast<uint8_t>(atoi(regex.str(EXPR_SPEED).c_str()));
+            wind windGroup;
+
+            windGroup.unit = decoders::decode_speed_unit(regex[EXPR_UNIT]);
+            windGroup.wind_speed = static_cast<uint8_t>(atoi(regex.str(EXPR_SPEED).c_str()));
 
             uint16_t direction = UINT16_MAX;
             if (regex.str(EXPR_DIRECTION) != "VRB")
             {
                 direction = static_cast<uint16_t>(atoi(regex.str(EXPR_DIRECTION).c_str()));
             }
+            windGroup.direction = direction;
 
             uint8_t gustSpeed = 0U;
             if (regex[EXPR_GUST].matched)
             {
                 gustSpeed = static_cast<uint8_t>(atoi(regex.str(EXPR_GUST_SPEED).c_str()));
             }
+            windGroup.gust_speed = gustSpeed;
 
-            uint16_t variationLower = UINT16_MAX;
-            uint16_t variationUpper = UINT16_MAX;
             if (regex[EXPR_VAR].matched)
             {
-                variationLower = static_cast<uint16_t>(atoi(regex.str(EXPR_VAR_LOWER).c_str()));
-                variationUpper = static_cast<uint16_t>(atoi(regex.str(EXPR_VAR_UPPER).c_str()));
+                windGroup.variation_lower = static_cast<uint16_t>(atoi(regex.str(EXPR_VAR_LOWER).c_str()));
+                windGroup.variation_upper = static_cast<uint16_t>(atoi(regex.str(EXPR_VAR_UPPER).c_str()));
             }
-
-            wind windGroup;
-            windGroup.unit = unit;
-            windGroup.direction = direction;
-            windGroup.wind_speed = speed;
-            windGroup.gust_speed = gustSpeed;
-            windGroup.variation_lower = variationLower;
-            windGroup.variation_upper = variationUpper;
 
             info.wind_group = std::move(windGroup);
         }
@@ -395,13 +389,10 @@ void parse_runway_visual_range(metar_info& info, std::string& metar)
             }
 
             runway_visual_range rvr;
-            rvr.unit = distance_unit::feet;
             rvr.runway_number = runwayNumber;
             rvr.runway_designator = runwayDesignator;
-            rvr.visibility_min_modifier = visibilityMinModifier;
-            rvr.visibility_max_modifier = visibilityMaxModifier;
-            rvr.visibility_min = visibilityMin;
-            rvr.visibility_max = visibilityMax;
+            rvr.visibility_min = visibility(visibilityMin, distance_unit::feet, visibilityMinModifier);
+            rvr.visibility_max = visibility(visibilityMax, distance_unit::feet, visibilityMaxModifier);
 
             info.runway_visual_range_group.push_back(std::move(rvr));
         }
@@ -574,33 +565,30 @@ void parse_temperature_dewpoint(metar_info& info, std::string& metar)
         static const unsigned short EXPR_DEW_IS_MINUS = 4;
         static const unsigned short EXPR_DEWPOINT = 5;
 
-        int8_t temperature = INT8_MAX;
-        int8_t dewpoint = INT8_MAX;
-
         if (regex[EXPR_TEMPERATURE].matched)
         {
             auto temperatureStr = regex.str(EXPR_TEMPERATURE);
-            temperature = static_cast<int8_t>(atoi(temperatureStr.c_str()));
+            int8_t temperature = static_cast<int8_t>(atoi(temperatureStr.c_str()));
 
             if (regex[EXPR_TEMP_IS_MINUS].matched)
             {
                 temperature = -temperature;
             }
+            info.temperature = temperature;
         }
 
         if (regex[EXPR_DEWPOINT].matched)
         {
             auto dewpointStr = regex.str(EXPR_DEWPOINT);
-            dewpoint = static_cast<int8_t>(atoi(dewpointStr.c_str()));
+            int8_t dewpoint = static_cast<int8_t>(atoi(dewpointStr.c_str()));
 
             if (regex[EXPR_DEW_IS_MINUS].matched)
             {
                 dewpoint = -dewpoint;
             }
+            info.dewpoint = dewpoint;
         }
 
-        info.temperature = temperature;
-        info.dewpoint = dewpoint;
     });
     metar = result;
 }
