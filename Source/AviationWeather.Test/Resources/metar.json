@@ -31,7 +31,8 @@
             "altimeter": {
                 "unit": "inHg",
                 "pressure": 30.12
-            }
+            },
+            "flight_category": "vfr"
         },
         {
             "string": "KRHV 122047Z 32009KT 10SM SKC 28/11 A3002",
@@ -62,7 +63,8 @@
             "altimeter": {
                 "unit": "inHg",
                 "pressure": 30.02
-            }
+            },
+            "flight_category": "vfr"
         },
         {
             "string": "KEDU 181255Z AUTO 9SM CLR 15/11 A2982 RMK AO1",
@@ -90,7 +92,8 @@
                 "unit": "inHg",
                 "pressure": 29.82
             },
-            "remarks": true
+            "remarks": true,
+            "flight_category": "vfr"
         },
         {
             "string": "KWVI 171653Z AUTO 7SM OVC004 18/15 A2990 RMK AO2 SLP124 T01780150",
@@ -119,7 +122,8 @@
                 "unit": "inHg",
                 "pressure": 29.9
             },
-            "remarks": true
+            "remarks": true,
+            "flight_category": "lifr"
         },
         {
             "string": "KSTS 181253Z AUTO 00000KT 10SM -RA HZ FU OVC007 14/12 A2990 RMK AO2 RAB30 SLP116 P0000 T01390122",
@@ -171,7 +175,8 @@
                 "unit": "inHg",
                 "pressure": 29.9
             },
-            "remarks": true
+            "remarks": true,
+            "flight_category": "ifr"
         },
         {
             "string": "KWVI 171453Z AUTO 00000KT 1/4SM FG VV002 16/15 A2989 RMK AO2 SLP119 T01610150 53007",
@@ -212,7 +217,8 @@
                 "unit": "inHg",
                 "pressure": 29.89
             },
-            "remarks": true
+            "remarks": true,
+            "flight_category": "lifr"
         },
         {
             "string": "KAPC 182254Z 20015KT 10SM CLR 24/16 A2987 RMK AO2 RAE2159 SLP107 P0000 T02390156 $",
@@ -244,7 +250,8 @@
                 "unit": "inHg",
                 "pressure": 29.87
             },
-            "remarks": true
+            "remarks": true,
+            "flight_category": "vfr"
         },
         {
             "string": "KCCR 182053Z 29008KT 270V340 10SM FU CLR 29/12 A2988 RMK AO2 SLP103 T02940117 58014",
@@ -285,7 +292,8 @@
                 "unit": "inHg",
                 "pressure": 29.88
             },
-            "remarks": true
+            "remarks": true,
+            "flight_category": "vfr"
         },
         {
             "string": "KSFO 180056Z 30017KT 8SM FEW007 SCT200 20/14 A2982 RMK AO2 PK WND 29027/0030 SLP096 T02000139",
@@ -322,7 +330,8 @@
                 "unit": "inHg",
                 "pressure": 29.82
             },
-            "remarks": true
+            "remarks": true,
+            "flight_category": "vfr"
         },
         {
             "string": "KRFD 190114Z 34011KT 1 1/4SM R01/4500VP6000FT TSRA BR FEW004 OVC019CB 20/19 A2969 RMK AO2 TWR VIS 1 1/2 OCNL LTGIC VC N TS VC N MOV N P0060 T02000189 $",
@@ -382,7 +391,8 @@
                 "unit": "inHg",
                 "pressure": 29.69
             },
-            "remarks": true
+            "remarks": true,
+            "flight_category": "ifr"
         },
         {
             "string": "KRHV 201647Z VRB05KT 8SM OVC025 20/14 A2992",
@@ -415,7 +425,8 @@
                 "unit": "inHg",
                 "pressure": 29.92
             },
-            "remarks": false
+            "remarks": false,
+            "flight_category": "mvfr"
         },
         {
             "string": "KSTS 201453Z COR 21004KT 6SM OVC006 14/13 A2991 RMK AO2 SLP122 T01440133 53008",
@@ -449,41 +460,8 @@
                 "unit": "inHg",
                 "pressure": 29.91
             },
-            "remarks": true
-        },
-        {
-            "string": "KSTS 201453Z COR 21004KT 6SM OVC006 14/13 A2991 RMK AO2 SLP122 T01440133 53008",
-            "station_identifier": "KSTS",
-            "observation_time": {
-                "day_of_month": 20,
-                "hour_of_day": 14,
-                "minute_of_hour": 53
-            },
-            "report_modifier": "corrected",
-            "wind": {
-                "unit": "kt",
-                "direction": 210,
-                "wind_speed": 4
-            },
-            "visibility": {
-                "unit": "statute_miles",
-                "distance": 6
-            },
-            "sky_condition": [
-                {
-                    "sky_cover": "overcast",
-                    "layer_height": 600
-                }
-            ],
-            "temperature_dewpoint": {
-                "temperature": 14,
-                "dewpoint": 13
-            },
-            "altimeter": {
-                "unit": "inHg",
-                "pressure": 29.91
-            },
-            "remarks": true
+            "remarks": true,
+            "flight_category": "ifr"
         },
         {
             "string": "KLVK 200153Z 29018G23KT 10SM CLR 23/13 A2986 RMK AO2 SLP108 FU E-SE T02330133",
@@ -517,7 +495,8 @@
                 "unit": "inHg",
                 "pressure": 29.86
             },
-            "remarks": true
+            "remarks": true,
+            "flight_category": "vfr"
         },
         {
             "string": "KMVY 031046Z 23004KT 1/2SM R24/1600V2600FT FG VV002 21/21 A2986 RMK AO2 T02110206",
@@ -565,7 +544,8 @@
                 "unit": "inHg",
                 "pressure": 29.86
             },
-            "remarks": true
+            "remarks": true,
+            "flight_category": "lifr"
         },
         {
             "string": "KPTK 030953Z 00000KT 4SM R09R/4500VP6000FT BR FEW100 SCT250 19/18 A2997 RMK AO2 SLP141 FIRST AUGMENTED OBS OF THE DAY T01940183",
@@ -619,7 +599,8 @@
                 "unit": "inHg",
                 "pressure": 29.97
             },
-            "remarks": true
+            "remarks": true,
+            "flight_category": "mvfr"
         },
         {
             "string": "KISP 031041Z 00000KT 1/4SM R06/1400V1800FT FG VV001 23/22 A2985 RMK AO2 T02280217",
@@ -667,7 +648,8 @@
                 "unit": "inHg",
                 "pressure": 29.85
             },
-            "remarks": true
+            "remarks": true,
+            "flight_category": "lifr"
         },
         {
             "string": "KRDU 031051Z 00000KT 1/8SM R23R/1200V1800FT FG OVC001 21/20 A2996 RMK AO2 TWR VIS 1/4 SLP141 T02060200 $",
@@ -716,7 +698,1693 @@
                 "unit": "inHg",
                 "pressure": 29.96
             },
-            "remarks": true
+            "remarks": true,
+            "flight_category": "lifr"
+        },
+		{
+            "string": "KBJC 201347Z 26006KT 540SM BKN120 13/01 A3004",
+            "station_identifier": "KBJC",
+            "observation_time": {
+                "day_of_month": 20,
+                "hour_of_day": 13,
+                "minute_of_hour": 47
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 260,
+                "wind_speed": 6
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 540
+            },
+            "sky_condition": [
+                {
+                    "sky_cover": "broken",
+                    "layer_height": 12000
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 13,
+                "dewpoint": 1
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.04
+            },
+            "flight_category": "vfr"
+        },
+		{
+            "string": "KBJC 202147Z 02004KT 50SM SCT080 BKN120TCU 20/00 A3001 RMK VIRGA SW-NW",
+            "station_identifier": "KBJC",
+            "observation_time": {
+                "day_of_month": 20,
+                "hour_of_day": 21,
+                "minute_of_hour": 47
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 20,
+                "wind_speed": 4
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 50
+            },
+            "sky_condition": [
+			    {
+                    "sky_cover": "scattered",
+                    "layer_height": 8000
+                },
+                {
+                    "sky_cover": "broken",
+                    "layer_height": 12000,
+                    "cloud_type": "towering_cumulus"
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 20,
+                "dewpoint": 0
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.01
+            },
+            "remarks": true,
+            "flight_category": "vfr"
+        },
+		{
+            "string": "KOAK 050753Z 12003KT 10SM MIFG FEW020 FEW200 07/06 A3028 RMK AO2 SLP253 T00720056 401500050",
+            "station_identifier": "KOAK",
+            "observation_time": {
+                "day_of_month": 5,
+                "hour_of_day": 7,
+                "minute_of_hour": 53
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 120,
+                "wind_speed": 3
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 10
+            },
+            "weather": [
+                {
+                    "descriptor": "shallow",
+                    "phenomena": [
+                        "fog"
+                    ]
+                }
+            ],
+            "sky_condition": [
+			    {
+                    "sky_cover": "few",
+                    "layer_height": 2000
+                },
+                {
+                    "sky_cover": "few",
+                    "layer_height": 20000
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 7,
+                "dewpoint": 6
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.28
+            },
+            "remarks": true,
+            "flight_category": "vfr"
+        },
+        {
+            "string": "KCCR 261541Z 11008KT 9SM BCFG SCT000 07/05 A3034 RMK AO2 VIS SW-N 1/2SM FG T00670050",
+            "station_identifier": "KCCR",
+            "observation_time": {
+                "day_of_month": 26,
+                "hour_of_day": 15,
+                "minute_of_hour": 41
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 110,
+                "wind_speed": 8
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 9
+            },
+            "weather": [
+                {
+                    "descriptor": "patches",
+                    "phenomena": [
+                        "fog"
+                    ]
+                }
+            ],
+            "sky_condition": [
+			    {
+                    "sky_cover": "scattered",
+                    "layer_height": 0
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 7,
+                "dewpoint": 5
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.34
+            },
+            "remarks": true,
+            "flight_category": "vfr"
+        },
+        {
+            "string": "KSTS 271515Z 03004KT 5SM BCFG OVC004 09/09 A3033 RMK AO2 T00890089",
+            "station_identifier": "KSTS",
+            "observation_time": {
+                "day_of_month": 27,
+                "hour_of_day": 15,
+                "minute_of_hour": 15
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 30,
+                "wind_speed": 4
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 5
+            },
+            "weather": [
+                {
+                    "descriptor": "patches",
+                    "phenomena": [
+                        "fog"
+                    ]
+                }
+            ],
+            "sky_condition": [
+			    {
+                    "sky_cover": "overcast",
+                    "layer_height": 400
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 9,
+                "dewpoint": 9
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.33
+            },
+            "remarks": true,
+            "flight_category": "lifr"
+        },
+        {
+            "string": "KCCR 300053Z 16007KT 5SM HZ SCT015 SCT020 OVC026 16/13 A3003 RMK AO2 RAB2359E11B27E37 SLP153 P0000 T01610133",
+            "station_identifier": "KCCR",
+            "observation_time": {
+                "day_of_month": 30,
+                "hour_of_day": 0,
+                "minute_of_hour": 53
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 160,
+                "wind_speed": 7
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 5
+            },
+            "weather": [
+                {
+                    "phenomena": [
+                        "haze"
+                    ]
+                }
+            ],
+            "sky_condition": [
+			    {
+                    "sky_cover": "scattered",
+                    "layer_height": 1500
+                },
+			    {
+                    "sky_cover": "scattered",
+                    "layer_height": 2000
+                },
+			    {
+                    "sky_cover": "overcast",
+                    "layer_height": 2600
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 16,
+                "dewpoint": 13
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.03
+            },
+            "remarks": true,
+            "flight_category": "mvfr"
+        },
+        {
+            "string": "PASD 242136Z 05008G17KT 360V080 10SM SCT013 BKN016 BKN020 05/04 A2877 RMK AO1 WEA: -RA (KH)",
+            "station_identifier": "PASD",
+            "observation_time": {
+                "day_of_month": 24,
+                "hour_of_day": 21,
+                "minute_of_hour": 36
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 50,
+                "wind_speed": 8,
+                "gust_speed": 17,
+                "variation_lower": 360,
+                "variation_upper": 80
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 10
+            },
+            "sky_condition": [
+			    {
+                    "sky_cover": "scattered",
+                    "layer_height": 1300
+                },
+			    {
+                    "sky_cover": "broken",
+                    "layer_height": 1600
+                },
+			    {
+                    "sky_cover": "broken",
+                    "layer_height": 2000
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 5,
+                "dewpoint": 4
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 28.77
+            },
+            "remarks": true,
+            "flight_category": "mvfr"
+        },
+        {
+            "string": "KWVI 271553Z AUTO 00000KT 6SM BR OVC003 11/11 A3020 RMK AO2 SLP225 T01110106",
+            "station_identifier": "KWVI",
+            "observation_time": {
+                "day_of_month": 27,
+                "hour_of_day": 15,
+                "minute_of_hour": 53
+            },
+            "report_modifier": "automatic",
+            "wind": {
+                "unit": "kt",
+                "direction": 0,
+                "wind_speed": 0
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 6
+            },
+            "weather": [
+                {
+                    "phenomena": [
+                        "mist"
+                    ]
+                }
+            ],
+            "sky_condition": [
+			    {
+                    "sky_cover": "overcast",
+                    "layer_height": 300
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 11,
+                "dewpoint": 11
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.20
+            },
+            "remarks": true,
+            "flight_category": "lifr"
+        },
+        {
+            "string": "KDVO 271555Z AUTO 02003KT 1/4SM FG OVC001 09/09 A3022 RMK AO2",
+            "station_identifier": "KDVO",
+            "observation_time": {
+                "day_of_month": 27,
+                "hour_of_day": 15,
+                "minute_of_hour": 55
+            },
+            "report_modifier": "automatic",
+            "wind": {
+                "unit": "kt",
+                "direction": 20,
+                "wind_speed": 3
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 0.25
+            },
+            "weather": [
+                {
+                    "phenomena": [
+                        "fog"
+                    ]
+                }
+            ],
+            "sky_condition": [
+			    {
+                    "sky_cover": "overcast",
+                    "layer_height": 100
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 9,
+                "dewpoint": 9
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.22
+            },
+            "remarks": true,
+            "flight_category": "lifr"
+        },
+        {
+            "string": "KAPC 271554Z 00000KT M1/4SM FG VV001 09/09 A3021 RMK AO2 SLP219 T00940094",
+            "station_identifier": "KAPC",
+            "observation_time": {
+                "day_of_month": 27,
+                "hour_of_day": 15,
+                "minute_of_hour": 54
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 0,
+                "wind_speed": 0
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 0.25,
+                "modifier": "less_than"
+            },
+            "weather": [
+                {
+                    "phenomena": [
+                        "fog"
+                    ]
+                }
+            ],
+            "sky_condition": [
+                {
+                    "sky_cover": "vertical_visibility",
+                    "layer_height": 100
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 9,
+                "dewpoint": 9
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.21
+            },
+            "remarks": true,
+            "flight_category": "lifr"
+        },
+        {
+            "string": "KSTS 271553Z 00000KT 3/4SM BR VV002 09/08 A3020 RMK AO2 SLP222 T00890083",
+            "station_identifier": "KSTS",
+            "observation_time": {
+                "day_of_month": 27,
+                "hour_of_day": 15,
+                "minute_of_hour": 53
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 0,
+                "wind_speed": 0
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 0.75
+            },
+            "weather": [
+                {
+                    "phenomena": [
+                        "mist"
+                    ]
+                }
+            ],
+            "sky_condition": [
+                {
+                    "sky_cover": "vertical_visibility",
+                    "layer_height": 200
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 9,
+                "dewpoint": 8
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.20
+            },
+            "remarks": true,
+            "flight_category": "lifr"
+        },
+        {
+            "string": "KHAF 271555Z AUTO 00000KT 5SM BR SCT003 12/12 A3022 RMK AO2",
+            "station_identifier": "KHAF",
+            "observation_time": {
+                "day_of_month": 27,
+                "hour_of_day": 15,
+                "minute_of_hour": 55
+            },
+            "report_modifier": "automatic",
+            "wind": {
+                "unit": "kt",
+                "direction": 0,
+                "wind_speed": 0
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 5
+            },
+            "weather": [
+                {
+                    "phenomena": [
+                        "mist"
+                    ]
+                }
+            ],
+            "sky_condition": [
+                {
+                    "sky_cover": "scattered",
+                    "layer_height": 300
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 12,
+                "dewpoint": 12
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.22
+            },
+            "remarks": true,
+            "flight_category": "mvfr"
+        },
+        {
+            "string": "KSFO 060430Z 24023G33KT 3SM RA BR BKN022 OVC050 14/12 A2964 RMK AO2 PK WND 19046/0419 WSHFT 0412 P0009 T01390117 $",
+            "station_identifier": "KSFO",
+            "observation_time": {
+                "day_of_month": 6,
+                "hour_of_day": 4,
+                "minute_of_hour": 30
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 240,
+                "wind_speed": 23,
+                "gust_speed": 33
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 3
+            },
+            "weather": [
+                {
+                    "phenomena": [
+                        "rain"
+                    ]
+                },
+                {
+                    "phenomena": [
+                        "mist"
+                    ]
+                }
+            ],
+            "sky_condition": [
+                {
+                    "sky_cover": "broken",
+                    "layer_height": 2200
+                },
+                {
+                    "sky_cover": "overcast",
+                    "layer_height": 5000
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 14,
+                "dewpoint": 12
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.64
+            },
+            "remarks": true,
+            "flight_category": "mvfr"
+        },
+        {
+            "string": "KOAK 060430Z 17027G33KT 4SM RA BR FEW012 BKN033 OVC041 16/13 A2961 RMK AO2 PK WND 15040/0357 PRESRR P0011 T01560133 $",
+            "station_identifier": "KOAK",
+            "observation_time": {
+                "day_of_month": 6,
+                "hour_of_day": 4,
+                "minute_of_hour": 30
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 170,
+                "wind_speed": 27,
+                "gust_speed": 33
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 4
+            },
+            "weather": [
+                {
+                    "phenomena": [
+                        "rain"
+                    ]
+                },
+                {
+                    "phenomena": [
+                        "mist"
+                    ]
+                }
+            ],
+            "sky_condition": [
+                {
+                    "sky_cover": "few",
+                    "layer_height": 1200
+                },
+                {
+                    "sky_cover": "broken",
+                    "layer_height": 3300
+                },
+                {
+                    "sky_cover": "overcast",
+                    "layer_height": 4100
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 16,
+                "dewpoint": 13
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.61
+            },
+            "remarks": true,
+            "flight_category": "mvfr"
+        },
+        {
+            "string": "KSJC 060406Z 10025G33KT 3SM -RA BR FEW013 BKN025 BKN031 15/14 A2961 RMK AO2 PK WND 11033/0359 P0004 T01500139 $",
+            "station_identifier": "KSJC",
+            "observation_time": {
+                "day_of_month": 6,
+                "hour_of_day": 4,
+                "minute_of_hour": 6
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 100,
+                "wind_speed": 25,
+                "gust_speed": 33
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 3
+            },
+            "weather": [
+                {
+                    "intensity": "light",
+                    "phenomena": [
+                        "rain"
+                    ]
+                },
+                {
+                    "phenomena": [
+                        "mist"
+                    ]
+                }
+            ],
+            "sky_condition": [
+                {
+                    "sky_cover": "few",
+                    "layer_height": 1300
+                },
+                {
+                    "sky_cover": "broken",
+                    "layer_height": 2500
+                },
+                {
+                    "sky_cover": "broken",
+                    "layer_height": 3100
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 15,
+                "dewpoint": 14
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.61
+            },
+            "remarks": true,
+            "flight_category": "mvfr"
+        },
+        {
+            "broken": true,
+            "string": "KRHV 060350Z 13020KT 4SM RA BKN030 15/13 29.65",
+            "station_identifier": "KRHV",
+            "observation_time": {
+                "day_of_month": 6,
+                "hour_of_day": 3,
+                "minute_of_hour": 50
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 130,
+                "wind_speed": 20
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 4
+            },
+            "weather": [
+                {
+                    "phenomena": [
+                        "rain"
+                    ]
+                }
+            ],
+            "sky_condition": [
+                {
+                    "sky_cover": "broken",
+                    "layer_height": 3000
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 15,
+                "dewpoint": 13
+            },
+            "flight_category": "mvfr"
+        },
+        {
+            "string": "KHWD 060430Z 17018G25KT 2 1/2SM +RA BR FEW021 OVC032 15/13 A2962 RMK AO2 PK WND 17033/0409 PRESRR P0011 T01500128",
+            "station_identifier": "KHWD",
+            "observation_time": {
+                "day_of_month": 6,
+                "hour_of_day": 4,
+                "minute_of_hour": 30
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 170,
+                "wind_speed": 18,
+                "gust_speed": 25
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 2.5
+            },
+            "weather": [
+                {
+                    "intensity": "heavy",
+                    "phenomena": [
+                        "rain"
+                    ]
+                },
+                {
+                    "phenomena": [
+                        "mist"
+                    ]
+                }
+            ],
+            "sky_condition": [
+                {
+                    "sky_cover": "few",
+                    "layer_height": 2100
+                },
+                {
+                    "sky_cover": "overcast",
+                    "layer_height": 3200
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 15,
+                "dewpoint": 13
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.62
+            },
+            "remarks": true,
+            "flight_category": "ifr"
+        },
+        {
+            "string": "KHWD 121254Z 10SM OVC014 13/09 A3016 RMK AO2 SLP223 T01330094",
+            "station_identifier": "KHWD",
+            "observation_time": {
+                "day_of_month": 12,
+                "hour_of_day": 12,
+                "minute_of_hour": 54
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 10
+            },
+            "sky_condition": [
+                {
+                    "sky_cover": "overcast",
+                    "layer_height": 1400
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 13,
+                "dewpoint": 9
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.16
+            },
+            "remarks": true,
+            "flight_category": "mvfr"
+        },
+        {
+            "string": "KCCR 131853Z 10SM 19/06 A3017 RMK AO2 SLP201 T01890056 $",
+            "station_identifier": "KCCR",
+            "observation_time": {
+                "day_of_month": 13,
+                "hour_of_day": 18,
+                "minute_of_hour": 53
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 10
+            },
+            "temperature_dewpoint": {
+                "temperature": 19,
+                "dewpoint": 6
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.17
+            },
+            "remarks": true,
+            "flight_category": "unknown"
+        },
+        {
+            "broken": true,
+            "string": "KCCR 131753Z CLR 17/07 A3018 RMK AO2 SLP206 T01720072 10178 20111 55003 $",
+            "station_identifier": "KCCR",
+            "observation_time": {
+                "day_of_month": 13,
+                "hour_of_day": 17,
+                "minute_of_hour": 53
+            },
+            "sky_condition": [
+                {
+                    "sky_cover": "clear_below_12000"
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 17,
+                "dewpoint": 7
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.18
+            },
+            "remarks": true,
+            "flight_category": "unknown"
+        },
+        {
+            "broken": true,
+            "string": "KHAF 140055Z AUTO 30005KT 5SM HZ A3017 RMK AO2",
+            "station_identifier": "KHAF",
+            "observation_time": {
+                "day_of_month": 14,
+                "hour_of_day": 0,
+                "minute_of_hour": 55
+            },
+            "report_modifier": "automatic",
+            "wind": {
+                "unit": "kt",
+                "direction": 300,
+                "wind_speed": 5
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 5
+            },
+            "weather": [
+                {
+                    "phenomena": [
+                        "haze"
+                    ]
+                }
+            ],
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.17
+            },
+            "remarks": true,
+            "flight_category": "unknown"
+        },
+        {
+            "broken": true,
+            "string": "KHAF 140035Z AUTO 5SM HZ RMK AO2",
+            "station_identifier": "KHAF",
+            "observation_time": {
+                "day_of_month": 14,
+                "hour_of_day": 0,
+                "minute_of_hour": 35
+            },
+            "report_modifier": "automatic",
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 5
+            },
+            "weather": [
+                {
+                    "phenomena": [
+                        "haze"
+                    ]
+                }
+            ],
+            "remarks": true,
+            "flight_category": "unknown"
+        },
+        {
+            "string": "KHAF 131655Z AUTO 32007KT 6SM BR 13/11 A3023 RMK AO2",
+            "station_identifier": "KHAF",
+            "observation_time": {
+                "day_of_month": 13,
+                "hour_of_day": 16,
+                "minute_of_hour": 55
+            },
+            "report_modifier": "automatic",
+            "wind": {
+                "unit": "kt",
+                "direction": 320,
+                "wind_speed": 7
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 6
+            },
+            "weather": [
+                {
+                    "phenomena": [
+                        "mist"
+                    ]
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 13,
+                "dewpoint": 11
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.23
+            },
+            "remarks": true,
+            "flight_category": "unknown"
+        },
+        {
+            "string": "KAPC 151954Z 21007KT 170V230 5SM HZ FU CLR 31/12 A2996 RMK AO2 SLP135 SMOKE ALQDS UP TO 7500 MSL FLIGHT VIS 4-5 MI T03110117",
+            "station_identifier": "KAPC",
+            "observation_time": {
+                "day_of_month": 15,
+                "hour_of_day": 19,
+                "minute_of_hour": 54
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 210,
+                "wind_speed": 7,
+                "variation_lower": 170,
+                "variation_upper": 230
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 5
+            },
+            "weather": [
+                {
+                    "phenomena": [
+                        "haze"
+                    ]
+                },
+                {
+                    "phenomena": [
+                        "smoke"
+                    ]
+                }
+            ],
+            "sky_condition": [
+                {
+                    "sky_cover": "clear_below_12000"
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 31,
+                "dewpoint": 12
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.96
+            },
+            "remarks": true,
+            "flight_category": "mvfr"
+        },
+        {
+            "string": "KSTS 151953Z VRB03KT 3SM HZ FU CLR 34/09 A2994 RMK AO2 SLP132 FU ALL QUADS TOPS 055 T03390094",
+            "station_identifier": "KSTS",
+            "observation_time": {
+                "day_of_month": 15,
+                "hour_of_day": 19,
+                "minute_of_hour": 53
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 65535,
+                "wind_speed": 3
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 3
+            },
+            "weather": [
+                {
+                    "phenomena": [
+                        "haze"
+                    ]
+                },
+                {
+                    "phenomena": [
+                        "smoke"
+                    ]
+                }
+            ],
+            "sky_condition": [
+                {
+                    "sky_cover": "clear_below_12000"
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 34,
+                "dewpoint": 9
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.94
+            },
+            "remarks": true,
+            "flight_category": "mvfr"
+        },
+        {
+            "string": "KLVK 151953Z COR 03004KT 6SM HZ FU CLR 35/03 A2995 RMK AO2 SLP138 T03500033",
+            "station_identifier": "KLVK",
+            "observation_time": {
+                "day_of_month": 15,
+                "hour_of_day": 19,
+                "minute_of_hour": 53
+            },
+            "report_modifier": "corrected",
+            "wind": {
+                "unit": "kt",
+                "direction": 30,
+                "wind_speed": 4
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 6
+            },
+            "weather": [
+                {
+                    "phenomena": [
+                        "haze"
+                    ]
+                },
+                {
+                    "phenomena": [
+                        "smoke"
+                    ]
+                }
+            ],
+            "sky_condition": [
+                {
+                    "sky_cover": "clear_below_12000"
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 35,
+                "dewpoint": 3
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.95
+            },
+            "remarks": true,
+            "flight_category": "vfr"
+        },
+        {
+            "string": "KRHV 141650Z 15012KT 10SM SCT020 17/12 A2996",
+            "station_identifier": "KRHV",
+            "observation_time": {
+                "day_of_month": 14,
+                "hour_of_day": 16,
+                "minute_of_hour": 50
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 150,
+                "wind_speed": 12
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 10
+            },
+            "sky_condition": [
+			    {
+                    "sky_cover": "scattered",
+                    "layer_height": 2000
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 17,
+                "dewpoint": 12
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.96
+            },
+            "flight_category": "vfr"
+        },
+        {
+            "string": "METAR KOKC 011955Z AUTO 22015G25KT 180V250 3/4SM R17L/2600FT +TSRA BR OVC010CB 18/16 A2992 RMK AO2 TSB25 TS OHD MOV E SLP132",
+            "report_type": "metar",
+            "station_identifier": "KOKC",
+            "observation_time": {
+                "day_of_month": 1,
+                "hour_of_day": 19,
+                "minute_of_hour": 55
+            },
+            "report_modifier": "automatic",
+            "wind": {
+                "unit": "kt",
+                "direction": 220,
+                "wind_speed": 15,
+                "gust_speed": 25,
+                "variation_lower": 180,
+                "variation_upper": 250
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 0.75
+            },
+            "runway_visual_range": [
+                {
+                    "unit": "feet",
+                    "runway_number": 17,
+                    "runway_designator": "left",
+                    "visibility_min": 2600,
+                    "visibility_max": 2600
+                }
+            ],
+            "weather": [
+                {
+                    "intensity": "heavy",
+                    "descriptor": "thunderstorm",
+                    "phenomena": [
+                        "rain"
+                    ]
+                },
+                {
+                    "phenomena": [
+                        "mist"
+                    ]
+                }
+            ],
+            "sky_condition": [
+			    {
+                    "sky_cover": "overcast",
+                    "layer_height": 1000,
+                    "cloud_type": "cumulonimbus"
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 18,
+                "dewpoint": 16
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.92
+            },
+            "remarks": true,
+            "flight_category": "lifr"
+        },
+        {
+            "string": "METAR PAHL 031836Z AUTO 07009KT 10SM CLR 13/02 A2980 RMK AO1 PNO",
+            "report_type": "metar",
+            "station_identifier": "PAHL",
+            "observation_time": {
+                "day_of_month": 3,
+                "hour_of_day": 18,
+                "minute_of_hour": 36
+            },
+            "report_modifier": "automatic",
+            "wind": {
+                "unit": "kt",
+                "direction": 70,
+                "wind_speed": 9
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 10
+            },
+            "sky_condition": [
+			    {
+                    "sky_cover": "clear_below_12000"
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 13,
+                "dewpoint": 2
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.80
+            },
+            "remarks": true,
+            "flight_category": "vfr"
+        },
+        {
+            "string": "METAR KNSI 031656Z VRB03KT 5SM HZ SCT007 21/17 A2989 RMK SLP121 T02060172",
+            "report_type": "metar",
+            "station_identifier": "KNSI",
+            "observation_time": {
+                "day_of_month": 3,
+                "hour_of_day": 16,
+                "minute_of_hour": 56
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 65535,
+                "wind_speed": 3
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 5
+            },
+            "weather": [
+                {
+                    "phenomena": [
+                        "haze"
+                    ]
+                }
+            ],
+            "sky_condition": [
+			    {
+                    "sky_cover": "scattered",
+                    "layer_height": 700
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 21,
+                "dewpoint": 17
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.89
+            },
+            "remarks": true,
+            "flight_category": "mvfr"
+        },
+        {
+            "string": "SPECI KCOT 292020Z AUTO 13009KT 3SM TSRA BR SCT011 BKN028 OVC043 23/21 A2991 RMK AO2 PK WND 13029/2000 LTG DSNT ALQDS P0020",
+            "report_type": "special",
+            "station_identifier": "KCOT",
+            "observation_time": {
+                "day_of_month": 29,
+                "hour_of_day": 20,
+                "minute_of_hour": 20
+            },
+            "report_modifier": "automatic",
+            "wind": {
+                "unit": "kt",
+                "direction": 130,
+                "wind_speed": 9
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 3
+            },
+            "weather": [
+                {
+                    "descriptor": "thunderstorm",
+                    "phenomena": [
+                        "rain"
+                    ]
+                },
+                {
+                    "phenomena": [
+                        "mist"
+                    ]
+                }
+            ],
+            "sky_condition": [
+			    {
+                    "sky_cover": "scattered",
+                    "layer_height": 1100
+                },
+			    {
+                    "sky_cover": "broken",
+                    "layer_height": 2800
+                },
+			    {
+                    "sky_cover": "overcast",
+                    "layer_height": 4300
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 23,
+                "dewpoint": 21
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.91
+            },
+            "remarks": true,
+            "flight_category": "mvfr"
+        },
+        {
+            "string": "METAR KMDW 090153Z 23003KT 1/2SM R31C/4000V4500FT SN FZFG VV002 M04/M05 A3004 RMK AO2 SLP191 SNINCR 1/10 P0000 T10391050",
+            "report_type": "metar",
+            "station_identifier": "KMDW",
+            "observation_time": {
+                "day_of_month": 9,
+                "hour_of_day": 1,
+                "minute_of_hour": 53
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 230,
+                "wind_speed": 3
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 0.5
+            },
+            "runway_visual_range": [
+                {
+                    "unit": "feet",
+                    "runway_number": 31,
+                    "runway_designator": "center",
+                    "visibility_min": 4000,
+                    "visibility_max": 4500
+                }
+            ],
+            "weather": [
+                {
+                    "phenomena": [
+                        "snow"
+                    ]
+                },
+                {
+                    "descriptor": "freezing",
+                    "phenomena": [
+                        "fog"
+                    ]
+                }
+            ],
+            "sky_condition": [
+			    {
+                    "sky_cover": "vertical_visibility",
+                    "layer_height": 200
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": -4,
+                "dewpoint": -5
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.04
+            },
+            "remarks": true,
+            "flight_category": "lifr"
+        },
+        {
+            "string": "SPECI KMEM 091826Z 27013G27KT 240V310 1/2SM R36L/1000VP6000FT +TSRAGR FG FEW002 BKN023 OVC032CB 18/17 A2992 RMK A02 PK WND 31031/1802 WSHFT 1759 TSB22RAB17GRB23 PRESRR FRQ LTGIC W-NW TS W-NW GR 1/2 P0005",
+            "report_type": "special",
+            "station_identifier": "KMEM",
+            "observation_time": {
+                "day_of_month": 9,
+                "hour_of_day": 18,
+                "minute_of_hour": 26
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 270,
+                "wind_speed": 13,
+                "gust_speed": 27,
+                "variation_lower": 240,
+                "variation_upper": 310
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 0.5
+            },
+            "runway_visual_range": [
+                {
+                    "unit": "feet",
+                    "runway_number": 36,
+                    "runway_designator": "left",
+                    "visibility_min": 1000,
+                    "visibility_max": 6000,
+                    "visibility_max_modifier": "greater_than"
+                }
+            ],
+            "weather": [
+                {
+                    "intensity": "heavy",
+                    "descriptor": "thunderstorm",
+                    "phenomena": [
+                        "rain",
+                        "hail"
+                    ]
+                },
+                {
+                    "phenomena": [
+                        "fog"
+                    ]
+                }
+            ],
+            "sky_condition": [
+			    {
+                    "sky_cover": "few",
+                    "layer_height": 200
+                },
+			    {
+                    "sky_cover": "broken",
+                    "layer_height": 2300
+                },
+			    {
+                    "sky_cover": "overcast",
+                    "layer_height": 3200,
+                    "cloud_type": "cumulonimbus"
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 18,
+                "dewpoint": 17
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.92
+            },
+            "remarks": true,
+            "flight_category": "lifr"
+        },
+        {
+            "broken": true,
+            "string": "SPECI KMSN 012312Z 13021G26KT 1SM -FZRAPL BR OVC011 00/M02 A2988 RMK AO2 PK WND 14031/2255 SFC VIS 1 1/2 P0005 $",
+            "report_type": "special",
+            "station_identifier": "KMSN",
+            "observation_time": {
+                "day_of_month": 1,
+                "hour_of_day": 23,
+                "minute_of_hour": 12
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 130,
+                "wind_speed": 21,
+                "gust_speed": 26
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 1
+            },
+            "weather": [
+                {
+                    "intensity": "light",
+                    "descriptor": "freezing",
+                    "phenomena": [
+                        "rain",
+                        "ice_pellets"
+                    ]
+                },
+                {
+                    "phenomena": [
+                        "mist"
+                    ]
+                }
+            ],
+            "sky_condition": [
+			    {
+                    "sky_cover": "overcast",
+                    "layer_height": 1100
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 0,
+                "dewpoint": -2
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.88
+            },
+            "remarks": true,
+            "flight_category": "ifr"
+        },
+        {
+            "string": "METAR KPIT 091955Z COR 22015G25KT 3/4SM R28L/2600FT TSRA OVC010CB 18/16 A2992 RMK SLP045 T01820159",
+            "report_type": "metar",
+            "station_identifier": "KPIT",
+            "observation_time": {
+                "day_of_month": 9,
+                "hour_of_day": 19,
+                "minute_of_hour": 55
+            },
+            "report_modifier": "corrected",
+            "wind": {
+                "unit": "kt",
+                "direction": 220,
+                "wind_speed": 15,
+                "gust_speed": 25
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 0.75
+            },
+            "runway_visual_range": [
+                {
+                    "unit": "feet",
+                    "runway_number": 28,
+                    "runway_designator": "left",
+                    "visibility_min": 2600,
+                    "visibility_max": 2600
+                }
+            ],
+            "weather": [
+                {
+                    "descriptor": "thunderstorm",
+                    "phenomena": [
+                        "rain"
+                    ]
+                }
+            ],
+            "sky_condition": [
+			    {
+                    "sky_cover": "overcast",
+                    "layer_height": 1000,
+                    "cloud_type": "cumulonimbus"
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 18,
+                "dewpoint": 16
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.92
+            },
+            "remarks": true,
+            "flight_category": "lifr"
+        },
+        {
+            "string": "METAR KBNA 281250Z 33018KT 290V360 1/2SM R31/2700FT SN BLSN FG VV008 00/M03 A2991 RMK RAE42SNB42",
+            "report_type": "metar",
+            "station_identifier": "KBNA",
+            "observation_time": {
+                "day_of_month": 28,
+                "hour_of_day": 12,
+                "minute_of_hour": 50
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 330,
+                "wind_speed": 18,
+                "variation_lower": 290,
+                "variation_upper": 360
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 0.5
+            },
+            "runway_visual_range": [
+                {
+                    "unit": "feet",
+                    "runway_number": 31,
+                    "visibility_min": 2700,
+                    "visibility_max": 2700
+                }
+            ],
+            "weather": [
+                {
+                    "phenomena": [
+                        "snow"
+                    ]
+                },
+                {
+                    "descriptor": "blowing",
+                    "phenomena": [
+                        "snow"
+                    ]
+                },
+                {
+                    "phenomena": [
+                        "fog"
+                    ]
+                }
+            ],
+            "sky_condition": [
+			    {
+                    "sky_cover": "vertical_visibility",
+                    "layer_height": 800
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 0,
+                "dewpoint": -3
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 29.91
+            },
+            "remarks": true,
+            "flight_category": "lifr"
+        },
+        {
+            "string": "METAR KSFO 041453Z AUTO VRB02KT 3SM BR CLR 15/12 A3012 RMK AO2",
+            "report_type": "metar",
+            "station_identifier": "KSFO",
+            "observation_time": {
+                "day_of_month": 4,
+                "hour_of_day": 14,
+                "minute_of_hour": 53
+            },
+            "report_modifier": "automatic",
+            "wind": {
+                "unit": "kt",
+                "direction": 65535,
+                "wind_speed": 2
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 3
+            },
+            "weather": [
+                {
+                    "phenomena": [
+                        "mist"
+                    ]
+                }
+            ],
+            "sky_condition": [
+			    {
+                    "sky_cover": "clear_below_12000"
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 15,
+                "dewpoint": 12
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.12
+            },
+            "remarks": true,
+            "flight_category": "mvfr"
+        },
+        {
+            "string": "SPECI KCVG 152224Z 28024G36KT 3/4SM +TSRA BKN008 OVC020CB 28/23 A3000 RMK TSRAB24 TS W MOV E",
+            "report_type": "special",
+            "station_identifier": "KCVG",
+            "observation_time": {
+                "day_of_month": 15,
+                "hour_of_day": 22,
+                "minute_of_hour": 24
+            },
+            "wind": {
+                "unit": "kt",
+                "direction": 280,
+                "wind_speed": 24,
+                "gust_speed": 36
+            },
+            "visibility": {
+                "unit": "statute_miles",
+                "distance": 0.75
+            },
+            "weather": [
+                {
+                    "intensity": "heavy",
+                    "descriptor": "thunderstorm",
+                    "phenomena": [
+                        "rain"
+                    ]
+                }
+            ],
+            "sky_condition": [
+			    {
+                    "sky_cover": "broken",
+                    "layer_height": 800
+                },
+			    {
+                    "sky_cover": "overcast",
+                    "layer_height": 2000,
+                    "cloud_type": "cumulonimbus"
+                }
+            ],
+            "temperature_dewpoint": {
+                "temperature": 28,
+                "dewpoint": 23
+            },
+            "altimeter": {
+                "unit": "inHg",
+                "pressure": 30.00
+            },
+            "remarks": true,
+            "flight_category": "lifr"
         }
     ]
 }
