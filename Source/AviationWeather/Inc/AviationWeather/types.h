@@ -117,7 +117,8 @@ enum class flight_category
     vfr,
     mvfr,
     ifr,
-    lifr
+    lifr,
+    unknown
 };
 
 enum class speed_unit

@@ -154,7 +154,8 @@ std::string flight_category_strings[] =
     STRINGIFY(vfr),
     STRINGIFY(mvfr),
     STRINGIFY(ifr),
-    STRINGIFY(lifr)
+    STRINGIFY(lifr),
+    STRINGIFY(unknown)
 };
 
 std::string speed_unit_strings[] =
