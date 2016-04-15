@@ -215,7 +215,6 @@ private:
     void ValidateTemperatureDewpoint(aw::metar::metar_info const& metar, basic_json<> const& test);
     void ValidateAltimeter          (aw::metar::metar_info const& metar, basic_json<> const& test);
     void ValidateRemarks            (aw::metar::metar_info const& metar, basic_json<> const& test);
-    void ValidateFlightCategory     (aw::metar::metar_info const& metar, basic_json<> const& test);
 
 private:
     static basic_json<> m_expectationFile;
@@ -276,7 +275,6 @@ void MetarValidationTests::METAR_Validation()
         ValidateTemperatureDewpoint(metar, test);
         ValidateAltimeter(metar, test);
         ValidateRemarks(metar, test);
-        ValidateFlightCategory(metar, test);
     }
 }
 
@@ -603,16 +601,6 @@ void MetarValidationTests::ValidateRemarks(aw::metar::metar_info const& metar, b
     else
     {
         Assert::AreEqual(size_t(0), metar.remarks.size());
-    }
-}
-
-//-----------------------------------------------------------------------------
-
-void MetarValidationTests::ValidateFlightCategory(aw::metar::metar_info const& metar, basic_json<> const& test)
-{
-    if (test.find("flight_category") != test.end())
-    {
-        Assert::AreEqual(test["flight_category"].get<std::string>(), flight_category_strings[etoi(metar.flight_category())]);
     }
 }
 

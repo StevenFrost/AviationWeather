@@ -307,6 +307,7 @@ public:
 
 private:
     void parse();
+    cloud_layer ceiling_nothrow() const;
 
 public:
     std::string                      metar;

@@ -607,12 +607,8 @@ void metar_info::parse()
     parsers::parse_altimeter(*this, baseMetar);
 }
 
-cloud_layer metar_info::ceiling() const
+cloud_layer metar_info::ceiling_nothrow() const
 {
-    if (sky_condition_group.empty())
-    {
-        throw aw_exception("Sky condition missing");
-    }
     auto result = std::find_if(sky_condition_group.begin(), sky_condition_group.end(), [](cloud_layer layer)
     {
         return layer.sky_cover == sky_cover_type::broken ||
@@ -624,23 +620,23 @@ cloud_layer metar_info::ceiling() const
     return result != sky_condition_group.end() ? *result : cloud_layer();
 }
 
+cloud_layer metar_info::ceiling() const
+{
+    if (sky_condition_group.empty())
+    {
+        throw aw_exception("Sky condition missing");
+    }
+    return ceiling_nothrow();
+}
+
 flight_category metar_info::flight_category() const
 {
-    if (!visibility_group)
+    if (!visibility_group || sky_condition_group.empty())
     {
         return flight_category::unknown;
     }
 
-    cloud_layer ceiling;
-
-    try
-    {
-        ceiling = metar_info::ceiling();
-    }
-    catch (aw_exception const&)
-    {
-        return flight_category::unknown;
-    }
+    cloud_layer ceiling = metar_info::ceiling_nothrow();
 
     auto distanceSM = aw::convert(visibility_group->distance, visibility_group->unit, distance_unit::statute_miles);
 

@@ -31,8 +31,7 @@
             "altimeter": {
                 "unit": "inHg",
                 "pressure": 30.12
-            },
-            "flight_category": "vfr"
+            }
         },
         {
             "string": "KRHV 122047Z 32009KT 10SM SKC 28/11 A3002",
@@ -63,8 +62,7 @@
             "altimeter": {
                 "unit": "inHg",
                 "pressure": 30.02
-            },
-            "flight_category": "vfr"
+            }
         },
         {
             "string": "KEDU 181255Z AUTO 9SM CLR 15/11 A2982 RMK AO1",
@@ -92,8 +90,7 @@
                 "unit": "inHg",
                 "pressure": 29.82
             },
-            "remarks": true,
-            "flight_category": "vfr"
+            "remarks": true
         },
         {
             "string": "KWVI 171653Z AUTO 7SM OVC004 18/15 A2990 RMK AO2 SLP124 T01780150",
@@ -122,8 +119,7 @@
                 "unit": "inHg",
                 "pressure": 29.9
             },
-            "remarks": true,
-            "flight_category": "lifr"
+            "remarks": true
         },
         {
             "string": "KSTS 181253Z AUTO 00000KT 10SM -RA HZ FU OVC007 14/12 A2990 RMK AO2 RAB30 SLP116 P0000 T01390122",
@@ -175,8 +171,7 @@
                 "unit": "inHg",
                 "pressure": 29.9
             },
-            "remarks": true,
-            "flight_category": "ifr"
+            "remarks": true
         },
         {
             "string": "KWVI 171453Z AUTO 00000KT 1/4SM FG VV002 16/15 A2989 RMK AO2 SLP119 T01610150 53007",
@@ -217,8 +212,7 @@
                 "unit": "inHg",
                 "pressure": 29.89
             },
-            "remarks": true,
-            "flight_category": "lifr"
+            "remarks": true
         },
         {
             "string": "KAPC 182254Z 20015KT 10SM CLR 24/16 A2987 RMK AO2 RAE2159 SLP107 P0000 T02390156 $",
@@ -250,8 +244,7 @@
                 "unit": "inHg",
                 "pressure": 29.87
             },
-            "remarks": true,
-            "flight_category": "vfr"
+            "remarks": true
         },
         {
             "string": "KCCR 182053Z 29008KT 270V340 10SM FU CLR 29/12 A2988 RMK AO2 SLP103 T02940117 58014",
@@ -292,8 +285,7 @@
                 "unit": "inHg",
                 "pressure": 29.88
             },
-            "remarks": true,
-            "flight_category": "vfr"
+            "remarks": true
         },
         {
             "string": "KSFO 180056Z 30017KT 8SM FEW007 SCT200 20/14 A2982 RMK AO2 PK WND 29027/0030 SLP096 T02000139",
@@ -330,8 +322,7 @@
                 "unit": "inHg",
                 "pressure": 29.82
             },
-            "remarks": true,
-            "flight_category": "vfr"
+            "remarks": true
         },
         {
             "string": "KRFD 190114Z 34011KT 1 1/4SM R01/4500VP6000FT TSRA BR FEW004 OVC019CB 20/19 A2969 RMK AO2 TWR VIS 1 1/2 OCNL LTGIC VC N TS VC N MOV N P0060 T02000189 $",
@@ -391,8 +382,7 @@
                 "unit": "inHg",
                 "pressure": 29.69
             },
-            "remarks": true,
-            "flight_category": "ifr"
+            "remarks": true
         },
         {
             "string": "KRHV 201647Z VRB05KT 8SM OVC025 20/14 A2992",
@@ -425,8 +415,7 @@
                 "unit": "inHg",
                 "pressure": 29.92
             },
-            "remarks": false,
-            "flight_category": "mvfr"
+            "remarks": false
         },
         {
             "string": "KSTS 201453Z COR 21004KT 6SM OVC006 14/13 A2991 RMK AO2 SLP122 T01440133 53008",
@@ -460,8 +449,7 @@
                 "unit": "inHg",
                 "pressure": 29.91
             },
-            "remarks": true,
-            "flight_category": "ifr"
+            "remarks": true
         },
         {
             "string": "KLVK 200153Z 29018G23KT 10SM CLR 23/13 A2986 RMK AO2 SLP108 FU E-SE T02330133",
@@ -495,8 +483,7 @@
                 "unit": "inHg",
                 "pressure": 29.86
             },
-            "remarks": true,
-            "flight_category": "vfr"
+            "remarks": true
         },
         {
             "string": "KMVY 031046Z 23004KT 1/2SM R24/1600V2600FT FG VV002 21/21 A2986 RMK AO2 T02110206",
@@ -544,8 +531,7 @@
                 "unit": "inHg",
                 "pressure": 29.86
             },
-            "remarks": true,
-            "flight_category": "lifr"
+            "remarks": true
         },
         {
             "string": "KPTK 030953Z 00000KT 4SM R09R/4500VP6000FT BR FEW100 SCT250 19/18 A2997 RMK AO2 SLP141 FIRST AUGMENTED OBS OF THE DAY T01940183",
@@ -599,8 +585,7 @@
                 "unit": "inHg",
                 "pressure": 29.97
             },
-            "remarks": true,
-            "flight_category": "mvfr"
+            "remarks": true
         },
         {
             "string": "KISP 031041Z 00000KT 1/4SM R06/1400V1800FT FG VV001 23/22 A2985 RMK AO2 T02280217",
@@ -648,8 +633,7 @@
                 "unit": "inHg",
                 "pressure": 29.85
             },
-            "remarks": true,
-            "flight_category": "lifr"
+            "remarks": true
         },
         {
             "string": "KRDU 031051Z 00000KT 1/8SM R23R/1200V1800FT FG OVC001 21/20 A2996 RMK AO2 TWR VIS 1/4 SLP141 T02060200 $",
@@ -698,8 +682,7 @@
                 "unit": "inHg",
                 "pressure": 29.96
             },
-            "remarks": true,
-            "flight_category": "lifr"
+            "remarks": true
         },
 		{
             "string": "KBJC 201347Z 26006KT 540SM BKN120 13/01 A3004",
@@ -731,8 +714,7 @@
             "altimeter": {
                 "unit": "inHg",
                 "pressure": 30.04
-            },
-            "flight_category": "vfr"
+            }
         },
 		{
             "string": "KBJC 202147Z 02004KT 50SM SCT080 BKN120TCU 20/00 A3001 RMK VIRGA SW-NW",
@@ -770,8 +752,7 @@
                 "unit": "inHg",
                 "pressure": 30.01
             },
-            "remarks": true,
-            "flight_category": "vfr"
+            "remarks": true
         },
 		{
             "string": "KOAK 050753Z 12003KT 10SM MIFG FEW020 FEW200 07/06 A3028 RMK AO2 SLP253 T00720056 401500050",
@@ -816,8 +797,7 @@
                 "unit": "inHg",
                 "pressure": 30.28
             },
-            "remarks": true,
-            "flight_category": "vfr"
+            "remarks": true
         },
         {
             "string": "KCCR 261541Z 11008KT 9SM BCFG SCT000 07/05 A3034 RMK AO2 VIS SW-N 1/2SM FG T00670050",
@@ -858,8 +838,7 @@
                 "unit": "inHg",
                 "pressure": 30.34
             },
-            "remarks": true,
-            "flight_category": "vfr"
+            "remarks": true
         },
         {
             "string": "KSTS 271515Z 03004KT 5SM BCFG OVC004 09/09 A3033 RMK AO2 T00890089",
@@ -900,8 +879,7 @@
                 "unit": "inHg",
                 "pressure": 30.33
             },
-            "remarks": true,
-            "flight_category": "lifr"
+            "remarks": true
         },
         {
             "string": "KCCR 300053Z 16007KT 5SM HZ SCT015 SCT020 OVC026 16/13 A3003 RMK AO2 RAB2359E11B27E37 SLP153 P0000 T01610133",
@@ -949,8 +927,7 @@
                 "unit": "inHg",
                 "pressure": 30.03
             },
-            "remarks": true,
-            "flight_category": "mvfr"
+            "remarks": true
         },
         {
             "string": "PASD 242136Z 05008G17KT 360V080 10SM SCT013 BKN016 BKN020 05/04 A2877 RMK AO1 WEA: -RA (KH)",
@@ -994,8 +971,7 @@
                 "unit": "inHg",
                 "pressure": 28.77
             },
-            "remarks": true,
-            "flight_category": "mvfr"
+            "remarks": true
         },
         {
             "string": "KWVI 271553Z AUTO 00000KT 6SM BR OVC003 11/11 A3020 RMK AO2 SLP225 T01110106",
@@ -1036,8 +1012,7 @@
                 "unit": "inHg",
                 "pressure": 30.20
             },
-            "remarks": true,
-            "flight_category": "lifr"
+            "remarks": true
         },
         {
             "string": "KDVO 271555Z AUTO 02003KT 1/4SM FG OVC001 09/09 A3022 RMK AO2",
@@ -1078,8 +1053,7 @@
                 "unit": "inHg",
                 "pressure": 30.22
             },
-            "remarks": true,
-            "flight_category": "lifr"
+            "remarks": true
         },
         {
             "string": "KAPC 271554Z 00000KT M1/4SM FG VV001 09/09 A3021 RMK AO2 SLP219 T00940094",
@@ -1120,8 +1094,7 @@
                 "unit": "inHg",
                 "pressure": 30.21
             },
-            "remarks": true,
-            "flight_category": "lifr"
+            "remarks": true
         },
         {
             "string": "KSTS 271553Z 00000KT 3/4SM BR VV002 09/08 A3020 RMK AO2 SLP222 T00890083",
@@ -1161,8 +1134,7 @@
                 "unit": "inHg",
                 "pressure": 30.20
             },
-            "remarks": true,
-            "flight_category": "lifr"
+            "remarks": true
         },
         {
             "string": "KHAF 271555Z AUTO 00000KT 5SM BR SCT003 12/12 A3022 RMK AO2",
@@ -1203,8 +1175,7 @@
                 "unit": "inHg",
                 "pressure": 30.22
             },
-            "remarks": true,
-            "flight_category": "mvfr"
+            "remarks": true
         },
         {
             "string": "KSFO 060430Z 24023G33KT 3SM RA BR BKN022 OVC050 14/12 A2964 RMK AO2 PK WND 19046/0419 WSHFT 0412 P0009 T01390117 $",
@@ -1254,8 +1225,7 @@
                 "unit": "inHg",
                 "pressure": 29.64
             },
-            "remarks": true,
-            "flight_category": "mvfr"
+            "remarks": true
         },
         {
             "string": "KOAK 060430Z 17027G33KT 4SM RA BR FEW012 BKN033 OVC041 16/13 A2961 RMK AO2 PK WND 15040/0357 PRESRR P0011 T01560133 $",
@@ -1309,8 +1279,7 @@
                 "unit": "inHg",
                 "pressure": 29.61
             },
-            "remarks": true,
-            "flight_category": "mvfr"
+            "remarks": true
         },
         {
             "string": "KSJC 060406Z 10025G33KT 3SM -RA BR FEW013 BKN025 BKN031 15/14 A2961 RMK AO2 PK WND 11033/0359 P0004 T01500139 $",
@@ -1365,8 +1334,7 @@
                 "unit": "inHg",
                 "pressure": 29.61
             },
-            "remarks": true,
-            "flight_category": "mvfr"
+            "remarks": true
         },
         {
             "broken": true,
@@ -1402,8 +1370,7 @@
             "temperature_dewpoint": {
                 "temperature": 15,
                 "dewpoint": 13
-            },
-            "flight_category": "mvfr"
+            }
         },
         {
             "string": "KHWD 060430Z 17018G25KT 2 1/2SM +RA BR FEW021 OVC032 15/13 A2962 RMK AO2 PK WND 17033/0409 PRESRR P0011 T01500128",
@@ -1454,8 +1421,7 @@
                 "unit": "inHg",
                 "pressure": 29.62
             },
-            "remarks": true,
-            "flight_category": "ifr"
+            "remarks": true
         },
         {
             "string": "KHWD 121254Z 10SM OVC014 13/09 A3016 RMK AO2 SLP223 T01330094",
@@ -1483,8 +1449,7 @@
                 "unit": "inHg",
                 "pressure": 30.16
             },
-            "remarks": true,
-            "flight_category": "mvfr"
+            "remarks": true
         },
         {
             "string": "KCCR 131853Z 10SM 19/06 A3017 RMK AO2 SLP201 T01890056 $",
@@ -1506,8 +1471,7 @@
                 "unit": "inHg",
                 "pressure": 30.17
             },
-            "remarks": true,
-            "flight_category": "unknown"
+            "remarks": true
         },
         {
             "broken": true,
@@ -1531,8 +1495,7 @@
                 "unit": "inHg",
                 "pressure": 30.18
             },
-            "remarks": true,
-            "flight_category": "unknown"
+            "remarks": true
         },
         {
             "broken": true,
@@ -1564,8 +1527,7 @@
                 "unit": "inHg",
                 "pressure": 30.17
             },
-            "remarks": true,
-            "flight_category": "unknown"
+            "remarks": true
         },
         {
             "broken": true,
@@ -1588,8 +1550,7 @@
                     ]
                 }
             ],
-            "remarks": true,
-            "flight_category": "unknown"
+            "remarks": true
         },
         {
             "string": "KHAF 131655Z AUTO 32007KT 6SM BR 13/11 A3023 RMK AO2",
@@ -1624,8 +1585,7 @@
                 "unit": "inHg",
                 "pressure": 30.23
             },
-            "remarks": true,
-            "flight_category": "unknown"
+            "remarks": true
         },
         {
             "string": "KAPC 151954Z 21007KT 170V230 5SM HZ FU CLR 31/12 A2996 RMK AO2 SLP135 SMOKE ALQDS UP TO 7500 MSL FLIGHT VIS 4-5 MI T03110117",
@@ -1671,8 +1631,7 @@
                 "unit": "inHg",
                 "pressure": 29.96
             },
-            "remarks": true,
-            "flight_category": "mvfr"
+            "remarks": true
         },
         {
             "string": "KSTS 151953Z VRB03KT 3SM HZ FU CLR 34/09 A2994 RMK AO2 SLP132 FU ALL QUADS TOPS 055 T03390094",
@@ -1716,8 +1675,7 @@
                 "unit": "inHg",
                 "pressure": 29.94
             },
-            "remarks": true,
-            "flight_category": "mvfr"
+            "remarks": true
         },
         {
             "string": "KLVK 151953Z COR 03004KT 6SM HZ FU CLR 35/03 A2995 RMK AO2 SLP138 T03500033",
@@ -1762,8 +1720,7 @@
                 "unit": "inHg",
                 "pressure": 29.95
             },
-            "remarks": true,
-            "flight_category": "vfr"
+            "remarks": true
         },
         {
             "string": "KRHV 141650Z 15012KT 10SM SCT020 17/12 A2996",
@@ -1795,8 +1752,7 @@
             "altimeter": {
                 "unit": "inHg",
                 "pressure": 29.96
-            },
-            "flight_category": "vfr"
+            }
         },
         {
             "string": "METAR KOKC 011955Z AUTO 22015G25KT 180V250 3/4SM R17L/2600FT +TSRA BR OVC010CB 18/16 A2992 RMK AO2 TSB25 TS OHD MOV E SLP132",
@@ -1858,8 +1814,7 @@
                 "unit": "inHg",
                 "pressure": 29.92
             },
-            "remarks": true,
-            "flight_category": "lifr"
+            "remarks": true
         },
         {
             "string": "METAR PAHL 031836Z AUTO 07009KT 10SM CLR 13/02 A2980 RMK AO1 PNO",
@@ -1893,8 +1848,7 @@
                 "unit": "inHg",
                 "pressure": 29.80
             },
-            "remarks": true,
-            "flight_category": "vfr"
+            "remarks": true
         },
         {
             "string": "METAR KNSI 031656Z VRB03KT 5SM HZ SCT007 21/17 A2989 RMK SLP121 T02060172",
@@ -1935,8 +1889,7 @@
                 "unit": "inHg",
                 "pressure": 29.89
             },
-            "remarks": true,
-            "flight_category": "mvfr"
+            "remarks": true
         },
         {
             "string": "SPECI KCOT 292020Z AUTO 13009KT 3SM TSRA BR SCT011 BKN028 OVC043 23/21 A2991 RMK AO2 PK WND 13029/2000 LTG DSNT ALQDS P0020",
@@ -1992,8 +1945,7 @@
                 "unit": "inHg",
                 "pressure": 29.91
             },
-            "remarks": true,
-            "flight_category": "mvfr"
+            "remarks": true
         },
         {
             "string": "METAR KMDW 090153Z 23003KT 1/2SM R31C/4000V4500FT SN FZFG VV002 M04/M05 A3004 RMK AO2 SLP191 SNINCR 1/10 P0000 T10391050",
@@ -2049,8 +2001,7 @@
                 "unit": "inHg",
                 "pressure": 30.04
             },
-            "remarks": true,
-            "flight_category": "lifr"
+            "remarks": true
         },
         {
             "string": "SPECI KMEM 091826Z 27013G27KT 240V310 1/2SM R36L/1000VP6000FT +TSRAGR FG FEW002 BKN023 OVC032CB 18/17 A2992 RMK A02 PK WND 31031/1802 WSHFT 1759 TSB22RAB17GRB23 PRESRR FRQ LTGIC W-NW TS W-NW GR 1/2 P0005",
@@ -2121,8 +2072,7 @@
                 "unit": "inHg",
                 "pressure": 29.92
             },
-            "remarks": true,
-            "flight_category": "lifr"
+            "remarks": true
         },
         {
             "broken": true,
@@ -2173,8 +2123,7 @@
                 "unit": "inHg",
                 "pressure": 29.88
             },
-            "remarks": true,
-            "flight_category": "ifr"
+            "remarks": true
         },
         {
             "string": "METAR KPIT 091955Z COR 22015G25KT 3/4SM R28L/2600FT TSRA OVC010CB 18/16 A2992 RMK SLP045 T01820159",
@@ -2228,8 +2177,7 @@
                 "unit": "inHg",
                 "pressure": 29.92
             },
-            "remarks": true,
-            "flight_category": "lifr"
+            "remarks": true
         },
         {
             "string": "METAR KBNA 281250Z 33018KT 290V360 1/2SM R31/2700FT SN BLSN FG VV008 00/M03 A2991 RMK RAE42SNB42",
@@ -2291,8 +2239,7 @@
                 "unit": "inHg",
                 "pressure": 29.91
             },
-            "remarks": true,
-            "flight_category": "lifr"
+            "remarks": true
         },
         {
             "string": "METAR KSFO 041453Z AUTO VRB02KT 3SM BR CLR 15/12 A3012 RMK AO2",
@@ -2333,8 +2280,7 @@
                 "unit": "inHg",
                 "pressure": 30.12
             },
-            "remarks": true,
-            "flight_category": "mvfr"
+            "remarks": true
         },
         {
             "string": "SPECI KCVG 152224Z 28024G36KT 3/4SM +TSRA BKN008 OVC020CB 28/23 A3000 RMK TSRAB24 TS W MOV E",
@@ -2383,8 +2329,7 @@
                 "unit": "inHg",
                 "pressure": 30.00
             },
-            "remarks": true,
-            "flight_category": "lifr"
+            "remarks": true
         }
     ]
 }
