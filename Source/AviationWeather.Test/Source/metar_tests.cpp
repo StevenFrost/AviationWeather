@@ -434,7 +434,7 @@ void MetarTests::METAR_CeilingAndFlightCategory()
     Assert::AreEqual(aw::sky_cover_cloud_type::unspecified, ceiling.cloud_type);
     Assert::AreEqual(aw::flight_category::lifr, m14.flight_category());
 
-    aw::metar::metar_info m15("KHAF 291935Z AUTO 24004KT 10SM 18/18 A3004 RMK AO2");
+    aw::metar m15("KHAF 291935Z AUTO 24004KT 10SM 18/18 A3004 RMK AO2");
     Assert::ExpectException<aw_exception>([&m15]
     {
         m15.ceiling();
