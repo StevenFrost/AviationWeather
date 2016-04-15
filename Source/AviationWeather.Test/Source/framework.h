@@ -47,9 +47,9 @@ template<> inline std::wstring ToString<uint16_t>(const uint16_t* t) { RETURN_WI
 template<> inline std::wstring ToString<uint16_t>(uint16_t* t)       { RETURN_WIDE_STRING(t); }
 
 // aw::metar::visibility
-template<> inline std::wstring ToString<aw::metar::visibility>(const aw::metar::visibility& t) { RETURN_WIDE_STRING(&t); }
-template<> inline std::wstring ToString<aw::metar::visibility>(const aw::metar::visibility* t) { RETURN_WIDE_STRING(t);  }
-template<> inline std::wstring ToString<aw::metar::visibility>(aw::metar::visibility* t)       { RETURN_WIDE_STRING(t);  }
+template<> inline std::wstring ToString<aw::visibility>(const aw::visibility& t) { RETURN_WIDE_STRING(&t); }
+template<> inline std::wstring ToString<aw::visibility>(const aw::visibility* t) { RETURN_WIDE_STRING(t);  }
+template<> inline std::wstring ToString<aw::visibility>(aw::visibility* t)       { RETURN_WIDE_STRING(t);  }
 
 DEFINE_ENUM_TOSTRING_GROUP(aw::weather_intensity)
 DEFINE_ENUM_TOSTRING_GROUP(aw::weather_descriptor)
@@ -61,11 +61,11 @@ DEFINE_ENUM_TOSTRING_GROUP(aw::speed_unit)
 DEFINE_ENUM_TOSTRING_GROUP(aw::distance_unit)
 DEFINE_ENUM_TOSTRING_GROUP(aw::pressure_unit)
 
-DEFINE_ENUM_TOSTRING_GROUP(aw::metar::element_type)
-DEFINE_ENUM_TOSTRING_GROUP(aw::metar::report_type)
-DEFINE_ENUM_TOSTRING_GROUP(aw::metar::modifier_type)
-DEFINE_ENUM_TOSTRING_GROUP(aw::metar::runway_designator_type)
-DEFINE_ENUM_TOSTRING_GROUP(aw::metar::visibility_modifier_type)
+DEFINE_ENUM_TOSTRING_GROUP(aw::metar_element_type)
+DEFINE_ENUM_TOSTRING_GROUP(aw::metar_report_type)
+DEFINE_ENUM_TOSTRING_GROUP(aw::metar_modifier_type)
+DEFINE_ENUM_TOSTRING_GROUP(aw::runway_designator_type)
+DEFINE_ENUM_TOSTRING_GROUP(aw::visibility_modifier_type)
 
 } // namespace CppUnitTestFramework
 } // namespace VisualStudio

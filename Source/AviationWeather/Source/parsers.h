@@ -23,28 +23,22 @@
 
 namespace aw
 {
-namespace metar
-{
-namespace parsers
-{
 
 //-----------------------------------------------------------------------------
 
-void parse_report_type         (metar_info& info, std::string& metar);
-void parse_station_identifier  (metar_info& info, std::string& metar);
-void parse_observation_time    (metar_info& info, std::string& metar);
-void parse_modifier            (metar_info& info, std::string& metar);
-void parse_wind                (metar_info& info, std::string& metar);
-void parse_visibility          (metar_info& info, std::string& metar);
-void parse_runway_visual_range (metar_info& info, std::string& metar);
-void parse_weather             (metar_info& info, std::string& metar);
-void parse_sky_condition       (metar_info& info, std::string& metar);
-void parse_temperature_dewpoint(metar_info& info, std::string& metar);
-void parse_altimeter           (metar_info& info, std::string& metar);
-void parse_remarks             (metar_info& info, std::string& metar);
+void parse_report_type         (metar& info, std::string& metar);
+void parse_station_identifier  (metar& info, std::string& metar);
+void parse_observation_time    (metar& info, std::string& metar);
+void parse_modifier            (metar& info, std::string& metar);
+void parse_wind                (metar& info, std::string& metar);
+void parse_visibility          (metar& info, std::string& metar);
+void parse_runway_visual_range (metar& info, std::string& metar);
+void parse_weather             (metar& info, std::string& metar);
+void parse_sky_condition       (metar& info, std::string& metar);
+void parse_temperature_dewpoint(metar& info, std::string& metar);
+void parse_altimeter           (metar& info, std::string& metar);
+void parse_remarks             (metar& info, std::string& metar);
 
 //-----------------------------------------------------------------------------
 
-} // namespace parsers
-} // namespace metar
 } // namespace aw

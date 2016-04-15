@@ -22,8 +22,6 @@
 
 namespace aw
 {
-namespace decoders
-{
 
 weather_intensity decode_weather_intensity(std::string const& symbol)
 {
@@ -214,5 +212,4 @@ speed_unit decode_speed_unit(std::string const& symbol)
 
 //-----------------------------------------------------------------------------
 
-} // namespace decoders
 } // namespace aw

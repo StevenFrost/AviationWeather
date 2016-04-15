@@ -51,13 +51,13 @@ std::string element_type_strings[] =
     STRINGIFY(remarks)
 };
 
-std::string report_type_strings[] =
+std::string metar_report_type_strings[] =
 {
     STRINGIFY(metar),
     STRINGIFY(special)
 };
 
-std::string modifier_type_strings[] =
+std::string metar_modifier_type_strings[] =
 {
     STRINGIFY(none),
     STRINGIFY(automatic),
@@ -202,18 +202,18 @@ public:
     TEST_METHOD(METAR_Validation);
 
 private:
-    void ValidateReportType         (aw::metar::metar_info const& metar, basic_json<> const& test);
-    void ValidateStationIdentifier  (aw::metar::metar_info const& metar, basic_json<> const& test);
-    void ValidateObservationTime    (aw::metar::metar_info const& metar, basic_json<> const& test);
-    void ValidateReportModifier     (aw::metar::metar_info const& metar, basic_json<> const& test);
-    void ValidateWind               (aw::metar::metar_info const& metar, basic_json<> const& test);
-    void ValidateVisibility         (aw::metar::metar_info const& metar, basic_json<> const& test);
-    void ValidateRunwayVisualRange  (aw::metar::metar_info const& metar, basic_json<> const& test);
-    void ValidateWeather            (aw::metar::metar_info const& metar, basic_json<> const& test);
-    void ValidateSkyCondition       (aw::metar::metar_info const& metar, basic_json<> const& test);
-    void ValidateTemperatureDewpoint(aw::metar::metar_info const& metar, basic_json<> const& test);
-    void ValidateAltimeter          (aw::metar::metar_info const& metar, basic_json<> const& test);
-    void ValidateRemarks            (aw::metar::metar_info const& metar, basic_json<> const& test);
+    void ValidateReportType         (aw::metar const& metar, basic_json<> const& test);
+    void ValidateStationIdentifier  (aw::metar const& metar, basic_json<> const& test);
+    void ValidateObservationTime    (aw::metar const& metar, basic_json<> const& test);
+    void ValidateReportModifier     (aw::metar const& metar, basic_json<> const& test);
+    void ValidateWind               (aw::metar const& metar, basic_json<> const& test);
+    void ValidateVisibility         (aw::metar const& metar, basic_json<> const& test);
+    void ValidateRunwayVisualRange  (aw::metar const& metar, basic_json<> const& test);
+    void ValidateWeather            (aw::metar const& metar, basic_json<> const& test);
+    void ValidateSkyCondition       (aw::metar const& metar, basic_json<> const& test);
+    void ValidateTemperatureDewpoint(aw::metar const& metar, basic_json<> const& test);
+    void ValidateAltimeter          (aw::metar const& metar, basic_json<> const& test);
+    void ValidateRemarks            (aw::metar const& metar, basic_json<> const& test);
 
 private:
     static basic_json<> m_expectationFile;
@@ -260,7 +260,7 @@ void MetarValidationTests::METAR_Validation()
             continue;
         }
 
-        aw::metar::metar_info metar(test["string"].get<std::string>());
+        aw::metar metar(test["string"].get<std::string>());
 
         ValidateReportType(metar, test);
         ValidateStationIdentifier(metar, test);
@@ -279,29 +279,29 @@ void MetarValidationTests::METAR_Validation()
 
 //-----------------------------------------------------------------------------
 
-void MetarValidationTests::ValidateReportType(aw::metar::metar_info const& metar, basic_json<> const& test)
+void MetarValidationTests::ValidateReportType(aw::metar const& metar, basic_json<> const& test)
 {
     if (test.find("report_type") != test.end())
     {
-        Assert::AreEqual(test["report_type"].get<std::string>(), report_type_strings[etoi(metar.type)]);
+        Assert::AreEqual(test["report_type"].get<std::string>(), metar_report_type_strings[etoi(metar.type)]);
     }
     else
     {
-        Assert::AreEqual(std::string("metar"), report_type_strings[etoi(metar.type)]);
+        Assert::AreEqual(std::string("metar"), metar_report_type_strings[etoi(metar.type)]);
     }
 }
 
 //-----------------------------------------------------------------------------
 
-void MetarValidationTests::ValidateStationIdentifier(aw::metar::metar_info const& metar, basic_json<> const& test)
+void MetarValidationTests::ValidateStationIdentifier(aw::metar const& metar, basic_json<> const& test)
 {
     Assert::IsTrue(test.find("station_identifier") != test.end());
-    Assert::AreEqual(test["station_identifier"].get<std::string>(), metar.station_identifier);
+    Assert::AreEqual(test["station_identifier"].get<std::string>(), metar.identifier);
 }
 
 //-----------------------------------------------------------------------------
 
-void MetarValidationTests::ValidateObservationTime(aw::metar::metar_info const& metar, basic_json<> const& test)
+void MetarValidationTests::ValidateObservationTime(aw::metar const& metar, basic_json<> const& test)
 {
     Assert::IsTrue(test.find("observation_time") != test.end());
 
@@ -313,21 +313,21 @@ void MetarValidationTests::ValidateObservationTime(aw::metar::metar_info const& 
 
 //-----------------------------------------------------------------------------
 
-void MetarValidationTests::ValidateReportModifier(aw::metar::metar_info const& metar, basic_json<> const& test)
+void MetarValidationTests::ValidateReportModifier(aw::metar const& metar, basic_json<> const& test)
 {
     if (test.find("report_modifier") != test.end())
     {
-        Assert::AreEqual(test["report_modifier"].get<std::string>(), modifier_type_strings[etoi(metar.modifier)]);
+        Assert::AreEqual(test["report_modifier"].get<std::string>(), metar_modifier_type_strings[etoi(metar.modifier)]);
     }
     else
     {
-        Assert::AreEqual(std::string("none"), modifier_type_strings[etoi(metar.modifier)]);
+        Assert::AreEqual(std::string("none"), metar_modifier_type_strings[etoi(metar.modifier)]);
     }
 }
 
 //-----------------------------------------------------------------------------
 
-void MetarValidationTests::ValidateWind(aw::metar::metar_info const& metar, basic_json<> const& test)
+void MetarValidationTests::ValidateWind(aw::metar const& metar, basic_json<> const& test)
 {
     if (test.find("wind") != test.end())
     {
@@ -364,7 +364,7 @@ void MetarValidationTests::ValidateWind(aw::metar::metar_info const& metar, basi
 
 //-----------------------------------------------------------------------------
 
-void MetarValidationTests::ValidateVisibility(aw::metar::metar_info const& metar, basic_json<> const& test)
+void MetarValidationTests::ValidateVisibility(aw::metar const& metar, basic_json<> const& test)
 {
     if (test.find("visibility") != test.end())
     {
@@ -378,7 +378,7 @@ void MetarValidationTests::ValidateVisibility(aw::metar::metar_info const& metar
         }
         else
         {
-            Assert::AreEqual(aw::metar::visibility_modifier_type::none, metar.visibility_group->modifier);
+            Assert::AreEqual(aw::visibility_modifier_type::none, metar.visibility_group->modifier);
         }
     }
     else
@@ -389,7 +389,7 @@ void MetarValidationTests::ValidateVisibility(aw::metar::metar_info const& metar
 
 //-----------------------------------------------------------------------------
 
-void MetarValidationTests::ValidateRunwayVisualRange(aw::metar::metar_info const& metar, basic_json<> const& test)
+void MetarValidationTests::ValidateRunwayVisualRange(aw::metar const& metar, basic_json<> const& test)
 {
     if (test.find("runway_visual_range") != test.end())
     {
@@ -412,7 +412,7 @@ void MetarValidationTests::ValidateRunwayVisualRange(aw::metar::metar_info const
             }
             else
             {
-                Assert::AreEqual(aw::metar::runway_designator_type::none, actual.runway_designator);
+                Assert::AreEqual(runway_designator_type::none, actual.runway_designator);
             }
 
             if (expected.find("visibility_max") != expected.end())
@@ -430,7 +430,7 @@ void MetarValidationTests::ValidateRunwayVisualRange(aw::metar::metar_info const
             }
             else
             {
-                Assert::AreEqual(aw::metar::visibility_modifier_type::none, actual.visibility_min.modifier);
+                Assert::AreEqual(aw::visibility_modifier_type::none, actual.visibility_min.modifier);
             }
 
             if (expected.find("visibility_max_modifier") != expected.end())
@@ -439,7 +439,7 @@ void MetarValidationTests::ValidateRunwayVisualRange(aw::metar::metar_info const
             }
             else
             {
-                Assert::AreEqual(aw::metar::visibility_modifier_type::none, actual.visibility_max.modifier);
+                Assert::AreEqual(aw::visibility_modifier_type::none, actual.visibility_max.modifier);
             }
         }
     }
@@ -451,7 +451,7 @@ void MetarValidationTests::ValidateRunwayVisualRange(aw::metar::metar_info const
 
 //-----------------------------------------------------------------------------
 
-void MetarValidationTests::ValidateWeather(aw::metar::metar_info const& metar, basic_json<> const& test)
+void MetarValidationTests::ValidateWeather(aw::metar const& metar, basic_json<> const& test)
 {
     if (test.find("weather") != test.end())
     {
@@ -508,7 +508,7 @@ void MetarValidationTests::ValidateWeather(aw::metar::metar_info const& metar, b
 
 //-----------------------------------------------------------------------------
 
-void MetarValidationTests::ValidateSkyCondition(aw::metar::metar_info const& metar, basic_json<> const& test)
+void MetarValidationTests::ValidateSkyCondition(aw::metar const& metar, basic_json<> const& test)
 {
     if (test.find("sky_condition") != test.end())
     {
@@ -573,7 +573,7 @@ void MetarValidationTests::ValidateSkyCondition(aw::metar::metar_info const& met
 
 //-----------------------------------------------------------------------------
 
-void MetarValidationTests::ValidateTemperatureDewpoint(aw::metar::metar_info const& metar, basic_json<> const& test)
+void MetarValidationTests::ValidateTemperatureDewpoint(aw::metar const& metar, basic_json<> const& test)
 {
     // TODO: Check that we actually have temperature and dewpoint values in the expectation file
     Assert::AreEqual(test["temperature_dewpoint"]["temperature"].get<int8_t>(), *(metar.temperature));
@@ -582,7 +582,7 @@ void MetarValidationTests::ValidateTemperatureDewpoint(aw::metar::metar_info con
 
 //-----------------------------------------------------------------------------
 
-void MetarValidationTests::ValidateAltimeter(aw::metar::metar_info const& metar, basic_json<> const& test)
+void MetarValidationTests::ValidateAltimeter(aw::metar const& metar, basic_json<> const& test)
 {
     // TODO: Check that we actually have the altimeter value in the expectation file
     Assert::AreEqual(test["altimeter"]["unit"].get<std::string>(), pressure_unit_strings[etoi(metar.altimeter_group->unit)]);
@@ -591,7 +591,7 @@ void MetarValidationTests::ValidateAltimeter(aw::metar::metar_info const& metar,
 
 //-----------------------------------------------------------------------------
 
-void MetarValidationTests::ValidateRemarks(aw::metar::metar_info const& metar, basic_json<> const& test)
+void MetarValidationTests::ValidateRemarks(aw::metar const& metar, basic_json<> const& test)
 {
     if (test.find("remarks") != test.end())
     {

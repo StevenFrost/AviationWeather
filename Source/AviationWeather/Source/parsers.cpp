@@ -26,10 +26,6 @@
 
 namespace aw
 {
-namespace metar
-{
-namespace parsers
-{
 
 //-----------------------------------------------------------------------------
 
@@ -50,32 +46,32 @@ namespace parsers
 
 struct pattern
 {
-    element_type type;
-    const char*  regex;
+    metar_element_type type;
+    const char*        regex;
 };
 
 constexpr pattern g_patterns[] =
 {
-    { element_type::report_type,          REGEX_REPORT_TYPE      },
-    { element_type::station_identifier,   REGEX_STATION_IDENT    },
-    { element_type::observation_time,     REGEX_OBSERVATION_TIME },
-    { element_type::report_modifier,      REGEX_REPORT_MODIFIER  },
-    { element_type::wind,                 REGEX_WIND             },
-    { element_type::visibility,           REGEX_VISIBILITY       },
-    { element_type::runway_visual_range,  REGEX_RVR              },
-    { element_type::weather,              REGEX_WEATHER          },
-    { element_type::sky_condition,        REGEX_SKY_CONDITION    },
-    { element_type::temperature_dewpoint, REGEX_TEMP_DEW         },
-    { element_type::altimeter,            REGEX_ALTIMETER        },
-    { element_type::remarks,              REGEX_REMARKS          }
+    { metar_element_type::report_type,          REGEX_REPORT_TYPE      },
+    { metar_element_type::station_identifier,   REGEX_STATION_IDENT    },
+    { metar_element_type::observation_time,     REGEX_OBSERVATION_TIME },
+    { metar_element_type::report_modifier,      REGEX_REPORT_MODIFIER  },
+    { metar_element_type::wind,                 REGEX_WIND             },
+    { metar_element_type::visibility,           REGEX_VISIBILITY       },
+    { metar_element_type::runway_visual_range,  REGEX_RVR              },
+    { metar_element_type::weather,              REGEX_WEATHER          },
+    { metar_element_type::sky_condition,        REGEX_SKY_CONDITION    },
+    { metar_element_type::temperature_dewpoint, REGEX_TEMP_DEW         },
+    { metar_element_type::altimeter,            REGEX_ALTIMETER        },
+    { metar_element_type::remarks,              REGEX_REMARKS          }
 };
 
-constexpr const char* get_element_regex_impl(element_type type, const pattern* patterns)
+constexpr const char* get_element_regex_impl(metar_element_type type, const pattern* patterns)
 {
     return (patterns->type == type) ? patterns->regex : get_element_regex_impl(type, patterns + 1);
 }
 
-constexpr const char* get_element_regex(element_type type)
+constexpr const char* get_element_regex(metar_element_type type)
 {
     return get_element_regex_impl(type, g_patterns);
 }
@@ -83,7 +79,7 @@ constexpr const char* get_element_regex(element_type type)
 //-----------------------------------------------------------------------------
 
 template <typename TLambda>
-std::string ParseIfMatch(std::string const& metar, element_type element, TLambda l, bool reverse = false)
+std::string ParseIfMatch(std::string const& metar, metar_element_type element, TLambda l, bool reverse = false)
 {
     auto pattern = get_element_regex(element);
     auto metarString = metar;
@@ -101,7 +97,7 @@ std::string ParseIfMatch(std::string const& metar, element_type element, TLambda
 //-----------------------------------------------------------------------------
 
 template <typename TLambda>
-std::string ParseForEachMatch(std::string const& metar, element_type element, TLambda l, bool reverse = false)
+std::string ParseForEachMatch(std::string const& metar, metar_element_type element, TLambda l, bool reverse = false)
 {
     auto pattern = get_element_regex(element);
     auto metarString = metar;
@@ -118,20 +114,20 @@ std::string ParseForEachMatch(std::string const& metar, element_type element, TL
 
 //-----------------------------------------------------------------------------
 
-void parse_report_type(metar_info& info, std::string& metar)
+void parse_report_type(metar& info, std::string& metar)
 {
-    auto result = ParseIfMatch(metar, element_type::report_type, [&](std::cmatch regex)
+    auto result = ParseIfMatch(metar, metar_element_type::report_type, [&](std::cmatch regex)
     {
         static const unsigned short EXPR_TYPE = 1;
 
         auto reportType = regex.str(EXPR_TYPE);
         if (reportType == "METAR")
         {
-            info.type = report_type::metar;
+            info.type = metar_report_type::metar;
         }
         else if (reportType == "SPECI")
         {
-            info.type = report_type::special;
+            info.type = metar_report_type::special;
         }
     });
     metar = result;
@@ -139,22 +135,22 @@ void parse_report_type(metar_info& info, std::string& metar)
 
 //-----------------------------------------------------------------------------
 
-void parse_station_identifier(metar_info& info, std::string& metar)
+void parse_station_identifier(metar& info, std::string& metar)
 {
-    auto result = ParseIfMatch(metar, element_type::station_identifier, [&](std::cmatch regex)
+    auto result = ParseIfMatch(metar, metar_element_type::station_identifier, [&](std::cmatch regex)
     {
         static const unsigned short EXPR_IDENT = 1;
 
-        info.station_identifier = regex.str(EXPR_IDENT);
+        info.identifier = regex.str(EXPR_IDENT);
     });
     metar = result;
 }
 
 //-----------------------------------------------------------------------------
 
-void parse_observation_time(metar_info& info, std::string& metar)
+void parse_observation_time(metar& info, std::string& metar)
 {
-    auto result = ParseIfMatch(metar, element_type::observation_time, [&](std::cmatch regex)
+    auto result = ParseIfMatch(metar, metar_element_type::observation_time, [&](std::cmatch regex)
     {
         static const unsigned short EXPR_DAY = 1;
         static const unsigned short EXPR_HOUR = 2;
@@ -166,7 +162,7 @@ void parse_observation_time(metar_info& info, std::string& metar)
             auto hour = static_cast<uint8_t>(stoi(regex.str(EXPR_HOUR)));
             auto minute = static_cast<uint8_t>(stoi(regex.str(EXPR_MINUTE)));
 
-            info.report_time = observation_time(day, hour, minute);
+            info.report_time = time(day, hour, minute);
         }
         catch (std::invalid_argument const&)
         {
@@ -178,24 +174,24 @@ void parse_observation_time(metar_info& info, std::string& metar)
 
 //-----------------------------------------------------------------------------
 
-void parse_modifier(metar_info& info, std::string& metar)
+void parse_modifier(metar& info, std::string& metar)
 {
-    auto result = ParseIfMatch(metar, element_type::report_modifier, [&](std::cmatch regex)
+    auto result = ParseIfMatch(metar, metar_element_type::report_modifier, [&](std::cmatch regex)
     {
         static const unsigned short EXPR = 1;
 
         auto modifier = regex.str(EXPR);
         if (modifier == "AUTO")
         {
-            info.modifier = modifier_type::automatic;
+            info.modifier = metar_modifier_type::automatic;
         }
         else if (modifier == "COR")
         {
-            info.modifier = modifier_type::corrected;
+            info.modifier = metar_modifier_type::corrected;
         }
         else
         {
-            info.modifier = modifier_type::none;
+            info.modifier = metar_modifier_type::none;
         }
     });
     metar = result;
@@ -203,9 +199,9 @@ void parse_modifier(metar_info& info, std::string& metar)
 
 //-----------------------------------------------------------------------------
 
-void parse_wind(metar_info& info, std::string& metar)
+void parse_wind(metar& info, std::string& metar)
 {
-    auto result = ParseIfMatch(metar, element_type::wind, [&](std::cmatch regex)
+    auto result = ParseIfMatch(metar, metar_element_type::wind, [&](std::cmatch regex)
     {
         static const unsigned short EXPR_DIRECTION = 1;
         static const unsigned short EXPR_SPEED = 2;
@@ -220,7 +216,7 @@ void parse_wind(metar_info& info, std::string& metar)
         {
             wind windGroup;
 
-            windGroup.unit = decoders::decode_speed_unit(regex[EXPR_UNIT]);
+            windGroup.unit = decode_speed_unit(regex[EXPR_UNIT]);
             windGroup.wind_speed = static_cast<uint8_t>(atoi(regex.str(EXPR_SPEED).c_str()));
 
             uint16_t direction = UINT16_MAX;
@@ -255,9 +251,9 @@ void parse_wind(metar_info& info, std::string& metar)
 
 //-----------------------------------------------------------------------------
 
-void parse_visibility(metar_info& info, std::string& metar)
+void parse_visibility(metar& info, std::string& metar)
 {
-    auto result = ParseIfMatch(metar, element_type::visibility, [&](std::cmatch regex)
+    auto result = ParseIfMatch(metar, metar_element_type::visibility, [&](std::cmatch regex)
     {
         static const unsigned short EXPR_ALL = 1;
         static const unsigned short EXPR_FRACTIONAL = 3;
@@ -318,9 +314,9 @@ void parse_visibility(metar_info& info, std::string& metar)
 
 //-----------------------------------------------------------------------------
 
-void parse_runway_visual_range(metar_info& info, std::string& metar)
+void parse_runway_visual_range(metar& info, std::string& metar)
 {
-    auto result = ParseForEachMatch(metar, element_type::runway_visual_range, [&](std::cmatch regex)
+    auto result = ParseForEachMatch(metar, metar_element_type::runway_visual_range, [&](std::cmatch regex)
     {
         static const unsigned short EXPR_RUNWAY_NUM = 1;
         static const unsigned short EXPR_RUNWAY_DESIGNATOR = 2;
@@ -406,9 +402,9 @@ void parse_runway_visual_range(metar_info& info, std::string& metar)
 
 //-----------------------------------------------------------------------------
 
-void parse_weather(metar_info& info, std::string& metar)
+void parse_weather(metar& info, std::string& metar)
 {
-    auto result = ParseForEachMatch(metar, element_type::weather, [&](std::cmatch regex)
+    auto result = ParseForEachMatch(metar, metar_element_type::weather, [&](std::cmatch regex)
     {
         static const unsigned short EXPR_INTENSITY = 1;
         static const unsigned short EXPR_DESCRIPTOR_ALL = 3;
@@ -427,25 +423,25 @@ void parse_weather(metar_info& info, std::string& metar)
         // Intensity
         if (regex[EXPR_INTENSITY].matched)
         {
-            intensity = decoders::decode_weather_intensity(regex.str(EXPR_INTENSITY));
+            intensity = decode_weather_intensity(regex.str(EXPR_INTENSITY));
         }
 
         // Descriptor
         if (regex[EXPR_DESCRIPTOR_ALL].matched)
         {
-            descriptor = decoders::decode_weather_descriptor(regex.str(EXPR_DESCRIPTOR_ALL));
+            descriptor = decode_weather_descriptor(regex.str(EXPR_DESCRIPTOR_ALL));
         }
         else if (regex[EXPR_DESCRIPTOR_SH].matched)
         {
-            descriptor = decoders::decode_weather_descriptor(regex.str(EXPR_DESCRIPTOR_SH));
+            descriptor = decode_weather_descriptor(regex.str(EXPR_DESCRIPTOR_SH));
         }
         else if (regex[EXPR_DESCRIPTOR_TS].matched)
         {
-            descriptor = decoders::decode_weather_descriptor(regex.str(EXPR_DESCRIPTOR_TS));
+            descriptor = decode_weather_descriptor(regex.str(EXPR_DESCRIPTOR_TS));
         }
         else if (regex[EXPR_DESCRIPTOR_FZ].matched)
         {
-            descriptor = decoders::decode_weather_descriptor(regex.str(EXPR_DESCRIPTOR_FZ));
+            descriptor = decode_weather_descriptor(regex.str(EXPR_DESCRIPTOR_FZ));
         }
 
         // Phenomena
@@ -486,7 +482,7 @@ void parse_weather(metar_info& info, std::string& metar)
                 phenomena += *it++;
 
                 weatherGroup.phenomena.push_back(
-                    decoders::decode_weather_phenomena(phenomena)
+                    decode_weather_phenomena(phenomena)
                 );
             }
         }
@@ -498,9 +494,9 @@ void parse_weather(metar_info& info, std::string& metar)
 
 //-----------------------------------------------------------------------------
 
-void parse_sky_condition(metar_info& info, std::string& metar)
+void parse_sky_condition(metar& info, std::string& metar)
 {
-    auto result = ParseForEachMatch(metar, element_type::sky_condition, [&](std::cmatch regex)
+    auto result = ParseForEachMatch(metar, metar_element_type::sky_condition, [&](std::cmatch regex)
     {
         static const unsigned short EXPR_CLEAR = 2;
         static const unsigned short EXPR_LAYER = 4;
@@ -524,7 +520,7 @@ void parse_sky_condition(metar_info& info, std::string& metar)
             }
             else
             {
-                skyCover = decoders::decode_sky_cover(regex.str(EXPR_LAYER).c_str());
+                skyCover = decode_sky_cover(regex.str(EXPR_LAYER).c_str());
 
                 auto altitudeStr = regex.str(EXPR_LAYER_ALTITUDE);
                 if (altitudeStr != "///")
@@ -535,7 +531,7 @@ void parse_sky_condition(metar_info& info, std::string& metar)
 
                 if (regex[EXPR_MANUAL].matched)
                 {
-                    cloudType = decoders::decode_sky_cover_cloud_type(regex.str(EXPR_MANUAL).c_str());
+                    cloudType = decode_sky_cover_cloud_type(regex.str(EXPR_MANUAL).c_str());
                 }
             }
 
@@ -556,9 +552,9 @@ void parse_sky_condition(metar_info& info, std::string& metar)
 
 //-----------------------------------------------------------------------------
 
-void parse_temperature_dewpoint(metar_info& info, std::string& metar)
+void parse_temperature_dewpoint(metar& info, std::string& metar)
 {
-    auto result = ParseIfMatch(metar, element_type::temperature_dewpoint, [&](std::cmatch regex)
+    auto result = ParseIfMatch(metar, metar_element_type::temperature_dewpoint, [&](std::cmatch regex)
     {
         static const unsigned short EXPR_TEMP_IS_MINUS = 1;
         static const unsigned short EXPR_TEMPERATURE = 2;
@@ -595,9 +591,9 @@ void parse_temperature_dewpoint(metar_info& info, std::string& metar)
 
 //-----------------------------------------------------------------------------
 
-void parse_altimeter(metar_info& info, std::string& metar)
+void parse_altimeter(metar& info, std::string& metar)
 {
-    auto result = ParseIfMatch(metar, element_type::altimeter, [&](std::cmatch regex)
+    auto result = ParseIfMatch(metar, metar_element_type::altimeter, [&](std::cmatch regex)
     {
         static const unsigned short EXPR_SETTING = 1;
         static const unsigned short EXPR_ALT = 2;
@@ -629,9 +625,9 @@ void parse_altimeter(metar_info& info, std::string& metar)
 
 //-----------------------------------------------------------------------------
 
-void parse_remarks(metar_info& info, std::string& metar)
+void parse_remarks(metar& info, std::string& metar)
 {
-    auto result = ParseIfMatch(metar, element_type::remarks, [&](std::cmatch regex)
+    auto result = ParseIfMatch(metar, metar_element_type::remarks, [&](std::cmatch regex)
     {
         static const unsigned short EXPR_ALL = 1;
         info.remarks = regex.str(EXPR_ALL);
@@ -641,6 +637,4 @@ void parse_remarks(metar_info& info, std::string& metar)
 
 //-----------------------------------------------------------------------------
 
-} // namespace parsers
-} // namespace metar
 } // namespace aw
