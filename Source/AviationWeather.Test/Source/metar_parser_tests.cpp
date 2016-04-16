@@ -55,349 +55,317 @@ public:
 
 void MetarParserTests::METAR_Parser_ReportType()
 {
+    // Empty
+    parse_metar_report_type("", [&](metar_report_type type)
     {
-        aw::metar metar("");
-        Assert::AreEqual(metar_report_type::metar, metar.type);
-    }
+        Assert::Fail();
+    });
 
     // METAR
+    bool parsed = false;
+    parse_metar_report_type("METAR ", [&](metar_report_type type)
     {
-        aw::metar metar("");
-        std::string m1("METAR ");
-        parse_report_type(metar, m1);
-        Assert::AreEqual(metar_report_type::metar, metar.type);
-    }
+        parsed = true;
+        Assert::AreEqual(metar_report_type::metar, type);
+    });
+    Assert::IsTrue(parsed);
 
     // SPECI
+    parsed = false;
+    parse_metar_report_type(std::string("SPECI "), [&](metar_report_type type)
     {
-        aw::metar metar("");
-        std::string m2("SPECI ");
-        parse_report_type(metar, m2);
-        Assert::AreEqual(metar_report_type::special, metar.type);
-    }
+        parsed = true;
+        Assert::AreEqual(metar_report_type::special, type);
+    });
+    Assert::IsTrue(parsed);
 }
 
 //-----------------------------------------------------------------------------
 
 void MetarParserTests::METAR_Parser_StationIdentifier()
 {
+    // Empty
+    parse_station_identifier(std::string(""), [&](std::string const& identifier)
     {
-        aw::metar metar("");
-        Assert::AreEqual(std::string(""), metar.identifier);
-    }
+        Assert::Fail();
+    });
 
     // KSFO
+    bool parsed = false;
+    parse_station_identifier(std::string("KSFO "), [&](std::string const& identifier)
     {
-        aw::metar metar("");
-        std::string m1("KSFO ");
-        parse_station_identifier(metar, m1);
-        Assert::AreEqual(std::string("KSFO"), metar.identifier);
-    }
+        parsed = true;
+        Assert::AreEqual(std::string("KSFO"), identifier);
+    });
+    Assert::IsTrue(parsed);
 
     // EBGE
+    parsed = false;
+    parse_station_identifier(std::string("EGBE "), [&](std::string const& identifier)
     {
-        aw::metar metar("");
-        std::string m2("EGBE ");
-        parse_station_identifier(metar, m2);
-        Assert::AreEqual(std::string("EGBE"), metar.identifier);
-    }
+        parsed = true;
+        Assert::AreEqual(std::string("EGBE"), identifier);
+    });
+    Assert::IsTrue(parsed);
 }
 
 //-----------------------------------------------------------------------------
 
 void MetarParserTests::METAR_Parser_ObservationTime()
 {
-    // 8th, 17:53
+    // Empty
+    parse_time(std::string(""), [&](aw::time && time)
     {
-        aw::metar metar("");
-        std::string m1("081753Z ");
-        parse_observation_time(metar, m1);
-        Assert::AreEqual(uint8_t(8), metar.report_time.day_of_month);
-        Assert::AreEqual(uint8_t(17), metar.report_time.hour_of_day);
-        Assert::AreEqual(uint8_t(53), metar.report_time.minute_of_hour);
-    }
+        Assert::Fail();
+    });
+
+    // 8th, 17:53
+    parse_time(std::string("081753Z "), [&](aw::time && time)
+    {
+        Assert::AreEqual(uint8_t(8), time.day_of_month);
+        Assert::AreEqual(uint8_t(17), time.hour_of_day);
+        Assert::AreEqual(uint8_t(53), time.minute_of_hour);
+    });
 
     // 20th, 03:28
+    parse_time(std::string("200328Z "), [&](aw::time && time)
     {
-        aw::metar metar("");
-        std::string m2("200328Z ");
-        parse_observation_time(metar, m2);
-        Assert::AreEqual(uint8_t(20), metar.report_time.day_of_month);
-        Assert::AreEqual(uint8_t(3), metar.report_time.hour_of_day);
-        Assert::AreEqual(uint8_t(28), metar.report_time.minute_of_hour);
-    }
+        Assert::AreEqual(uint8_t(20), time.day_of_month);
+        Assert::AreEqual(uint8_t(3), time.hour_of_day);
+        Assert::AreEqual(uint8_t(28), time.minute_of_hour);
+    });
 }
 
 //-----------------------------------------------------------------------------
 
 void MetarParserTests::METAR_Parser_Modifier()
 {
+    // Empty
+    parse_metar_modifier(std::string(""), [&](metar_modifier_type type)
     {
-        aw::metar metar("");
-        Assert::AreEqual(metar_modifier_type::none, metar.modifier);
-    }
+        Assert::Fail();
+    });
 
     // AUTO
+    parse_metar_modifier(std::string("AUTO "), [&](metar_modifier_type type)
     {
-        aw::metar metar("");
-        std::string m1("AUTO ");
-        parse_modifier(metar, m1);
-        Assert::AreEqual(metar_modifier_type::automatic, metar.modifier);
-    }
+        Assert::AreEqual(metar_modifier_type::automatic, type);
+    });
 
     // COR
+    parse_metar_modifier(std::string("COR "), [&](metar_modifier_type type)
     {
-        aw::metar metar("");
-        std::string m2("COR ");
-        parse_modifier(metar, m2);
-        Assert::AreEqual(metar_modifier_type::corrected, metar.modifier);
-    }
+        Assert::AreEqual(metar_modifier_type::corrected, type);
+    });
 }
 
 //-----------------------------------------------------------------------------
 
 void MetarParserTests::METAR_Parser_Wind()
 {
-    // 240 @15kts
+    // Empty
+    parse_wind(std::string(""), [&](wind && windGroup)
     {
-        aw::metar metar("");
-        Assert::IsFalse(static_cast<bool>(metar.wind_group));
+        Assert::Fail();
+    });
 
-        std::string m1("24015KT ");
-        parse_wind(metar, m1);
-        Assert::AreEqual(uint16_t(240), metar.wind_group->direction);
-        Assert::AreEqual(uint8_t(15), metar.wind_group->wind_speed);
-        Assert::AreEqual(uint8_t(0), metar.wind_group->gust_speed);
-        Assert::IsFalse(static_cast<bool>(metar.wind_group->variation_lower));
-        Assert::IsFalse(static_cast<bool>(metar.wind_group->variation_upper));
-        Assert::AreEqual(speed_unit::kt, metar.wind_group->unit);
-    }
+    // 240 @15kts
+    parse_wind(std::string("24015KT "), [&](wind && windGroup)
+    {
+        Assert::AreEqual(uint16_t(240), windGroup.direction);
+        Assert::AreEqual(uint8_t(15), windGroup.wind_speed);
+        Assert::AreEqual(uint8_t(0), windGroup.gust_speed);
+        Assert::IsFalse(static_cast<bool>(windGroup.variation_lower));
+        Assert::IsFalse(static_cast<bool>(windGroup.variation_upper));
+        Assert::AreEqual(speed_unit::kt, windGroup.unit);
+    });
+
 
     // Variable @ 2kts
+    parse_wind(std::string("VRB02KT "), [&](wind && windGroup)
     {
-        aw::metar metar("");
-        std::string m2("VRB02KT ");
-        parse_wind(metar, m2);
-        Assert::AreEqual(UINT16_MAX, metar.wind_group->direction);
-        Assert::AreEqual(uint8_t(2), metar.wind_group->wind_speed);
-        Assert::AreEqual(uint8_t(0), metar.wind_group->gust_speed);
-        Assert::IsFalse(static_cast<bool>(metar.wind_group->variation_lower));
-        Assert::IsFalse(static_cast<bool>(metar.wind_group->variation_upper));
-        Assert::AreEqual(speed_unit::kt, metar.wind_group->unit);
-    }
+        Assert::AreEqual(UINT16_MAX, windGroup.direction);
+        Assert::AreEqual(uint8_t(2), windGroup.wind_speed);
+        Assert::AreEqual(uint8_t(0), windGroup.gust_speed);
+        Assert::IsFalse(static_cast<bool>(windGroup.variation_lower));
+        Assert::IsFalse(static_cast<bool>(windGroup.variation_upper));
+        Assert::AreEqual(speed_unit::kt, windGroup.unit);
+    });
 
     // 120 @ 10kts, variable between 100 and 140
+    parse_wind(std::string("12010KT 100V140 "), [&](wind && windGroup)
     {
-        aw::metar metar("");
-        std::string m3("12010KT 100V140 ");
-        parse_wind(metar, m3);
-        Assert::AreEqual(uint16_t(120), metar.wind_group->direction);
-        Assert::AreEqual(uint8_t(10), metar.wind_group->wind_speed);
-        Assert::AreEqual(uint8_t(0), metar.wind_group->gust_speed);
-        Assert::AreEqual(uint16_t(100), *(metar.wind_group->variation_lower));
-        Assert::AreEqual(uint16_t(140), *(metar.wind_group->variation_upper));
-        Assert::AreEqual(speed_unit::kt, metar.wind_group->unit);
-    }
+        Assert::AreEqual(uint16_t(120), windGroup.direction);
+        Assert::AreEqual(uint8_t(10), windGroup.wind_speed);
+        Assert::AreEqual(uint8_t(0), windGroup.gust_speed);
+        Assert::AreEqual(uint16_t(100), *(windGroup.variation_lower));
+        Assert::AreEqual(uint16_t(140), *(windGroup.variation_upper));
+        Assert::AreEqual(speed_unit::kt, windGroup.unit);
+    });
 
     // 120 @ 8kts, gusting 12kts
+    parse_wind(std::string("12008G12KT "), [&](wind && windGroup)
     {
-        aw::metar metar("");
-        std::string m4("12008G12KT ");
-        parse_wind(metar, m4);
-        Assert::AreEqual(uint16_t(120), metar.wind_group->direction);
-        Assert::AreEqual(uint8_t(8), metar.wind_group->wind_speed);
-        Assert::AreEqual(uint8_t(12), metar.wind_group->gust_speed);
-        Assert::IsFalse(static_cast<bool>(metar.wind_group->variation_lower));
-        Assert::IsFalse(static_cast<bool>(metar.wind_group->variation_upper));
-        Assert::AreEqual(speed_unit::kt, metar.wind_group->unit);
-    }
+        Assert::AreEqual(uint16_t(120), windGroup.direction);
+        Assert::AreEqual(uint8_t(8), windGroup.wind_speed);
+        Assert::AreEqual(uint8_t(12), windGroup.gust_speed);
+        Assert::IsFalse(static_cast<bool>(windGroup.variation_lower));
+        Assert::IsFalse(static_cast<bool>(windGroup.variation_upper));
+        Assert::AreEqual(speed_unit::kt, windGroup.unit);
+    });
 
     // 340 @ 112kts
+    parse_wind(std::string("340112KT "), [&](wind && windGroup)
     {
-        aw::metar metar("");
-        std::string m5("340112KT ");
-        parse_wind(metar, m5);
-        Assert::AreEqual(uint16_t(340), metar.wind_group->direction);
-        Assert::AreEqual(uint8_t(112), metar.wind_group->wind_speed);
-        Assert::AreEqual(uint8_t(0), metar.wind_group->gust_speed);
-        Assert::IsFalse(static_cast<bool>(metar.wind_group->variation_lower));
-        Assert::IsFalse(static_cast<bool>(metar.wind_group->variation_upper));
-        Assert::AreEqual(speed_unit::kt, metar.wind_group->unit);
-    }
+        Assert::AreEqual(uint16_t(340), windGroup.direction);
+        Assert::AreEqual(uint8_t(112), windGroup.wind_speed);
+        Assert::AreEqual(uint8_t(0), windGroup.gust_speed);
+        Assert::IsFalse(static_cast<bool>(windGroup.variation_lower));
+        Assert::IsFalse(static_cast<bool>(windGroup.variation_upper));
+        Assert::AreEqual(speed_unit::kt, windGroup.unit);
+    });
 
     // 000 @ 0kts
+    parse_wind(std::string("00000KT "), [&](wind && windGroup)
     {
-        aw::metar metar("");
-        std::string m6("00000KT ");
-        parse_wind(metar, m6);
-        Assert::AreEqual(uint16_t(0), metar.wind_group->direction);
-        Assert::AreEqual(uint8_t(0), metar.wind_group->wind_speed);
-        Assert::AreEqual(uint8_t(0), metar.wind_group->gust_speed);
-        Assert::IsFalse(static_cast<bool>(metar.wind_group->variation_lower));
-        Assert::IsFalse(static_cast<bool>(metar.wind_group->variation_upper));
-        Assert::AreEqual(speed_unit::kt, metar.wind_group->unit);
-    }
+        Assert::AreEqual(uint16_t(0), windGroup.direction);
+        Assert::AreEqual(uint8_t(0), windGroup.wind_speed);
+        Assert::AreEqual(uint8_t(0), windGroup.gust_speed);
+        Assert::IsFalse(static_cast<bool>(windGroup.variation_lower));
+        Assert::IsFalse(static_cast<bool>(windGroup.variation_upper));
+        Assert::AreEqual(speed_unit::kt, windGroup.unit);
+    });
 }
 
 //-----------------------------------------------------------------------------
 
 void MetarParserTests::METAR_Parser_Visibility()
 {
-    // M1/4SM
+    // Empty
+    parse_visibility(std::string(""), [&](visibility && visibilityGroup)
     {
-        aw::metar metar("");
-        Assert::IsFalse(static_cast<bool>(metar.visibility_group));
+        Assert::Fail();
+    });
 
-        std::string m1("M1/4SM ");
-        parse_visibility(metar, m1);
-        Assert::AreEqual(distance_unit::statute_miles, metar.visibility_group->unit);
-        Assert::AreEqual(1.0 / 4.0, metar.visibility_group->distance, 0.00001);
-        Assert::AreEqual(visibility_modifier_type::less_than, metar.visibility_group->modifier);
-    }
+    // M1/4SM
+    parse_visibility(std::string("M1/4SM "), [&](visibility && visibilityGroup)
+    {
+        Assert::AreEqual(distance_unit::statute_miles, visibilityGroup.unit);
+        Assert::AreEqual(1.0 / 4.0, visibilityGroup.distance, 0.00001);
+        Assert::AreEqual(visibility_modifier_type::less_than, visibilityGroup.modifier);
+    });
 
     // 1/2SM
+    parse_visibility(std::string("1/2SM "), [&](visibility && visibilityGroup)
     {
-        aw::metar metar("");
-        std::string m2("1/2SM ");
-        parse_visibility(metar, m2);
-        Assert::AreEqual(distance_unit::statute_miles, metar.visibility_group->unit);
-        Assert::AreEqual(1.0 / 2.0, metar.visibility_group->distance, 0.00001);
-        Assert::AreEqual(visibility_modifier_type::none, metar.visibility_group->modifier);
-    }
+        Assert::AreEqual(distance_unit::statute_miles, visibilityGroup.unit);
+        Assert::AreEqual(1.0 / 2.0, visibilityGroup.distance, 0.00001);
+        Assert::AreEqual(visibility_modifier_type::none, visibilityGroup.modifier);
+    });
 
     // 1SM
+    parse_visibility(std::string("1SM "), [&](visibility && visibilityGroup)
     {
-        aw::metar metar("");
-        std::string m3("1SM ");
-        parse_visibility(metar, m3);
-        Assert::AreEqual(distance_unit::statute_miles, metar.visibility_group->unit);
-        Assert::AreEqual(1.0, metar.visibility_group->distance, 0.00001);
-        Assert::AreEqual(visibility_modifier_type::none, metar.visibility_group->modifier);
-    }
+        Assert::AreEqual(distance_unit::statute_miles, visibilityGroup.unit);
+        Assert::AreEqual(1.0, visibilityGroup.distance, 0.00001);
+        Assert::AreEqual(visibility_modifier_type::none, visibilityGroup.modifier);
+    });
 
     // 1 3/4SM
+    parse_visibility(std::string("1 3/4SM "), [&](visibility && visibilityGroup)
     {
-        aw::metar metar("");
-        std::string m4("1 3/4SM ");
-        parse_visibility(metar, m4);
-        Assert::AreEqual(distance_unit::statute_miles, metar.visibility_group->unit);
-        Assert::AreEqual(1.0 + (3.0 / 4.0), metar.visibility_group->distance, 0.00001);
-        Assert::AreEqual(visibility_modifier_type::none, metar.visibility_group->modifier);
-    }
+        Assert::AreEqual(distance_unit::statute_miles, visibilityGroup.unit);
+        Assert::AreEqual(1.0 + (3.0 / 4.0), visibilityGroup.distance, 0.00001);
+        Assert::AreEqual(visibility_modifier_type::none, visibilityGroup.modifier);
+    });
 
     // 5/16SM
+    parse_visibility(std::string("5/16SM "), [&](visibility && visibilityGroup)
     {
-        aw::metar metar("");
-        std::string m5("5/16SM ");
-        parse_visibility(metar, m5);
-        Assert::AreEqual(distance_unit::statute_miles, metar.visibility_group->unit);
-        Assert::AreEqual(5.0 / 16.0, metar.visibility_group->distance, 0.00001);
-        Assert::AreEqual(visibility_modifier_type::none, metar.visibility_group->modifier);
-    }
+        Assert::AreEqual(distance_unit::statute_miles, visibilityGroup.unit);
+        Assert::AreEqual(5.0 / 16.0, visibilityGroup.distance, 0.00001);
+        Assert::AreEqual(visibility_modifier_type::none, visibilityGroup.modifier);
+    });
 
     // 3SM
+    parse_visibility(std::string("3SM "), [&](visibility && visibilityGroup)
     {
-        aw::metar metar("");
-        std::string m6("3SM ");
-        parse_visibility(metar, m6);
-        Assert::AreEqual(distance_unit::statute_miles, metar.visibility_group->unit);
-        Assert::AreEqual(3.0, metar.visibility_group->distance, 0.00001);
-        Assert::AreEqual(visibility_modifier_type::none, metar.visibility_group->modifier);
-    }
+        Assert::AreEqual(distance_unit::statute_miles, visibilityGroup.unit);
+        Assert::AreEqual(3.0, visibilityGroup.distance, 0.00001);
+        Assert::AreEqual(visibility_modifier_type::none, visibilityGroup.modifier);
+    });
 
     // 15SM
+    parse_visibility(std::string("15SM "), [&](visibility && visibilityGroup)
     {
-        aw::metar metar("");
-        std::string m7("15SM ");
-        parse_visibility(metar, m7);
-        Assert::AreEqual(distance_unit::statute_miles, metar.visibility_group->unit);
-        Assert::AreEqual(15.0, metar.visibility_group->distance, 0.00001);
-        Assert::AreEqual(visibility_modifier_type::none, metar.visibility_group->modifier);
-    }
+        Assert::AreEqual(distance_unit::statute_miles, visibilityGroup.unit);
+        Assert::AreEqual(15.0, visibilityGroup.distance, 0.00001);
+        Assert::AreEqual(visibility_modifier_type::none, visibilityGroup.modifier);
+    });
 }
 
 //-----------------------------------------------------------------------------
 
 void MetarParserTests::METAR_Parser_RunwayVisualRange()
 {
+    // Empty
+    parse_runway_visual_range(std::string(""), [&](runway_visual_range && rvr)
     {
-        aw::metar metar("");
-        Assert::AreEqual(size_t(0), metar.runway_visual_range_group.size());
-    }
+        Assert::Fail();
+    });
 
     // R09/3000FT
+    parse_runway_visual_range(std::string("R09/3000FT "), [&](runway_visual_range && rvr)
     {
-        aw::metar metar("");
-        std::vector<runway_visual_range>::iterator it;
-
-        std::string m1("R09/3000FT ");
-        parse_runway_visual_range(metar, m1);
-        Assert::AreEqual(size_t(1), metar.runway_visual_range_group.size());
-
-        it = metar.runway_visual_range_group.begin();
-        Assert::AreEqual(runway_designator_type::none, it->runway_designator);
-        Assert::AreEqual(uint8_t(9), it->runway_number);
-        Assert::AreEqual(double(3000), it->visibility_min.distance);
-        Assert::AreEqual(double(3000), it->visibility_max.distance);
-        Assert::AreEqual(visibility_modifier_type::none, it->visibility_min.modifier);
-        Assert::AreEqual(visibility_modifier_type::none, it->visibility_max.modifier);
-        Assert::AreEqual(distance_unit::feet, it->visibility_min.unit);
-        Assert::AreEqual(distance_unit::feet, it->visibility_max.unit);
-        metar.runway_visual_range_group.clear();
-    }
+        Assert::AreEqual(runway_designator_type::none, rvr.runway_designator);
+        Assert::AreEqual(uint8_t(9), rvr.runway_number);
+        Assert::AreEqual(double(3000), rvr.visibility_min.distance);
+        Assert::AreEqual(double(3000), rvr.visibility_max.distance);
+        Assert::AreEqual(visibility_modifier_type::none, rvr.visibility_min.modifier);
+        Assert::AreEqual(visibility_modifier_type::none, rvr.visibility_max.modifier);
+        Assert::AreEqual(distance_unit::feet, rvr.visibility_min.unit);
+        Assert::AreEqual(distance_unit::feet, rvr.visibility_max.unit);
+    });
 
     // R27L/2000FT
+    parse_runway_visual_range(std::string("R27L/2000FT "), [&](runway_visual_range && rvr)
     {
-        aw::metar metar("");
-        std::vector<runway_visual_range>::iterator it;
+        Assert::AreEqual(runway_designator_type::left, rvr.runway_designator);
+        Assert::AreEqual(uint8_t(27), rvr.runway_number);
+        Assert::AreEqual(double(2000), rvr.visibility_min.distance);
+        Assert::AreEqual(double(2000), rvr.visibility_max.distance);
+        Assert::AreEqual(visibility_modifier_type::none, rvr.visibility_min.modifier);
+        Assert::AreEqual(visibility_modifier_type::none, rvr.visibility_max.modifier);
+        Assert::AreEqual(distance_unit::feet, rvr.visibility_min.unit);
+        Assert::AreEqual(distance_unit::feet, rvr.visibility_max.unit);
+    });
 
-        std::string m2("R27L/2000FT ");
-        parse_runway_visual_range(metar, m2);
-        Assert::AreEqual(size_t(1), metar.runway_visual_range_group.size());
-
-        it = metar.runway_visual_range_group.begin();
-        Assert::AreEqual(runway_designator_type::left, it->runway_designator);
-        Assert::AreEqual(uint8_t(27), it->runway_number);
-        Assert::AreEqual(double(2000), it->visibility_min.distance);
-        Assert::AreEqual(double(2000), it->visibility_max.distance);
-        Assert::AreEqual(visibility_modifier_type::none, it->visibility_min.modifier);
-        Assert::AreEqual(visibility_modifier_type::none, it->visibility_max.modifier);
-        Assert::AreEqual(distance_unit::feet, it->visibility_min.unit);
-        Assert::AreEqual(distance_unit::feet, it->visibility_max.unit);
-        metar.runway_visual_range_group.clear();
-    }
+    // R06R/2000V3000FT
+    parse_runway_visual_range(std::string("R06R/2000V3000FT "), [&](runway_visual_range && rvr)
+    {
+        Assert::AreEqual(runway_designator_type::right, rvr.runway_designator);
+        Assert::AreEqual(uint8_t(6), rvr.runway_number);
+        Assert::AreEqual(double(2000), rvr.visibility_min.distance);
+        Assert::AreEqual(double(3000), rvr.visibility_max.distance);
+        Assert::AreEqual(visibility_modifier_type::none, rvr.visibility_min.modifier);
+        Assert::AreEqual(visibility_modifier_type::none, rvr.visibility_max.modifier);
+        Assert::AreEqual(distance_unit::feet, rvr.visibility_min.unit);
+        Assert::AreEqual(distance_unit::feet, rvr.visibility_max.unit);
+    });
 
     // R06R/2000V3000FT
     {
-        aw::metar metar("");
+        std::vector<runway_visual_range> rvrGroup;
         std::vector<runway_visual_range>::iterator it;
 
-        std::string m3("R06R/2000V3000FT ");
-        parse_runway_visual_range(metar, m3);
-        Assert::AreEqual(size_t(1), metar.runway_visual_range_group.size());
+        parse_runway_visual_range(std::string("R09L/3500V4500FT R09R/3000V4000FT "), [&](runway_visual_range && rvr)
+        {
+            rvrGroup.push_back(rvr);
+        });
 
-        it = metar.runway_visual_range_group.begin();
-        Assert::AreEqual(runway_designator_type::right, it->runway_designator);
-        Assert::AreEqual(uint8_t(6), it->runway_number);
-        Assert::AreEqual(double(2000), it->visibility_min.distance);
-        Assert::AreEqual(double(3000), it->visibility_max.distance);
-        Assert::AreEqual(visibility_modifier_type::none, it->visibility_min.modifier);
-        Assert::AreEqual(visibility_modifier_type::none, it->visibility_max.modifier);
-        Assert::AreEqual(distance_unit::feet, it->visibility_min.unit);
-        Assert::AreEqual(distance_unit::feet, it->visibility_max.unit);
-        metar.runway_visual_range_group.clear();
-    }
+        Assert::AreEqual(size_t(2), rvrGroup.size());
 
-    // R06R/2000V3000FT
-    {
-        aw::metar metar("");
-        std::vector<runway_visual_range>::iterator it;
-
-        std::string m4("R09L/3500V4500FT R09R/3000V4000FT ");
-        parse_runway_visual_range(metar, m4);
-        Assert::AreEqual(size_t(2), metar.runway_visual_range_group.size());
-
-        it = metar.runway_visual_range_group.begin();
+        it = rvrGroup.begin();
         Assert::AreEqual(runway_designator_type::left, it->runway_designator);
         Assert::AreEqual(uint8_t(9), it->runway_number);
         Assert::AreEqual(double(3500), it->visibility_min.distance);
@@ -415,128 +383,90 @@ void MetarParserTests::METAR_Parser_RunwayVisualRange()
         Assert::AreEqual(visibility_modifier_type::none, it->visibility_max.modifier);
         Assert::AreEqual(distance_unit::feet, it->visibility_min.unit);
         Assert::AreEqual(distance_unit::feet, it->visibility_max.unit);
-        metar.runway_visual_range_group.clear();
     }
 
     // R01L/M0600FT
+    parse_runway_visual_range(std::string("R01L/M0600FT "), [&](runway_visual_range && rvr)
     {
-        aw::metar metar("");
-        std::vector<runway_visual_range>::iterator it;
-
-        std::string m5("R01L/M0600FT ");
-        parse_runway_visual_range(metar, m5);
-        Assert::AreEqual(size_t(1), metar.runway_visual_range_group.size());
-
-        it = metar.runway_visual_range_group.begin();
-        Assert::AreEqual(runway_designator_type::left, it->runway_designator);
-        Assert::AreEqual(uint8_t(1), it->runway_number);
-        Assert::AreEqual(double(600), it->visibility_min.distance);
-        Assert::AreEqual(double(600), it->visibility_max.distance);
-        Assert::AreEqual(visibility_modifier_type::less_than, it->visibility_min.modifier);
-        Assert::AreEqual(visibility_modifier_type::none, it->visibility_max.modifier);
-        Assert::AreEqual(distance_unit::feet, it->visibility_min.unit);
-        Assert::AreEqual(distance_unit::feet, it->visibility_max.unit);
-        metar.runway_visual_range_group.clear();
-    }
+        Assert::AreEqual(runway_designator_type::left, rvr.runway_designator);
+        Assert::AreEqual(uint8_t(1), rvr.runway_number);
+        Assert::AreEqual(double(600), rvr.visibility_min.distance);
+        Assert::AreEqual(double(600), rvr.visibility_max.distance);
+        Assert::AreEqual(visibility_modifier_type::less_than, rvr.visibility_min.modifier);
+        Assert::AreEqual(visibility_modifier_type::none, rvr.visibility_max.modifier);
+        Assert::AreEqual(distance_unit::feet, rvr.visibility_min.unit);
+        Assert::AreEqual(distance_unit::feet, rvr.visibility_max.unit);
+    });
 
     // R27/P6000FT
+    parse_runway_visual_range(std::string("R27/P6000FT "), [&](runway_visual_range && rvr)
     {
-        aw::metar metar("");
-        std::vector<runway_visual_range>::iterator it;
-
-        std::string m6("R27/P6000FT ");
-        parse_runway_visual_range(metar, m6);
-        Assert::AreEqual(size_t(1), metar.runway_visual_range_group.size());
-
-        it = metar.runway_visual_range_group.begin();
-        Assert::AreEqual(runway_designator_type::none, it->runway_designator);
-        Assert::AreEqual(uint8_t(27), it->runway_number);
-        Assert::AreEqual(double(6000), it->visibility_min.distance);
-        Assert::AreEqual(double(6000), it->visibility_max.distance);
-        Assert::AreEqual(visibility_modifier_type::greater_than, it->visibility_min.modifier);
-        Assert::AreEqual(visibility_modifier_type::none, it->visibility_max.modifier);
-        Assert::AreEqual(distance_unit::feet, it->visibility_min.unit);
-        Assert::AreEqual(distance_unit::feet, it->visibility_max.unit);
-        metar.runway_visual_range_group.clear();
-    }
+        Assert::AreEqual(runway_designator_type::none, rvr.runway_designator);
+        Assert::AreEqual(uint8_t(27), rvr.runway_number);
+        Assert::AreEqual(double(6000), rvr.visibility_min.distance);
+        Assert::AreEqual(double(6000), rvr.visibility_max.distance);
+        Assert::AreEqual(visibility_modifier_type::greater_than, rvr.visibility_min.modifier);
+        Assert::AreEqual(visibility_modifier_type::none, rvr.visibility_max.modifier);
+        Assert::AreEqual(distance_unit::feet, rvr.visibility_min.unit);
+        Assert::AreEqual(distance_unit::feet, rvr.visibility_max.unit);
+    });
 
     // R01L/M0600VP6000FT
+    parse_runway_visual_range(std::string("R01L/M0600VP6000FT "), [&](runway_visual_range && rvr)
     {
-        aw::metar metar("");
-        std::vector<runway_visual_range>::iterator it;
-
-        std::string m7("R01L/M0600VP6000FT ");
-        parse_runway_visual_range(metar, m7);
-        Assert::AreEqual(size_t(1), metar.runway_visual_range_group.size());
-
-        it = metar.runway_visual_range_group.begin();
-        Assert::AreEqual(runway_designator_type::left, it->runway_designator);
-        Assert::AreEqual(uint8_t(1), it->runway_number);
-        Assert::AreEqual(double(600), it->visibility_min.distance);
-        Assert::AreEqual(double(6000), it->visibility_max.distance);
-        Assert::AreEqual(visibility_modifier_type::less_than, it->visibility_min.modifier);
-        Assert::AreEqual(visibility_modifier_type::greater_than, it->visibility_max.modifier);
-        Assert::AreEqual(distance_unit::feet, it->visibility_min.unit);
-        Assert::AreEqual(distance_unit::feet, it->visibility_max.unit);
-        metar.runway_visual_range_group.clear();
-    }
+        Assert::AreEqual(runway_designator_type::left, rvr.runway_designator);
+        Assert::AreEqual(uint8_t(1), rvr.runway_number);
+        Assert::AreEqual(double(600), rvr.visibility_min.distance);
+        Assert::AreEqual(double(6000), rvr.visibility_max.distance);
+        Assert::AreEqual(visibility_modifier_type::less_than, rvr.visibility_min.modifier);
+        Assert::AreEqual(visibility_modifier_type::greater_than, rvr.visibility_max.modifier);
+        Assert::AreEqual(distance_unit::feet, rvr.visibility_min.unit);
+        Assert::AreEqual(distance_unit::feet, rvr.visibility_max.unit);
+    });
 }
 
 //-----------------------------------------------------------------------------
 
 void MetarParserTests::METAR_Parser_Weather()
 {
+    // Empty
+    parse_weather(std::string(""), [&](weather && rvr)
     {
-        aw::metar metar("");
-        Assert::AreEqual(size_t(0), metar.weather_group.size());
-    }
-
+        Assert::Fail();
+    });
 
     // -DZ
+    parse_weather(std::string("-DZ "), [&](weather && weatherGroup)
     {
-        aw::metar metar("");
-        std::vector<weather>::iterator it;
-
-        std::string m1("-DZ ");
-        parse_weather(metar, m1);
-        Assert::AreEqual(size_t(1), metar.weather_group.size());
-
-        it = metar.weather_group.begin();
-        Assert::AreEqual(weather_intensity::light, it->intensity);
-        Assert::AreEqual(weather_descriptor::none, it->descriptor);
-        Assert::AreEqual(size_t(1), it->phenomena.size());
-        Assert::AreEqual(weather_phenomena::drizzle, it->phenomena.at(0));
-        metar.weather_group.clear();
-    }
+        Assert::AreEqual(weather_intensity::light, weatherGroup.intensity);
+        Assert::AreEqual(weather_descriptor::none, weatherGroup.descriptor);
+        Assert::AreEqual(size_t(1), weatherGroup.phenomena.size());
+        Assert::AreEqual(weather_phenomena::drizzle, weatherGroup.phenomena.at(0));
+    });
 
     // -RASN
+    parse_weather(std::string("-RASN "), [&](weather && weatherGroup)
     {
-        aw::metar metar("");
-        std::vector<weather>::iterator it;
-
-        std::string m2("-RASN ");
-        parse_weather(metar, m2);
-        Assert::AreEqual(size_t(1), metar.weather_group.size());
-
-        it = metar.weather_group.begin();
-        Assert::AreEqual(weather_intensity::light, it->intensity);
-        Assert::AreEqual(weather_descriptor::none, it->descriptor);
-        Assert::AreEqual(size_t(2), it->phenomena.size());
-        Assert::AreEqual(weather_phenomena::rain, it->phenomena.at(0));
-        Assert::AreEqual(weather_phenomena::snow, it->phenomena.at(1));
-        metar.weather_group.clear();
-    }
+        Assert::AreEqual(weather_intensity::light, weatherGroup.intensity);
+        Assert::AreEqual(weather_descriptor::none, weatherGroup.descriptor);
+        Assert::AreEqual(size_t(2), weatherGroup.phenomena.size());
+        Assert::AreEqual(weather_phenomena::rain, weatherGroup.phenomena.at(0));
+        Assert::AreEqual(weather_phenomena::snow, weatherGroup.phenomena.at(1));
+    });
 
     // SN BR
     {
-        aw::metar metar("");
+        std::vector<weather> weatherGroups;
         std::vector<weather>::iterator it;
 
-        std::string m3("SN BR ");
-        parse_weather(metar, m3);
-        Assert::AreEqual(size_t(2), metar.weather_group.size());
+        parse_weather(std::string("SN BR "), [&](weather && weatherGroup)
+        {
+            weatherGroups.push_back(weatherGroup);
+        });
 
-        it = metar.weather_group.begin();
+        Assert::AreEqual(size_t(2), weatherGroups.size());
+
+        it = weatherGroups.begin();
         Assert::AreEqual(weather_intensity::moderate, it->intensity);
         Assert::AreEqual(weather_descriptor::none, it->descriptor);
         Assert::AreEqual(size_t(1), it->phenomena.size());
@@ -546,19 +476,21 @@ void MetarParserTests::METAR_Parser_Weather()
         Assert::AreEqual(weather_descriptor::none, it->descriptor);
         Assert::AreEqual(size_t(1), it->phenomena.size());
         Assert::AreEqual(weather_phenomena::mist, it->phenomena.at(0));
-        metar.weather_group.clear();
     }
 
     // -FZRA FG
     {
-        aw::metar metar("");
+        std::vector<weather> weatherGroups;
         std::vector<weather>::iterator it;
 
-        std::string m4("-FZRA FG ");
-        parse_weather(metar, m4);
-        Assert::AreEqual(size_t(2), metar.weather_group.size());
+        parse_weather(std::string("-FZRA FG "), [&](weather && weatherGroup)
+        {
+            weatherGroups.push_back(weatherGroup);
+        });
 
-        it = metar.weather_group.begin();
+        Assert::AreEqual(size_t(2), weatherGroups.size());
+
+        it = weatherGroups.begin();
         Assert::AreEqual(weather_intensity::light, it->intensity);
         Assert::AreEqual(weather_descriptor::freezing, it->descriptor);
         Assert::AreEqual(size_t(1), it->phenomena.size());
@@ -568,53 +500,39 @@ void MetarParserTests::METAR_Parser_Weather()
         Assert::AreEqual(weather_descriptor::none, it->descriptor);
         Assert::AreEqual(size_t(1), it->phenomena.size());
         Assert::AreEqual(weather_phenomena::fog, it->phenomena.at(0));
-        metar.weather_group.clear();
     }
 
     // SHRA
+    parse_weather(std::string("SHRA "), [&](weather && weatherGroup)
     {
-        aw::metar metar("");
-        std::vector<weather>::iterator it;
-
-        std::string m5("SHRA ");
-        parse_weather(metar, m5);
-        Assert::AreEqual(size_t(1), metar.weather_group.size());
-
-        it = metar.weather_group.begin();
-        Assert::AreEqual(weather_intensity::moderate, it->intensity);
-        Assert::AreEqual(weather_descriptor::showers, it->descriptor);
-        Assert::AreEqual(size_t(1), it->phenomena.size());
-        Assert::AreEqual(weather_phenomena::rain, it->phenomena.at(0));
-        metar.weather_group.clear();
-    }
+        Assert::AreEqual(weather_intensity::moderate, weatherGroup.intensity);
+        Assert::AreEqual(weather_descriptor::showers, weatherGroup.descriptor);
+        Assert::AreEqual(size_t(1), weatherGroup.phenomena.size());
+        Assert::AreEqual(weather_phenomena::rain, weatherGroup.phenomena.at(0));
+    });
 
     // VCBLSA
+    parse_weather(std::string("VCBLSA "), [&](weather && weatherGroup)
     {
-        aw::metar metar("");
-        std::vector<weather>::iterator it;
-
-        std::string m6("VCBLSA ");
-        parse_weather(metar, m6);
-        Assert::AreEqual(size_t(1), metar.weather_group.size());
-
-        it = metar.weather_group.begin();
-        Assert::AreEqual(weather_intensity::in_the_vicinity, it->intensity);
-        Assert::AreEqual(weather_descriptor::blowing, it->descriptor);
-        Assert::AreEqual(size_t(1), it->phenomena.size());
-        Assert::AreEqual(weather_phenomena::sand, it->phenomena.at(0));
-        metar.weather_group.clear();
-    }
+        Assert::AreEqual(weather_intensity::in_the_vicinity, weatherGroup.intensity);
+        Assert::AreEqual(weather_descriptor::blowing, weatherGroup.descriptor);
+        Assert::AreEqual(size_t(1), weatherGroup.phenomena.size());
+        Assert::AreEqual(weather_phenomena::sand, weatherGroup.phenomena.at(0));
+    });
 
     // -RASN FG HZ
     {
-        aw::metar metar("");
+        std::vector<weather> weatherGroups;
         std::vector<weather>::iterator it;
 
-        std::string m7("-RASN FG HZ ");
-        parse_weather(metar, m7);
-        Assert::AreEqual(size_t(3), metar.weather_group.size());
+        parse_weather(std::string("-RASN FG HZ "), [&](weather && weatherGroup)
+        {
+            weatherGroups.push_back(weatherGroup);
+        });
 
-        it = metar.weather_group.begin();
+        Assert::AreEqual(size_t(3), weatherGroups.size());
+
+        it = weatherGroups.begin();
         Assert::AreEqual(weather_intensity::light, it->intensity);
         Assert::AreEqual(weather_descriptor::none, it->descriptor);
         Assert::AreEqual(size_t(2), it->phenomena.size());
@@ -630,52 +548,38 @@ void MetarParserTests::METAR_Parser_Weather()
         Assert::AreEqual(weather_descriptor::none, it->descriptor);
         Assert::AreEqual(size_t(1), it->phenomena.size());
         Assert::AreEqual(weather_phenomena::haze, it->phenomena.at(0));
-        metar.weather_group.clear();
     }
 
     // TS
+    parse_weather(std::string("TS "), [&](weather && weatherGroup)
     {
-        aw::metar metar("");
-        std::vector<weather>::iterator it;
-
-        std::string m8("TS ");
-        parse_weather(metar, m8);
-        Assert::AreEqual(size_t(1), metar.weather_group.size());
-
-        it = metar.weather_group.begin();
-        Assert::AreEqual(weather_intensity::moderate, it->intensity);
-        Assert::AreEqual(weather_descriptor::thunderstorm, it->descriptor);
-        Assert::AreEqual(size_t(0), it->phenomena.size());
-        metar.weather_group.clear();
-    }
+        Assert::AreEqual(weather_intensity::moderate, weatherGroup.intensity);
+        Assert::AreEqual(weather_descriptor::thunderstorm, weatherGroup.descriptor);
+        Assert::AreEqual(size_t(0), weatherGroup.phenomena.size());
+    });
 
     // +TSRA
+    parse_weather(std::string("+TSRA "), [&](weather && weatherGroup)
     {
-        aw::metar metar("");
-        std::vector<weather>::iterator it;
-
-        std::string m9("+TSRA ");
-        parse_weather(metar, m9);
-        Assert::AreEqual(size_t(1), metar.weather_group.size());
-
-        it = metar.weather_group.begin();
-        Assert::AreEqual(weather_intensity::heavy, it->intensity);
-        Assert::AreEqual(weather_descriptor::thunderstorm, it->descriptor);
-        Assert::AreEqual(size_t(1), it->phenomena.size());
-        Assert::AreEqual(weather_phenomena::rain, it->phenomena.at(0));
-        metar.weather_group.clear();
-    }
+        Assert::AreEqual(weather_intensity::heavy, weatherGroup.intensity);
+        Assert::AreEqual(weather_descriptor::thunderstorm, weatherGroup.descriptor);
+        Assert::AreEqual(size_t(1), weatherGroup.phenomena.size());
+        Assert::AreEqual(weather_phenomena::rain, weatherGroup.phenomena.at(0));
+    });
 
     // +FC TSRAGR BR
     {
-        aw::metar metar("");
+        std::vector<weather> weatherGroups;
         std::vector<weather>::iterator it;
 
-        std::string m10("+FC TSRAGR BR ");
-        parse_weather(metar, m10);
-        Assert::AreEqual(size_t(3), metar.weather_group.size());
+        parse_weather(std::string("+FC TSRAGR BR "), [&](weather && weatherGroup)
+        {
+            weatherGroups.push_back(weatherGroup);
+        });
 
-        it = metar.weather_group.begin();
+        Assert::AreEqual(size_t(3), weatherGroups.size());
+
+        it = weatherGroups.begin();
         Assert::AreEqual(weather_intensity::heavy, it->intensity);
         Assert::AreEqual(weather_descriptor::none, it->descriptor);
         Assert::AreEqual(size_t(1), it->phenomena.size());
@@ -691,7 +595,6 @@ void MetarParserTests::METAR_Parser_Weather()
         Assert::AreEqual(weather_descriptor::none, it->descriptor);
         Assert::AreEqual(size_t(1), it->phenomena.size());
         Assert::AreEqual(weather_phenomena::mist, it->phenomena.at(0));
-        metar.weather_group.clear();
     }
 }
 
@@ -699,89 +602,61 @@ void MetarParserTests::METAR_Parser_Weather()
 
 void MetarParserTests::METAR_Parser_SkyCondition()
 {
+    // Empty
+    parse_sky_condition(std::string(""), [&](cloud_layer && cloudLayer)
     {
-        aw::metar metar("");
-        Assert::AreEqual(size_t(0), metar.sky_condition_group.size());
-    }
+        Assert::Fail();
+    });
 
     // CLR
+    parse_sky_condition(std::string("CLR "), [&](cloud_layer && cloudLayer)
     {
-        aw::metar metar("");
-        std::vector<cloud_layer>::iterator it;
-
-        std::string m1("CLR ");
-        parse_sky_condition(metar, m1);
-        Assert::AreEqual(size_t(1), metar.sky_condition_group.size());
-
-        it = metar.sky_condition_group.begin();
-        Assert::AreEqual(sky_cover_type::clear_below_12000, it->sky_cover);
-        Assert::AreEqual(sky_cover_cloud_type::none, it->cloud_type);
-        Assert::AreEqual(UINT32_MAX, it->layer_height);
-        Assert::AreEqual(distance_unit::feet, it->unit);
-        metar.sky_condition_group.clear();
-    }
+        Assert::AreEqual(sky_cover_type::clear_below_12000, cloudLayer.sky_cover);
+        Assert::AreEqual(sky_cover_cloud_type::none, cloudLayer.cloud_type);
+        Assert::AreEqual(UINT32_MAX, cloudLayer.layer_height);
+        Assert::AreEqual(distance_unit::feet, cloudLayer.unit);
+    });
 
     // SKC
+    parse_sky_condition(std::string("SKC "), [&](cloud_layer && cloudLayer)
     {
-        aw::metar metar("");
-        std::vector<cloud_layer>::iterator it;
-
-        std::string m2("SKC ");
-        parse_sky_condition(metar, m2);
-        Assert::AreEqual(size_t(1), metar.sky_condition_group.size());
-
-        it = metar.sky_condition_group.begin();
-        Assert::AreEqual(sky_cover_type::sky_clear, it->sky_cover);
-        Assert::AreEqual(sky_cover_cloud_type::none, it->cloud_type);
-        Assert::AreEqual(UINT32_MAX, it->layer_height);
-        Assert::AreEqual(distance_unit::feet, it->unit);
-        metar.sky_condition_group.clear();
-    }
+        Assert::AreEqual(sky_cover_type::sky_clear, cloudLayer.sky_cover);
+        Assert::AreEqual(sky_cover_cloud_type::none, cloudLayer.cloud_type);
+        Assert::AreEqual(UINT32_MAX, cloudLayer.layer_height);
+        Assert::AreEqual(distance_unit::feet, cloudLayer.unit);
+    });
 
     // VV003
+    parse_sky_condition(std::string("VV003 "), [&](cloud_layer && cloudLayer)
     {
-        aw::metar metar("");
-        std::vector<cloud_layer>::iterator it;
-
-        std::string m3("VV003 ");
-        parse_sky_condition(metar, m3);
-        Assert::AreEqual(size_t(1), metar.sky_condition_group.size());
-
-        it = metar.sky_condition_group.begin();
-        Assert::AreEqual(sky_cover_type::vertical_visibility, it->sky_cover);
-        Assert::AreEqual(sky_cover_cloud_type::unspecified, it->cloud_type);
-        Assert::AreEqual(uint32_t(300), it->layer_height);
-        Assert::AreEqual(distance_unit::feet, it->unit);
-        metar.sky_condition_group.clear();
-    }
+        Assert::AreEqual(sky_cover_type::vertical_visibility, cloudLayer.sky_cover);
+        Assert::AreEqual(sky_cover_cloud_type::unspecified, cloudLayer.cloud_type);
+        Assert::AreEqual(uint32_t(300), cloudLayer.layer_height);
+        Assert::AreEqual(distance_unit::feet, cloudLayer.unit);
+    });
 
     // BKN060CB
+    parse_sky_condition(std::string("BKN060CB "), [&](cloud_layer && cloudLayer)
     {
-        aw::metar metar("");
-        std::vector<cloud_layer>::iterator it;
-
-        std::string m4("BKN060CB ");
-        parse_sky_condition(metar, m4);
-        Assert::AreEqual(size_t(1), metar.sky_condition_group.size());
-
-        it = metar.sky_condition_group.begin();
-        Assert::AreEqual(sky_cover_type::broken, it->sky_cover);
-        Assert::AreEqual(sky_cover_cloud_type::cumulonimbus, it->cloud_type);
-        Assert::AreEqual(uint32_t(6000), it->layer_height);
-        Assert::AreEqual(distance_unit::feet, it->unit);
-        metar.sky_condition_group.clear();
-    }
+        Assert::AreEqual(sky_cover_type::broken, cloudLayer.sky_cover);
+        Assert::AreEqual(sky_cover_cloud_type::cumulonimbus, cloudLayer.cloud_type);
+        Assert::AreEqual(uint32_t(6000), cloudLayer.layer_height);
+        Assert::AreEqual(distance_unit::feet, cloudLayer.unit);
+    });
 
     // FEW008 SCT030
     {
-        aw::metar metar("");
+        std::vector<cloud_layer> skyConditionGroup;
         std::vector<cloud_layer>::iterator it;
 
-        std::string m5("FEW008 SCT030 ");
-        parse_sky_condition(metar, m5);
-        Assert::AreEqual(size_t(2), metar.sky_condition_group.size());
+        parse_sky_condition(std::string("FEW008 SCT030 "), [&](cloud_layer && cloudLayer)
+        {
+            skyConditionGroup.push_back(cloudLayer);
+        });
 
-        it = metar.sky_condition_group.begin();
+        Assert::AreEqual(size_t(2), skyConditionGroup.size());
+
+        it = skyConditionGroup.begin();
         Assert::AreEqual(sky_cover_type::few, it->sky_cover);
         Assert::AreEqual(sky_cover_cloud_type::unspecified, it->cloud_type);
         Assert::AreEqual(uint32_t(800), it->layer_height);
@@ -791,7 +666,6 @@ void MetarParserTests::METAR_Parser_SkyCondition()
         Assert::AreEqual(sky_cover_cloud_type::unspecified, it->cloud_type);
         Assert::AreEqual(uint32_t(3000), it->layer_height);
         Assert::AreEqual(distance_unit::feet, it->unit);
-        metar.sky_condition_group.clear();
     }
 }
 
@@ -799,79 +673,74 @@ void MetarParserTests::METAR_Parser_SkyCondition()
 
 void MetarParserTests::METAR_Parser_TemperatureDewpoint()
 {
+    // Empty
+    parse_temperature_dewpoint(std::string(""), [&](util::optional<int8_t> temperature, util::optional<int8_t> dewpoint)
     {
-        aw::metar metar("");
-        Assert::IsFalse(static_cast<bool>(metar.temperature));
-        Assert::IsFalse(static_cast<bool>(metar.dewpoint));
-    }
+        Assert::Fail();
+    });
 
     // Temperature: 19C, Dewpoint: 4C
+    parse_temperature_dewpoint(std::string("19/04 "), [&](util::optional<int8_t> temperature, util::optional<int8_t> dewpoint)
     {
-        aw::metar metar("");
-        std::string m1("19/04 ");
-        parse_temperature_dewpoint(metar, m1);
-        Assert::AreEqual(int8_t(19), *(metar.temperature));
-        Assert::AreEqual(int8_t(4), *(metar.dewpoint));
-    }
+        Assert::AreEqual(int8_t(19), *(temperature));
+        Assert::AreEqual(int8_t(4), *(dewpoint));
+    });
 
     // Temperature: -3C, Dewpoint: -9C
+    parse_temperature_dewpoint(std::string("M03/M09 "), [&](util::optional<int8_t> temperature, util::optional<int8_t> dewpoint)
     {
-        aw::metar metar("");
-        std::string m2("M03/M09 ");
-        parse_temperature_dewpoint(metar, m2);
-        Assert::AreEqual(int8_t(-3), *(metar.temperature));
-        Assert::AreEqual(int8_t(-9), *(metar.dewpoint));
-    }
+        Assert::AreEqual(int8_t(-3), *(temperature));
+        Assert::AreEqual(int8_t(-9), *(dewpoint));
+    });
     
     // Temperature: 17C, Dewpoint: missing
+    parse_temperature_dewpoint(std::string("17/ "), [&](util::optional<int8_t> temperature, util::optional<int8_t> dewpoint)
     {
-        aw::metar metar("");
-        std::string m3("17/ ");
-        parse_temperature_dewpoint(metar, m3);
-        Assert::AreEqual(int8_t(17), *(metar.temperature));
-        Assert::IsFalse(static_cast<bool>(metar.dewpoint));
-    }
+        Assert::AreEqual(int8_t(17), *(temperature));
+        Assert::IsFalse(static_cast<bool>(dewpoint));
+    });
 }
 
 //-----------------------------------------------------------------------------
 
 void MetarParserTests::METAR_Parser_Altimeter()
 {
+    // Empty
+    parse_altimeter(std::string(""), [&](altimeter && altimeterGroup)
     {
-        aw::metar metar("");
-        Assert::IsFalse(static_cast<bool>(metar.altimeter_group));
-    }
+        Assert::Fail();
+    });
 
     // QNH 1013
+    parse_altimeter(std::string("Q1013"), [&](altimeter && altimeterGroup)
     {
-        aw::metar metar("");
-        std::string m1("Q1013");
-        parse_altimeter(metar, m1);
-        Assert::AreEqual(1013.0, metar.altimeter_group->pressure);
-        Assert::AreEqual(pressure_unit::hPa, metar.altimeter_group->unit);
-    }
+        Assert::AreEqual(1013.0, altimeterGroup.pressure);
+        Assert::AreEqual(pressure_unit::hPa, altimeterGroup.unit);
+    });
 
     // Altimeter 29.92
+    parse_altimeter(std::string("A2992"), [&](altimeter && altimeterGroup)
     {
-        aw::metar metar("");
-        std::string m2("A2992");
-        parse_altimeter(metar, m2);
-        Assert::AreEqual(29.92, metar.altimeter_group->pressure);
-        Assert::AreEqual(pressure_unit::inHg, metar.altimeter_group->unit);
-    }
+        Assert::AreEqual(29.92, altimeterGroup.pressure);
+        Assert::AreEqual(pressure_unit::inHg, altimeterGroup.unit);
+    });
 }
 
 //-----------------------------------------------------------------------------
 
 void MetarParserTests::METAR_Parser_Remarks()
 {
-    aw::metar metar("");
-    Assert::AreEqual(std::string(""), metar.remarks);
+    // Empty
+    parse_remarks(std::string(""), [&](std::string const& remarks)
+    {
+        Assert::Fail();
+    });
 
     // RMK AO1
-    std::string m1("RMK AO1");
-    parse_remarks(metar, m1);
-    Assert::AreEqual(std::string("AO1"), metar.remarks);
+    parse_remarks(std::string("RMK AO1"), [&](std::string const& remarks)
+    {
+        Assert::AreEqual(std::string("AO1"), remarks);
+    });
 }
 
 //-----------------------------------------------------------------------------

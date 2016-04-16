@@ -198,7 +198,7 @@ metar& metar::operator=(metar && rhs)
         raw_data = std::move(rhs.raw_data);
         type = rhs.type;
         identifier = std::move(rhs.identifier);
-        report_time = std::move(rhs.report_time);
+        observation_time = std::move(rhs.observation_time);
         modifier = rhs.modifier;
         wind_group = std::move(rhs.wind_group);
         visibility_group = std::move(rhs.visibility_group);
@@ -213,7 +213,7 @@ metar& metar::operator=(metar && rhs)
         rhs.raw_data = "";
         rhs.type = metar_report_type::metar;
         rhs.identifier = "";
-        rhs.report_time = time();
+        rhs.observation_time = time();
         rhs.modifier = metar_modifier_type::none;
         rhs.wind_group = util::nullopt;
         rhs.visibility_group = util::nullopt;
@@ -232,7 +232,7 @@ bool metar::operator== (metar const& rhs) const
 {
     return (type == rhs.type) &&
         (identifier == rhs.identifier) &&
-        (report_time == rhs.report_time) &&
+        (observation_time == rhs.observation_time) &&
         (modifier == rhs.modifier) &&
         (wind_group == rhs.wind_group) &&
         (visibility_group == rhs.visibility_group) &&
@@ -255,19 +255,56 @@ void metar::parse()
     std::string baseMetar = raw_data;
 
     // We parse remarks first to avoid over-matching in earlier groups
-    parse_remarks(*this, baseMetar);
+    baseMetar = parse_remarks(baseMetar, [&](std::string const& remarks)
+    {
+        this->remarks = remarks;
+    });
 
-    parse_report_type(*this, baseMetar);
-    parse_station_identifier(*this, baseMetar);
-    parse_observation_time(*this, baseMetar);
-    parse_modifier(*this, baseMetar);
-    parse_wind(*this, baseMetar);
-    parse_visibility(*this, baseMetar);
-    parse_runway_visual_range(*this, baseMetar);
-    parse_weather(*this, baseMetar);
-    parse_sky_condition(*this, baseMetar);
-    parse_temperature_dewpoint(*this, baseMetar);
-    parse_altimeter(*this, baseMetar);
+    baseMetar = parse_metar_report_type(baseMetar, [&](metar_report_type type)
+    {
+        this->type = type;
+    });
+    baseMetar = parse_station_identifier(baseMetar, [&](std::string const& identifier)
+    {
+        this->identifier = identifier;
+    });
+    baseMetar = parse_time(baseMetar, [&](time && observationTime)
+    {
+        this->observation_time = observationTime;
+    });
+    baseMetar = parse_metar_modifier(baseMetar, [&](metar_modifier_type type)
+    {
+        this->modifier = type;
+    });
+    baseMetar = parse_wind(baseMetar, [&](wind && windGroup)
+    {
+        this->wind_group = windGroup;
+    });
+    baseMetar = parse_visibility(baseMetar, [&](visibility && visibilityGroup)
+    {
+        this->visibility_group = visibilityGroup;
+    });
+    baseMetar = parse_runway_visual_range(baseMetar, [&](runway_visual_range && rvr)
+    {
+        this->runway_visual_range_group.push_back(rvr);
+    });
+    baseMetar = parse_weather(baseMetar, [&](weather && weatherGroup)
+    {
+        this->weather_group.push_back(weatherGroup);
+    });
+    baseMetar = parse_sky_condition(baseMetar, [&](cloud_layer && skyCondition)
+    {
+        this->sky_condition_group.push_back(skyCondition);
+    });
+    baseMetar = parse_temperature_dewpoint(baseMetar, [&](util::optional<int8_t> temperature, util::optional<int8_t> dewpoint)
+    {
+        this->temperature = temperature;
+        this->dewpoint = dewpoint;
+    });
+    baseMetar = parse_altimeter(baseMetar, [&](altimeter && altimeterGroup)
+    {
+        this->altimeter_group = altimeterGroup;
+    });
 }
 
 cloud_layer metar::ceiling_nothrow() const

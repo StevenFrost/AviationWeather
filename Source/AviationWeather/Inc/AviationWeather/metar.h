@@ -150,7 +150,7 @@ public:
     std::string                      raw_data;
     metar_report_type                type;
     station_identifier               identifier;
-    time                             report_time;
+    time                             observation_time;
     metar_modifier_type              modifier;
     util::optional<wind>             wind_group;
     util::optional<visibility>       visibility_group;

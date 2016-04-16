@@ -21,10 +21,10 @@
     <ClCompile Include="..\Source\converters.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\parsers.cpp">
+    <ClCompile Include="..\Source\components.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\components.cpp">
+    <ClCompile Include="..\Source\decoders.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

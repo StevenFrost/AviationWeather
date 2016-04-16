@@ -307,9 +307,9 @@ void MetarValidationTests::ValidateObservationTime(aw::metar const& metar, basic
     Assert::IsTrue(test.find("observation_time") != test.end());
 
     auto observation_time = test["observation_time"];
-    Assert::AreEqual(observation_time["day_of_month"].get<uint8_t>(), metar.report_time.day_of_month);
-    Assert::AreEqual(observation_time["hour_of_day"].get<uint8_t>(), metar.report_time.hour_of_day);
-    Assert::AreEqual(observation_time["minute_of_hour"].get<uint8_t>(), metar.report_time.minute_of_hour);
+    Assert::AreEqual(observation_time["day_of_month"].get<uint8_t>(), metar.observation_time.day_of_month);
+    Assert::AreEqual(observation_time["hour_of_day"].get<uint8_t>(), metar.observation_time.hour_of_day);
+    Assert::AreEqual(observation_time["minute_of_hour"].get<uint8_t>(), metar.observation_time.minute_of_hour);
 }
 
 //-----------------------------------------------------------------------------
