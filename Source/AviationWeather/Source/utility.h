@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include <cmath>
+
 namespace aw
 {
 
@@ -27,6 +29,57 @@ bool comparison_conversion_helper(TEnum to, TUnit leftUnit, TUnit rightUnit, TVa
     auto rhs = rightUnit == to ? static_cast<TExpected>(rightVal) : convert<TExpected>(rightVal, rightUnit, to);
 
     return l(std::forward<TExpected>(lhs), std::forward<TExpected>(rhs));
+}
+
+//-----------------------------------------------------------------------------
+
+template <class T>
+bool are_approximately_equal(T a, T b)
+{
+    auto A = std::abs(a);
+    auto B = std::abs(b);
+
+    return std::abs(a - b) <= ((A < B ? B : A) * std::numeric_limits<T>::epsilon());
+}
+
+template <class T>
+bool is_greater_than(T a, T b)
+{
+    auto A = std::abs(a);
+    auto B = std::abs(b);
+
+    return (a - b) > ((A < B ? B : A) * std::numeric_limits<T>::epsilon());
+}
+
+template <class T>
+bool is_greater_than_or_equal(T a, T b)
+{
+    auto A = std::abs(a);
+    auto B = std::abs(b);
+    auto X = (A < B ? B : A);
+
+    return (a - b) > (X * std::numeric_limits<T>::epsilon()) ||
+        std::abs(a - b) <= (X * std::numeric_limits<T>::epsilon());
+}
+
+template <class T>
+bool is_less_than(T a, T b)
+{
+    auto A = std::abs(a);
+    auto B = std::abs(b);
+
+    return (b - a) > ((A < B ? B : A) * std::numeric_limits<T>::epsilon());
+}
+
+template <class T>
+bool is_less_than_or_equal(T a, T b)
+{
+    auto A = std::abs(a);
+    auto B = std::abs(b);
+    auto X = (A < B ? B : A);
+
+    return (b - a) >(X * std::numeric_limits<T>::epsilon()) ||
+        std::abs(a - b) <= (X * std::numeric_limits<T>::epsilon());
 }
 
 //-----------------------------------------------------------------------------

@@ -71,7 +71,7 @@ bool altimeter::operator==(altimeter const& rhs) const
     return comparison_conversion_helper<double>(pressure_unit::hPa, unit, rhs.unit, pressure, rhs.pressure,
         [](double && l, double && r)
     {
-        return l == r;
+        return are_approximately_equal(l, r);
     });
 }
 
@@ -85,7 +85,7 @@ bool altimeter::operator<=(altimeter const& rhs) const
     return comparison_conversion_helper<double>(pressure_unit::hPa, unit, rhs.unit, pressure, rhs.pressure,
         [](double && l, double && r)
     {
-        return l <= r;
+        return is_greater_than_or_equal(l, r);
     });
 }
 
@@ -94,7 +94,7 @@ bool altimeter::operator>=(altimeter const& rhs) const
     return comparison_conversion_helper<double>(pressure_unit::hPa, unit, rhs.unit, pressure, rhs.pressure,
         [](double && l, double && r)
     {
-        return l >= r;
+        return is_greater_than_or_equal(l, r);
     });
 }
 
@@ -103,7 +103,7 @@ bool altimeter::operator<(altimeter const& rhs) const
     return comparison_conversion_helper<double>(pressure_unit::hPa, unit, rhs.unit, pressure, rhs.pressure,
         [](double && l, double && r)
     {
-        return l < r;
+        return is_less_than(l, r);
     });
 }
 
@@ -112,7 +112,7 @@ bool altimeter::operator>(altimeter const& rhs) const
     return comparison_conversion_helper<double>(pressure_unit::hPa, unit, rhs.unit, pressure, rhs.pressure,
         [](double && l, double && r)
     {
-        return l > r;
+        return is_greater_than(l, r);
     });
 }
 

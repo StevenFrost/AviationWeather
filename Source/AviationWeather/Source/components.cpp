@@ -206,7 +206,7 @@ bool visibility::operator==(visibility const& rhs) const
     auto distanceEqual = comparison_conversion_helper<double>(distance_unit::feet, unit, rhs.unit, distance, rhs.distance,
         [](double && l, double && r)
     {
-        return l == r;
+        return are_approximately_equal(l, r);
     });
 
     return distanceEqual && (modifier == rhs.modifier);

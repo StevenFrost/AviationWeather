@@ -24,6 +24,9 @@
     <ClCompile Include="..\Source\metar_tests.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\utility_tests.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\AviationWeather.TestPch.h">

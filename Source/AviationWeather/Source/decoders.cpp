@@ -24,7 +24,10 @@ namespace aw
 
 weather_intensity decode_weather_intensity(std::string const& symbol)
 {
-    if (symbol == "-") {
+    if (symbol == "") {
+        return weather_intensity::moderate;
+    }
+    else if (symbol == "-") {
         return weather_intensity::light;
     }
     else if (symbol == "+") {
@@ -33,16 +36,17 @@ weather_intensity decode_weather_intensity(std::string const& symbol)
     else if (symbol == "VC") {
         return weather_intensity::in_the_vicinity;
     }
-    else {
-        return weather_intensity::moderate;
-    }
+    throw unsupported_symbol_exception(symbol);
 }
 
 //-----------------------------------------------------------------------------
 
 weather_descriptor decode_weather_descriptor(std::string const& symbol)
 {
-    if (symbol == "MI") {
+    if (symbol == "") {
+        return weather_descriptor::none;
+    }
+    else if (symbol == "MI") {
         return weather_descriptor::shallow;
     }
     else if (symbol == "PR") {
@@ -66,15 +70,16 @@ weather_descriptor decode_weather_descriptor(std::string const& symbol)
     else if (symbol == "FZ") {
         return weather_descriptor::freezing;
     }
-    else {
-        return weather_descriptor::none;
-    }
+    throw unsupported_symbol_exception(symbol);
 }
 
 //-----------------------------------------------------------------------------
 
 weather_phenomena decode_weather_phenomena(std::string const& symbol)
 {
+    if (symbol == "") {
+        return weather_phenomena::none;
+    }
     if (symbol == "DZ") {
         return weather_phenomena::drizzle;
     }
@@ -100,7 +105,7 @@ weather_phenomena decode_weather_phenomena(std::string const& symbol)
         return weather_phenomena::small_hail;
     }
     else if (symbol == "UP") {
-        return weather_phenomena::small_hail;
+        return weather_phenomena::unknown_precipitation;
     }
     else if (symbol == "BR") {
         return weather_phenomena::mist;
@@ -141,9 +146,7 @@ weather_phenomena decode_weather_phenomena(std::string const& symbol)
     else if (symbol == "DS") {
         return weather_phenomena::duststorm;
     }
-    else {
-        return weather_phenomena::none;
-    }
+    throw unsupported_symbol_exception(symbol);
 }
 
 //-----------------------------------------------------------------------------
@@ -152,6 +155,12 @@ sky_cover_type decode_sky_cover(std::string const& symbol)
 {
     if (symbol == "VV") {
         return sky_cover_type::vertical_visibility;
+    }
+    else if (symbol == "SKC") {
+        return sky_cover_type::sky_clear;
+    }
+    else if (symbol == "CLR") {
+        return sky_cover_type::clear_below_12000;
     }
     else if (symbol == "FEW") {
         return sky_cover_type::few;
@@ -165,24 +174,23 @@ sky_cover_type decode_sky_cover(std::string const& symbol)
     else if (symbol == "OVC") {
         return sky_cover_type::overcast;
     }
-    else {
-        return sky_cover_type::sky_clear;
-    }
+    throw unsupported_symbol_exception(symbol);
 }
 
 //-----------------------------------------------------------------------------
 
 sky_cover_cloud_type decode_sky_cover_cloud_type(std::string const& symbol)
 {
+    if (symbol == "") {
+        return sky_cover_cloud_type::unspecified;
+    }
     if (symbol == "CB") {
         return sky_cover_cloud_type::cumulonimbus;
     }
     else if (symbol == "TCU") {
         return sky_cover_cloud_type::towering_cumulus;
     }
-    else {
-        return sky_cover_cloud_type::unspecified;
-    }
+    throw unsupported_symbol_exception(symbol);
 }
 
 //-----------------------------------------------------------------------------
@@ -199,6 +207,9 @@ distance_unit decode_distance_unit(std::string const& symbol)
 
 //-----------------------------------------------------------------------------
 
+// TODO: Add support for MPH when adjusting the parsers for international metars.
+//       The MPH unit currently doesn't get decoded since we only check for KT
+//       in a wind group.
 speed_unit decode_speed_unit(std::string const& symbol)
 {
     if (symbol == "KT") {

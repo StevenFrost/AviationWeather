@@ -54,6 +54,7 @@
     <ClCompile Include="..\Source\metar_tests.cpp" />
     <ClCompile Include="..\Source\metar_validation_tests.cpp" />
     <ClCompile Include="..\Source\metar_parser_tests.cpp" />
+    <ClCompile Include="..\Source\utility_tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\metar.json" />

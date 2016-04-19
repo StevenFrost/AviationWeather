@@ -25,6 +25,15 @@ namespace aw
 
 //-----------------------------------------------------------------------------
 
+struct unsupported_symbol_exception : public aw::aw_exception
+{
+    unsupported_symbol_exception(std::string const& symbol) :
+        aw_exception(std::string("The symbol '" + symbol + "' is not supported by this decoder.").c_str())
+    {}
+};
+
+//-----------------------------------------------------------------------------
+
 weather_intensity    decode_weather_intensity   (std::string const& symbol);
 weather_descriptor   decode_weather_descriptor  (std::string const& symbol);
 weather_phenomena    decode_weather_phenomena   (std::string const& symbol);
