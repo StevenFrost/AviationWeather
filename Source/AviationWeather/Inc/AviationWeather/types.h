@@ -97,6 +97,21 @@ enum class sky_cover_cloud_type
     towering_cumulus
 };
 
+enum class visibility_modifier_type
+{
+    none,
+    less_than,
+    greater_than
+};
+
+enum class runway_designator_type
+{
+    none,
+    left,
+    right,
+    center
+};
+
 enum class flight_category
 {
     vfr,

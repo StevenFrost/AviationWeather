@@ -21,7 +21,10 @@
     <ClCompile Include="..\Source\converters.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\parsers.cpp">
+    <ClCompile Include="..\Source\components.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\decoders.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -46,6 +49,12 @@
     </ClInclude>
     <ClInclude Include="..\Inc\AviationWeather\optional.h">
       <Filter>Public Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Inc\AviationWeather\components.h">
+      <Filter>Public Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\utility.h">
+      <Filter>Private Headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

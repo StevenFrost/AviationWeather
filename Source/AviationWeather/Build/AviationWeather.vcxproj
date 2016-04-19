@@ -23,6 +23,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Inc\AviationWeather\components.h" />
     <ClInclude Include="..\Inc\AviationWeather\converters.h" />
     <ClInclude Include="..\Inc\AviationWeather\metar.h" />
     <ClInclude Include="..\Inc\AviationWeather\optional.h" />
@@ -30,14 +31,16 @@
     <ClInclude Include="..\Source\AviationWeatherPch.h" />
     <ClInclude Include="..\Source\decoders.h" />
     <ClInclude Include="..\Source\parsers.h" />
+    <ClInclude Include="..\Source\utility.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Source\components.cpp" />
     <ClCompile Include="..\Source\converters.cpp" />
+    <ClCompile Include="..\Source\decoders.cpp" />
     <ClCompile Include="..\Source\metar.cpp" />
     <ClCompile Include="..\Source\AviationWeatherPch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\Source\parsers.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
