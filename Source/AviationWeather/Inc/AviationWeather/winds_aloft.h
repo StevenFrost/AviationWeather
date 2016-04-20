@@ -96,7 +96,7 @@ public:
     bool operator== (location const& rhs) const;
     bool operator!= (location const& rhs) const;
 
-    std::string iata_identifier() const;
+    std::string get_iata_identifier() const;
 
     optional<report> at(double altitude) const;
 
