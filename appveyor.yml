@@ -1,0 +1,44 @@
+version: 0.3.{build}
+branches:
+  only:
+  - master
+  - /FEATURE_.*/
+  - /BUG_.*/
+image: Visual Studio 2015
+shallow_clone: true
+environment:
+  matrix:
+  - configuration: Debug
+    platform: Win32
+  - configuration: Release
+    platform: Win32
+  - configuration: Debug
+    platform: x64
+  - configuration: Release
+    platform: x64
+install:
+- cmd: appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+nuget:
+  account_feed: true
+before_build:
+- cmd: appveyor-retry nuget restore Build/AviationWeather.sln -DisableParallelProcessing
+build:
+  project: Build/AviationWeather.sln
+  parallel: true
+  verbosity: normal
+test_script:
+- ps: >-
+    $platform = $env:PLATFORM;
+    $testplatform = $env:PLATFORM;
+    $configuration = $env:CONFIGURATION;
+
+    if ($testplatform -eq "Win32") { $testplatform = "x86"; }
+    vstest.console /logger:Appveyor "Built/Out/v140/$platform/$configuration/AviationWeather.Test/AviationWeather.Test.dll" /Platform:$testplatform
+artifacts:
+- path: Built\Out\
+  name: binaries
+notifications:
+- provider: GitHubPullRequest
+  on_build_success: false
+  on_build_failure: false
+  on_build_status_changed: false
