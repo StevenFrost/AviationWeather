@@ -684,7 +684,7 @@
             },
             "remarks": true
         },
-		{
+        {
             "string": "KBJC 201347Z 26006KT 540SM BKN120 13/01 A3004",
             "station_identifier": "KBJC",
             "observation_time": {
@@ -716,7 +716,7 @@
                 "pressure": 30.04
             }
         },
-		{
+        {
             "string": "KBJC 202147Z 02004KT 50SM SCT080 BKN120TCU 20/00 A3001 RMK VIRGA SW-NW",
             "station_identifier": "KBJC",
             "observation_time": {
@@ -734,7 +734,7 @@
                 "distance": 50
             },
             "sky_condition": [
-			    {
+                {
                     "sky_cover": "scattered",
                     "layer_height": 8000
                 },
@@ -754,7 +754,7 @@
             },
             "remarks": true
         },
-		{
+        {
             "string": "KOAK 050753Z 12003KT 10SM MIFG FEW020 FEW200 07/06 A3028 RMK AO2 SLP253 T00720056 401500050",
             "station_identifier": "KOAK",
             "observation_time": {
@@ -780,7 +780,7 @@
                 }
             ],
             "sky_condition": [
-			    {
+                {
                     "sky_cover": "few",
                     "layer_height": 2000
                 },
@@ -825,7 +825,7 @@
                 }
             ],
             "sky_condition": [
-			    {
+                {
                     "sky_cover": "scattered",
                     "layer_height": 0
                 }
@@ -866,7 +866,7 @@
                 }
             ],
             "sky_condition": [
-			    {
+                {
                     "sky_cover": "overcast",
                     "layer_height": 400
                 }
@@ -906,15 +906,15 @@
                 }
             ],
             "sky_condition": [
-			    {
+                {
                     "sky_cover": "scattered",
                     "layer_height": 1500
                 },
-			    {
+                {
                     "sky_cover": "scattered",
                     "layer_height": 2000
                 },
-			    {
+                {
                     "sky_cover": "overcast",
                     "layer_height": 2600
                 }
@@ -950,15 +950,15 @@
                 "distance": 10
             },
             "sky_condition": [
-			    {
+                {
                     "sky_cover": "scattered",
                     "layer_height": 1300
                 },
-			    {
+                {
                     "sky_cover": "broken",
                     "layer_height": 1600
                 },
-			    {
+                {
                     "sky_cover": "broken",
                     "layer_height": 2000
                 }
@@ -999,7 +999,7 @@
                 }
             ],
             "sky_condition": [
-			    {
+                {
                     "sky_cover": "overcast",
                     "layer_height": 300
                 }
@@ -1040,7 +1040,7 @@
                 }
             ],
             "sky_condition": [
-			    {
+                {
                     "sky_cover": "overcast",
                     "layer_height": 100
                 }
@@ -1740,7 +1740,7 @@
                 "distance": 10
             },
             "sky_condition": [
-			    {
+                {
                     "sky_cover": "scattered",
                     "layer_height": 2000
                 }
@@ -1800,7 +1800,7 @@
                 }
             ],
             "sky_condition": [
-			    {
+                {
                     "sky_cover": "overcast",
                     "layer_height": 1000,
                     "cloud_type": "cumulonimbus"
@@ -1836,7 +1836,7 @@
                 "distance": 10
             },
             "sky_condition": [
-			    {
+                {
                     "sky_cover": "clear_below_12000"
                 }
             ],
@@ -1876,7 +1876,7 @@
                 }
             ],
             "sky_condition": [
-			    {
+                {
                     "sky_cover": "scattered",
                     "layer_height": 700
                 }
@@ -1924,15 +1924,15 @@
                 }
             ],
             "sky_condition": [
-			    {
+                {
                     "sky_cover": "scattered",
                     "layer_height": 1100
                 },
-			    {
+                {
                     "sky_cover": "broken",
                     "layer_height": 2800
                 },
-			    {
+                {
                     "sky_cover": "overcast",
                     "layer_height": 4300
                 }
@@ -1988,7 +1988,7 @@
                 }
             ],
             "sky_condition": [
-			    {
+                {
                     "sky_cover": "vertical_visibility",
                     "layer_height": 200
                 }
@@ -2050,15 +2050,15 @@
                 }
             ],
             "sky_condition": [
-			    {
+                {
                     "sky_cover": "few",
                     "layer_height": 200
                 },
-			    {
+                {
                     "sky_cover": "broken",
                     "layer_height": 2300
                 },
-			    {
+                {
                     "sky_cover": "overcast",
                     "layer_height": 3200,
                     "cloud_type": "cumulonimbus"
@@ -2110,7 +2110,7 @@
                 }
             ],
             "sky_condition": [
-			    {
+                {
                     "sky_cover": "overcast",
                     "layer_height": 1100
                 }
@@ -2163,7 +2163,7 @@
                 }
             ],
             "sky_condition": [
-			    {
+                {
                     "sky_cover": "overcast",
                     "layer_height": 1000,
                     "cloud_type": "cumulonimbus"
@@ -2226,7 +2226,7 @@
                 }
             ],
             "sky_condition": [
-			    {
+                {
                     "sky_cover": "vertical_visibility",
                     "layer_height": 800
                 }
@@ -2268,7 +2268,7 @@
                 }
             ],
             "sky_condition": [
-			    {
+                {
                     "sky_cover": "clear_below_12000"
                 }
             ],
@@ -2311,11 +2311,11 @@
                 }
             ],
             "sky_condition": [
-			    {
+                {
                     "sky_cover": "broken",
                     "layer_height": 800
                 },
-			    {
+                {
                     "sky_cover": "overcast",
                     "layer_height": 2000,
                     "cloud_type": "cumulonimbus"
