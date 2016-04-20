@@ -18,6 +18,15 @@
 namespace aw
 {
 
+//-----------------------------------------------------------------------------
+
+struct aw_exception : public std::exception
+{
+    aw_exception(const char* message) : exception(message) {}
+};
+
+//-----------------------------------------------------------------------------
+
 enum class weather_intensity
 {
     light,
@@ -93,7 +102,8 @@ enum class flight_category
     vfr,
     mvfr,
     ifr,
-    lifr
+    lifr,
+    unknown
 };
 
 enum class speed_unit
@@ -115,5 +125,7 @@ enum class pressure_unit
     hPa  = 0, // Hectopascals
     inHg = 1  // Inches of mercury
 };
+
+//-----------------------------------------------------------------------------
 
 } // namespace aw

@@ -25,6 +25,7 @@
   <ItemGroup>
     <ClInclude Include="..\Inc\AviationWeather\converters.h" />
     <ClInclude Include="..\Inc\AviationWeather\metar.h" />
+    <ClInclude Include="..\Inc\AviationWeather\optional.h" />
     <ClInclude Include="..\Inc\AviationWeather\types.h" />
     <ClInclude Include="..\Inc\AviationWeather\winds_aloft.h" />
     <ClInclude Include="..\Source\AviationWeatherPch.h" />
@@ -41,6 +42,5 @@
     <ClCompile Include="..\Source\winds_aloft.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

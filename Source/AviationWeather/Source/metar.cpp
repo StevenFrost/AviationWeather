@@ -16,13 +16,15 @@
 #include "AviationWeatherPch.h"
 
 #include <AviationWeather/metar.h>
-#include <AviationWeather/converters.h>
 
 #include <algorithm>
 #include <ctime>
 #include <regex>
 #include <string>
 #include <map>
+
+#include <AviationWeather/converters.h>
+#include <AviationWeather/optional.h>
 
 #include "parsers.h"
 
@@ -287,8 +289,8 @@ wind::wind() :
     direction(UINT16_MAX),
     wind_speed(0),
     gust_speed(0),
-    variation_lower(UINT16_MAX),
-    variation_upper(UINT16_MAX)
+    variation_lower(util::nullopt),
+    variation_upper(util::nullopt)
 {}
 
 wind::wind(wind && other) :
@@ -296,8 +298,8 @@ wind::wind(wind && other) :
     direction(UINT16_MAX),
     wind_speed(0),
     gust_speed(0),
-    variation_lower(UINT16_MAX),
-    variation_upper(UINT16_MAX)
+    variation_lower(util::nullopt),
+    variation_upper(util::nullopt)
 {
     *this = std::move(other);
 }
@@ -310,15 +312,15 @@ wind& wind::operator=(wind && rhs)
         direction = rhs.direction;
         wind_speed = rhs.wind_speed;
         gust_speed = rhs.gust_speed;
-        variation_lower = rhs.variation_lower;
-        variation_upper = rhs.variation_upper;
+        variation_lower = std::move(rhs.variation_lower);
+        variation_upper = std::move(rhs.variation_upper);
 
         rhs.unit = speed_unit::kt;
         rhs.direction = UINT16_MAX;
         rhs.wind_speed = 0;
         rhs.gust_speed = 0;
-        rhs.variation_lower = UINT16_MAX;
-        rhs.variation_upper = UINT16_MAX;
+        rhs.variation_lower = util::nullopt;
+        rhs.variation_upper = util::nullopt;
     }
     return *this;
 }
@@ -340,7 +342,7 @@ bool wind::operator!= (wind const& rhs) const
 
 bool wind::is_variable() const
 {
-    return (direction == UINT16_MAX) || (variation_lower != UINT16_MAX && variation_upper != UINT16_MAX);
+    return (direction == UINT16_MAX) || (variation_lower && variation_upper);
 }
 
 uint8_t wind::gust_factor() const
@@ -361,23 +363,13 @@ double wind::crosswind_component(double heading, bool useGusts) const
 //-----------------------------------------------------------------------------
 
 runway_visual_range::runway_visual_range() :
-    unit(distance_unit::feet),
     runway_number(0U),
-    runway_designator(runway_designator_type::none),
-    visibility_min_modifier(visibility_modifier_type::none),
-    visibility_max_modifier(visibility_modifier_type::none),
-    visibility_min(UINT16_MAX),
-    visibility_max(UINT16_MAX)
+    runway_designator(runway_designator_type::none)
 {}
 
 runway_visual_range::runway_visual_range(runway_visual_range && other) :
-    unit(distance_unit::feet),
     runway_number(0U),
-    runway_designator(runway_designator_type::none),
-    visibility_min_modifier(visibility_modifier_type::none),
-    visibility_max_modifier(visibility_modifier_type::none),
-    visibility_min(UINT16_MAX),
-    visibility_max(UINT16_MAX)
+    runway_designator(runway_designator_type::none)
 {
     *this = std::move(other);
 }
@@ -386,32 +378,23 @@ runway_visual_range& runway_visual_range::operator=(runway_visual_range && rhs)
 {
     if (this != &rhs)
     {
-        unit = rhs.unit;
         runway_number = rhs.runway_number;
         runway_designator = rhs.runway_designator;
-        visibility_min_modifier = rhs.visibility_min_modifier;
-        visibility_max_modifier = rhs.visibility_max_modifier;
-        visibility_min = rhs.visibility_min;
-        visibility_max = rhs.visibility_max;
+        visibility_min = std::move(rhs.visibility_min);
+        visibility_max = std::move(rhs.visibility_max);
 
-        rhs.unit = distance_unit::feet;
         rhs.runway_number = 0U;
         rhs.runway_designator = runway_designator_type::none;
-        rhs.visibility_min_modifier = visibility_modifier_type::none;
-        rhs.visibility_max_modifier = visibility_modifier_type::none;
-        rhs.visibility_min = UINT16_MAX;
-        rhs.visibility_max = UINT16_MAX;
+        rhs.visibility_min = visibility();
+        rhs.visibility_max = visibility();
     }
     return *this;
 }
 
 bool runway_visual_range::operator== (runway_visual_range const& rhs) const
 {
-    return (unit == rhs.unit) &&
-        (runway_number == rhs.runway_number) &&
+    return (runway_number == rhs.runway_number) &&
         (runway_designator == rhs.runway_designator) &&
-        (visibility_min_modifier == rhs.visibility_min_modifier) &&
-        (visibility_max_modifier == rhs.visibility_max_modifier) &&
         (visibility_min == rhs.visibility_min) &&
         (visibility_max == rhs.visibility_max);
 }
@@ -526,8 +509,8 @@ metar_info::metar_info(std::string const& metar) :
     type(report_type::metar),
     station_identifier(""),
     modifier(modifier_type::none),
-    temperature(INT8_MAX),
-    dewpoint(INT8_MAX),
+    temperature(util::nullopt),
+    dewpoint(util::nullopt),
     remarks("")
 {
     parse();
@@ -538,8 +521,8 @@ metar_info::metar_info(metar_info && other) :
     type(report_type::metar),
     station_identifier(""),
     modifier(modifier_type::none),
-    temperature(INT8_MAX),
-    dewpoint(INT8_MAX),
+    temperature(util::nullopt),
+    dewpoint(util::nullopt),
     remarks("")
 {
     *this = std::move(other);
@@ -569,14 +552,14 @@ metar_info& metar_info::operator=(metar_info && rhs)
         rhs.station_identifier = "";
         rhs.report_time = observation_time();
         rhs.modifier = modifier_type::none;
-        rhs.wind_group = wind();
-        rhs.visibility_group = visibility();
+        rhs.wind_group = util::nullopt;
+        rhs.visibility_group = util::nullopt;
         rhs.runway_visual_range_group.clear();
         rhs.weather_group.clear();
         rhs.sky_condition_group.clear();
-        rhs.temperature = 0;
-        rhs.dewpoint = 0;
-        rhs.altimeter_group = altimeter();
+        rhs.temperature = util::nullopt;
+        rhs.dewpoint = util::nullopt;
+        rhs.altimeter_group = util::nullopt;
         rhs.remarks = "";
     }
     return *this;
@@ -624,7 +607,7 @@ void metar_info::parse()
     parsers::parse_altimeter(*this, baseMetar);
 }
 
-cloud_layer metar_info::ceiling() const
+cloud_layer metar_info::ceiling_nothrow() const
 {
     auto result = std::find_if(sky_condition_group.begin(), sky_condition_group.end(), [](cloud_layer layer)
     {
@@ -637,19 +620,40 @@ cloud_layer metar_info::ceiling() const
     return result != sky_condition_group.end() ? *result : cloud_layer();
 }
 
+cloud_layer metar_info::ceiling() const
+{
+    if (sky_condition_group.empty())
+    {
+        throw aw_exception("Sky condition missing");
+    }
+    return ceiling_nothrow();
+}
+
 flight_category metar_info::flight_category() const
 {
-    auto ceiling = metar_info::ceiling();
-    if (aw::convert(visibility_group.distance, visibility_group.unit, distance_unit::statute_miles) >= 3.0 && ceiling.layer_height >= 1000L)
+    if (!visibility_group || sky_condition_group.empty())
     {
-        return (aw::convert(visibility_group.distance, visibility_group.unit, distance_unit::statute_miles) > 5.0 && ceiling.layer_height > 3000L) ? flight_category::vfr : flight_category::mvfr;
+        return flight_category::unknown;
     }
-    return (aw::convert(visibility_group.distance, visibility_group.unit, distance_unit::statute_miles) >= 1.0 && ceiling.layer_height >= 500L) ? flight_category::ifr : flight_category::lifr;
+
+    cloud_layer ceiling = metar_info::ceiling_nothrow();
+
+    auto distanceSM = aw::convert(visibility_group->distance, visibility_group->unit, distance_unit::statute_miles);
+
+    if (distanceSM >= 3.0 && ceiling.layer_height >= 1000L)
+    {
+        return (distanceSM > 5.0 && ceiling.layer_height > 3000L) ? flight_category::vfr : flight_category::mvfr;
+    }
+    return (distanceSM >= 1.0 && ceiling.layer_height >= 500L) ? flight_category::ifr : flight_category::lifr;
 }
 
 int16_t metar_info::temperature_dewpoint_spread() const
 {
-    return temperature - dewpoint;
+    if (!temperature || !dewpoint)
+    {
+        throw aw_exception("Missing temperature or dewpoint");
+    }
+    return *temperature - *dewpoint;
 }
 
 //-----------------------------------------------------------------------------

@@ -47,6 +47,9 @@
     <ClInclude Include="..\Source\decoders.h">
       <Filter>Private Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\Inc\AviationWeather\optional.h">
+      <Filter>Public Headers</Filter>
+    </ClInclude>
     <ClInclude Include="..\Inc\AviationWeather\winds_aloft.h">
       <Filter>Public Headers</Filter>
     </ClInclude>

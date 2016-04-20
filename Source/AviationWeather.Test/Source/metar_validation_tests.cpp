@@ -23,6 +23,8 @@
 #include <AviationWeather/metar.h>
 #include <AviationWeather/types.h>
 
+#include <JSON/json.h>
+
 //-----------------------------------------------------------------------------
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -152,7 +154,8 @@ std::string flight_category_strings[] =
     STRINGIFY(vfr),
     STRINGIFY(mvfr),
     STRINGIFY(ifr),
-    STRINGIFY(lifr)
+    STRINGIFY(lifr),
+    STRINGIFY(unknown)
 };
 
 std::string speed_unit_strings[] =
@@ -330,38 +333,33 @@ void MetarValidationTests::ValidateWind(aw::metar::metar_info const& metar, basi
     if (test.find("wind") != test.end())
     {
         auto wind = test["wind"];
-        Assert::AreEqual(wind["unit"].get<std::string>(), speed_unit_strings[etoi(metar.wind_group.unit)]);
-        Assert::AreEqual(wind["direction"].get<uint16_t>(), metar.wind_group.direction);
-        Assert::AreEqual(wind["wind_speed"].get<uint8_t>(), metar.wind_group.wind_speed);
+        Assert::AreEqual(wind["unit"].get<std::string>(), speed_unit_strings[etoi(metar.wind_group->unit)]);
+        Assert::AreEqual(wind["direction"].get<uint16_t>(), metar.wind_group->direction);
+        Assert::AreEqual(wind["wind_speed"].get<uint8_t>(), metar.wind_group->wind_speed);
 
         if (wind.find("gust_speed") != wind.end())
         {
-            Assert::AreEqual(wind["gust_speed"].get<uint8_t>(), metar.wind_group.gust_speed);
+            Assert::AreEqual(wind["gust_speed"].get<uint8_t>(), metar.wind_group->gust_speed);
         }
         else
         {
-            Assert::AreEqual(uint8_t(0), metar.wind_group.gust_speed);
+            Assert::AreEqual(uint8_t(0), metar.wind_group->gust_speed);
         }
 
         if (wind.find("variation_lower") != wind.end() && wind.find("variation_upper") != wind.end())
         {
-            Assert::AreEqual(wind["variation_lower"].get<uint16_t>(), metar.wind_group.variation_lower);
-            Assert::AreEqual(wind["variation_upper"].get<uint16_t>(), metar.wind_group.variation_upper);
+            Assert::AreEqual(wind["variation_lower"].get<uint16_t>(), *(metar.wind_group->variation_lower));
+            Assert::AreEqual(wind["variation_upper"].get<uint16_t>(), *(metar.wind_group->variation_upper));
         }
         else
         {
-            Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_lower);
-            Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_upper);
+            Assert::IsFalse(static_cast<bool>(metar.wind_group->variation_lower));
+            Assert::IsFalse(static_cast<bool>(metar.wind_group->variation_upper));
         }
     }
     else
     {
-        Assert::AreEqual(aw::speed_unit::kt, metar.wind_group.unit);
-        Assert::AreEqual(UINT16_MAX, metar.wind_group.direction);
-        Assert::AreEqual(uint8_t(0), metar.wind_group.wind_speed);
-        Assert::AreEqual(uint8_t(0), metar.wind_group.gust_speed);
-        Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_lower);
-        Assert::AreEqual(UINT16_MAX, metar.wind_group.variation_upper);
+        Assert::IsFalse(static_cast<bool>(metar.wind_group));
     }
 }
 
@@ -372,23 +370,21 @@ void MetarValidationTests::ValidateVisibility(aw::metar::metar_info const& metar
     if (test.find("visibility") != test.end())
     {
         auto visibility = test["visibility"];
-        Assert::AreEqual(visibility["unit"].get<std::string>(), distance_unit_strings[etoi(metar.visibility_group.unit)]);
-        Assert::AreEqual(visibility["distance"].get<double>(), metar.visibility_group.distance, 0.001);
+        Assert::AreEqual(visibility["unit"].get<std::string>(), distance_unit_strings[etoi(metar.visibility_group->unit)]);
+        Assert::AreEqual(visibility["distance"].get<double>(), metar.visibility_group->distance, 0.001);
 
         if (visibility.find("modifier") != visibility.end())
         {
-            Assert::AreEqual(visibility["modifier"].get<std::string>(), visibility_modifier_type_strings[etoi(metar.visibility_group.modifier)]);
+            Assert::AreEqual(visibility["modifier"].get<std::string>(), visibility_modifier_type_strings[etoi(metar.visibility_group->modifier)]);
         }
         else
         {
-            Assert::AreEqual(aw::metar::visibility_modifier_type::none, metar.visibility_group.modifier);
+            Assert::AreEqual(aw::metar::visibility_modifier_type::none, metar.visibility_group->modifier);
         }
     }
     else
     {
-        Assert::AreEqual(aw::distance_unit::feet, metar.visibility_group.unit);
-        Assert::AreEqual(double(UINT32_MAX), metar.visibility_group.distance);
-        Assert::AreEqual(aw::metar::visibility_modifier_type::none, metar.visibility_group.modifier);
+        Assert::IsFalse(static_cast<bool>(metar.visibility_group));
     }
 }
 
@@ -406,9 +402,10 @@ void MetarValidationTests::ValidateRunwayVisualRange(aw::metar::metar_info const
             auto expected = rvrGroup.at(i);
             auto actual = metar.runway_visual_range_group.at(i);
 
-            Assert::AreEqual(expected["unit"].get<std::string>(), distance_unit_strings[etoi(actual.unit)]);
+            Assert::AreEqual(expected["unit"].get<std::string>(), distance_unit_strings[etoi(actual.visibility_min.unit)]);
+            Assert::AreEqual(expected["unit"].get<std::string>(), distance_unit_strings[etoi(actual.visibility_max.unit)]);
             Assert::AreEqual(expected["runway_number"].get<uint8_t>(), actual.runway_number);
-            Assert::AreEqual(expected["visibility_min"].get<uint16_t>(), actual.visibility_min);
+            Assert::AreEqual(static_cast<double>(expected["visibility_min"].get<uint16_t>()), actual.visibility_min.distance);
 
             if (expected.find("runway_designator") != expected.end())
             {
@@ -421,29 +418,29 @@ void MetarValidationTests::ValidateRunwayVisualRange(aw::metar::metar_info const
 
             if (expected.find("visibility_max") != expected.end())
             {
-                Assert::AreEqual(expected["visibility_max"].get<uint16_t>(), actual.visibility_max);
+                Assert::AreEqual(static_cast<double>(expected["visibility_max"].get<uint16_t>()), actual.visibility_max.distance);
             }
             else
             {
-                Assert::AreEqual(UINT16_MAX, actual.visibility_max);
+                Assert::AreEqual(actual.visibility_min, actual.visibility_max);
             }
 
             if (expected.find("visibility_min_modifier") != expected.end())
             {
-                Assert::AreEqual(expected["visibility_min_modifier"].get<std::string>(), visibility_modifier_type_strings[etoi(actual.visibility_min_modifier)]);
+                Assert::AreEqual(expected["visibility_min_modifier"].get<std::string>(), visibility_modifier_type_strings[etoi(actual.visibility_min.modifier)]);
             }
             else
             {
-                Assert::AreEqual(aw::metar::visibility_modifier_type::none, actual.visibility_min_modifier);
+                Assert::AreEqual(aw::metar::visibility_modifier_type::none, actual.visibility_min.modifier);
             }
 
             if (expected.find("visibility_max_modifier") != expected.end())
             {
-                Assert::AreEqual(expected["visibility_max_modifier"].get<std::string>(), visibility_modifier_type_strings[etoi(actual.visibility_max_modifier)]);
+                Assert::AreEqual(expected["visibility_max_modifier"].get<std::string>(), visibility_modifier_type_strings[etoi(actual.visibility_max.modifier)]);
             }
             else
             {
-                Assert::AreEqual(aw::metar::visibility_modifier_type::none, actual.visibility_max_modifier);
+                Assert::AreEqual(aw::metar::visibility_modifier_type::none, actual.visibility_max.modifier);
             }
         }
     }
@@ -579,16 +576,18 @@ void MetarValidationTests::ValidateSkyCondition(aw::metar::metar_info const& met
 
 void MetarValidationTests::ValidateTemperatureDewpoint(aw::metar::metar_info const& metar, basic_json<> const& test)
 {
-    Assert::AreEqual(test["temperature_dewpoint"]["temperature"].get<int8_t>(), metar.temperature);
-    Assert::AreEqual(test["temperature_dewpoint"]["dewpoint"].get<int8_t>(), metar.dewpoint);
+    // TODO: Check that we actually have temperature and dewpoint values in the expectation file
+    Assert::AreEqual(test["temperature_dewpoint"]["temperature"].get<int8_t>(), *(metar.temperature));
+    Assert::AreEqual(test["temperature_dewpoint"]["dewpoint"].get<int8_t>(), *(metar.dewpoint));
 }
 
 //-----------------------------------------------------------------------------
 
 void MetarValidationTests::ValidateAltimeter(aw::metar::metar_info const& metar, basic_json<> const& test)
 {
-    Assert::AreEqual(test["altimeter"]["unit"].get<std::string>(), pressure_unit_strings[etoi(metar.altimeter_group.unit)]);
-    Assert::AreEqual(test["altimeter"]["pressure"].get<double>(), metar.altimeter_group.pressure);
+    // TODO: Check that we actually have the altimeter value in the expectation file
+    Assert::AreEqual(test["altimeter"]["unit"].get<std::string>(), pressure_unit_strings[etoi(metar.altimeter_group->unit)]);
+    Assert::AreEqual(test["altimeter"]["pressure"].get<double>(), metar.altimeter_group->pressure);
 }
 
 //-----------------------------------------------------------------------------
