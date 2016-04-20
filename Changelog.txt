@@ -5,7 +5,21 @@ Known Issues
 ------------
   - Some international METARs may not be parsed correctly
   - Remarks are not parsed at all and are instead represented by a string
-  - Runway Visual Range groups are not parsed correctly if they contain visibility modifiers
+  - Missing METAR elements may result in other sections being incorrectly parsed
+  - The pattern matching for weather groups fails for some phenomena used in combination with the freezing (FZ) descriptor
+
+
+v0.3.7.0 - 2016/04/20
+---------------------
+General
+ - Functionality to determine the temperature-dewpoint spread for a METAR
+ - Added an unknown flight category for METARs missing ceiling or visibility data
+
+Build
+ - Continuous Integration with AppVeyor
+
+Bugs
+ - #33: Runway Visual Range groups are not parsed correctly if they contain visibility modifiers
 
 
 v0.2.0.0 - 2015/08/20
